@@ -11,14 +11,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionControllerAdvice {
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<PlatformException> handleException(RuntimeException e) {
+    public ResponseEntity<ExceptionResponse> handleException(RuntimeException e) {
         log.error(e.getMessage());
         if (e instanceof PlatformException) {
             var platform = (PlatformException) e;
-            return ResponseEntity.status(platform.getHttpStatusCode()).body(platform);
+            return ResponseEntity.status(platform.getHttpStatusCode())
+                    .body(
+                            ExceptionResponse.builder()
+                                    .message(platform.getMessage())
+                                    .code(platform.getHttpStatusCode())
+                                    .build());
         }
         return ResponseEntity.internalServerError()
-                .body(PlatformException.builder().message("General Error").httpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR).build());
+                .body(
+                        ExceptionResponse.builder()
+                                .message("General Error")
+                                .code(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .build());
     }
-
 }

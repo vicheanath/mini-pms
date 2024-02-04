@@ -8,10 +8,11 @@ import org.springframework.http.HttpStatusCode;
 @Builder
 public class PlatformException extends RuntimeException {
 
-    String message;
-    HttpStatusCode httpStatusCode;
+    private String message;
+    private HttpStatusCode httpStatusCode;
 
     public PlatformException(String message, HttpStatusCode httpStatusCode) {
+        super(message);
         this.message = message;
         this.httpStatusCode = httpStatusCode;
     }

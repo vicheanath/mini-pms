@@ -16,8 +16,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        var member = memberRepo.findByEmail(username)
-                .orElseThrow(() -> new PlatformException("", HttpStatus.NOT_FOUND));
+        var member =
+                memberRepo
+                        .findByEmail(username)
+                        .orElseThrow(() -> new PlatformException("", HttpStatus.NOT_FOUND));
         return new CustomizeUserDetails(member);
     }
 }

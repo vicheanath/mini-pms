@@ -26,27 +26,34 @@ public class SecurityConfig {
 
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors ->
-                        cors.configurationSource(request ->
-                        {
-                            var all = List.of(CorsConfiguration.ALL);
-                            var c = new CorsConfiguration();
-                            c.setAllowedHeaders(all);
-                            c.setAllowedMethods(all);
-                            c.setAllowedOriginPatterns(all);
-                            return c;
-                        }))
-                .authorizeHttpRequests(authorize -> {
-                    String contextPath = "**/api/v1/";
-                    authorize
-                            .requestMatchers(contextPath + "/public").permitAll()
-                            .requestMatchers(contextPath + "admins/**").hasAuthority("Admin")
-                            .requestMatchers(contextPath + "owners/**").hasAuthority("Owner")
-                            .requestMatchers(contextPath + "customers/**").hasAuthority("Customer")
-                            .anyRequest().authenticated()
-                    ;
-
-                })
+                .cors(
+                        cors ->
+                                cors.configurationSource(
+                                        request -> {
+                                            var all = List.of(CorsConfiguration.ALL);
+                                            var c = new CorsConfiguration();
+                                            c.setAllowedHeaders(all);
+                                            c.setAllowedMethods(all);
+                                            c.setAllowedOriginPatterns(all);
+                                            return c;
+                                        }))
+                .authorizeHttpRequests(
+                        authorize -> {
+                            String contextPath = "**/api/v1";
+                            authorize
+                                    .requestMatchers(
+                                            contextPath + "/public", contextPath + "/auth/**")
+                                    .permitAll()
+                                    .requestMatchers(contextPath + "/admins/**")
+                                    .hasAuthority("Admin")
+                                    .requestMatchers(contextPath + "/owners/**")
+                                    .hasAuthority("Owner")
+                                    .requestMatchers(contextPath + "/customers/**")
+                                    .hasAuthority("Customer")
+                                    .anyRequest()
+                                    .authenticated();
+                        })
+                //                .addFilterBefore()
                 .formLogin(Customizer.withDefaults())
                 .build();
     }
@@ -57,11 +64,11 @@ public class SecurityConfig {
     }
 
     @Bean
-    AuthenticationManager authenticationManager(UserDetailsService myUserDetailsService, PasswordEncoder encoder) {
+    AuthenticationManager authenticationManager(
+            UserDetailsService myUserDetailsService, PasswordEncoder encoder) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(myUserDetailsService);
         provider.setPasswordEncoder(encoder);
         return new ProviderManager(provider);
     }
-
 }
