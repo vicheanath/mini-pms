@@ -1,11 +1,19 @@
 import Layout from "./components/Layout/Layout";
-import Router from "./routes/Router";
+import { Router, UnauthorizedRouter } from "./routes/Router";
+import { useSelector } from "react-redux";
 
 function App() {
+  const { isAuthenticated } = useSelector((state) => state.auth);
   return (
-    <Layout>
-      <Router />
-    </Layout>
+    <>
+      {isAuthenticated ? (
+        <UnauthorizedRouter />
+      ) : (
+        <Layout>
+          <Router />
+        </Layout>
+      )}
+    </>
   );
 }
 
