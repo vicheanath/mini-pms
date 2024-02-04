@@ -7,11 +7,11 @@ function App() {
   return (
     <>
       {isAuthenticated ? (
-        <UnauthorizedRouter />
-      ) : (
         <Layout>
           <Router />
         </Layout>
+      ) : (
+        <UnauthorizedRouter />
       )}
     </>
   );

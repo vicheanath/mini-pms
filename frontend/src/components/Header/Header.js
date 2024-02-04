@@ -1,19 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 const Header = () => {
   const navLinks = [
-    { title: "Home", path: "/" },
-    { title: "About", path: "/about" },
-    { title: "Services", path: "/services" },
-    { title: "Contact", path: "/contact" },
+    { title: "Dashboard", path: "/dashboard" },
+    { title: "Profile", path: "/profile" },
   ];
+
+  const { pathname } = useLocation();
+  console.log(pathname);
+  const isActive = (path) => {
+    return "/" + path === pathname ? "active" : "";
+  };
 
   return (
     <nav className="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
       <div className="container">
-        <a className="navbar-brand" href="#">
-          BMS
-        </a>
+        <a className="navbar-brand">BMS</a>
         <button
           className="navbar-toggler"
           type="button"
@@ -27,16 +30,9 @@ const Header = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarColor01">
           <ul className="navbar-nav me-auto">
-            <li className="nav-item">
-              <a className="nav-link active" href="#">
-                Home
-                <span className="visually-hidden">(current)</span>
-              </a>
-            </li>
-
             {navLinks.map((link, index) => (
               <li className="nav-item">
-                <Link className="nav-link" to={link.path}>
+                <Link className={`nav-link ${isActive}`} to={link.path}>
                   {link.title}
                 </Link>
               </li>
