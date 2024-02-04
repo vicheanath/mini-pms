@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: pms
+  datasource:
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:1234}
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost:5432}/${POSTGRES_DB:pms-db}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+    show-sql: true
+    defer-datasource-initialization: true
+    generate-ddl: true
+  sql:
+    init:
+      mode: always
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+server:
+  port: ${SERVER_PORT:8080}
+
+jwt:
+  secret: ${JWT_SECRET:1234}
