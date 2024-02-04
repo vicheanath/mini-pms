@@ -25,4 +25,4 @@ server:
   port: ${SERVER_PORT:8080}
 
 jwt:
-  secret: ${JWT_SECRET:1234"}
+  secret: ${JWT_SECRET:1234}
