@@ -67,7 +67,7 @@ public class Property {
     private PropertyType type;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault(value = "'Available'")
+    @ColumnDefault(value = "'AVAILABLE'")
     private PropertyOfferStatus offerStatus;
 
     @Enumerated(EnumType.STRING)

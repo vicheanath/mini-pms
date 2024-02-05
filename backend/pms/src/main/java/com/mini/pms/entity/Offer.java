@@ -46,7 +46,7 @@ public class Offer {
     private Property property;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault(value = "'Pending'")
+    @ColumnDefault(value = "'PENDING'")
     private OfferStatus status;
 
     @CreatedDate
