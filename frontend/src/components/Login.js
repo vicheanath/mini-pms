@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "react-query";
-import { accessTokenKey, api, refreshTokenKey } from "../libs/api";
+import { accessTokenKey, refreshTokenKey } from "../libs/api";
 import { useDispatch } from "react-redux";
 import { login, setUser } from "../features/authSlice";
 import { jwtDecode } from "jwt-decode";
