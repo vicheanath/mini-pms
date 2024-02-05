@@ -44,42 +44,44 @@ public class Property {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
-    String title;
-    double price;
-    String location;
+    private String title;
+    private double price;
+    private String location;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "property")
-    List<Picture> pictures;
+    private List<Picture> pictures;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "property")
     @BatchSize(size = 10)
-    List<Offer> offers;
+    private List<Offer> offers;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    Member owner;
+    private Member owner;
 
     @Enumerated(EnumType.STRING)
-    PropertyCategory category;
+    private PropertyCategory category;
 
     @Enumerated(EnumType.STRING)
-    PropertyType type;
+    private PropertyType type;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault(value = "'Available'")
-    PropertyOfferStatus offerStatus;
+    private PropertyOfferStatus offerStatus;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault(value = "'ACTIVE'")
-    PropertyStatus status;
+    private PropertyStatus status;
 
-    int numberOfRoom;
+    private int numberOfRoom;
 
-    double latitude;
-    double longitude;
+    private double latitude;
+    private double longitude;
 
-    @CreatedDate LocalDateTime createdAt;
+    @CreatedDate
+    private LocalDateTime createdAt;
 
-    @LastModifiedDate LocalDateTime updatedAt;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }

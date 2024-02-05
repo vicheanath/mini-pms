@@ -35,23 +35,23 @@ public class Offer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
-    String remark;
-
-    @ManyToOne
-    Member customer;
+    private String remark;
 
     @ManyToOne
-    Property property;
+    private Member customer;
+
+    @ManyToOne
+    private Property property;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault(value = "'Pending'")
-    OfferStatus status;
+    private OfferStatus status;
 
     @CreatedDate
-    LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 }

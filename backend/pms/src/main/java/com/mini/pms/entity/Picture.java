@@ -34,20 +34,21 @@ public class Picture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
-    String name;
-    long size;
-    String url;
+    private String name;
+    private long size;
+    private String url;
 
     @Column(unique = true)
-    String key;
+    private String key;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    Property property;
+    private Property property;
 
+    @CreatedDate
+    private LocalDateTime createdAt;
 
-    @CreatedDate LocalDateTime createdAt;
-
-    @LastModifiedDate LocalDateTime updatedAt;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }
