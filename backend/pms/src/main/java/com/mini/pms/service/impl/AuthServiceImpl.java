@@ -66,10 +66,10 @@ public class AuthServiceImpl implements AuthService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", email);
         claims.put("roles", roles);
+        claims.put("subject", tokenType.name());
 
         var jwt =
                 Jwts.builder()
-                        .setSubject(tokenType.name())
                         .setClaims(claims)
                         .setIssuedAt(now)
                         .setExpiration(expireAt)
