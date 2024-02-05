@@ -3,6 +3,9 @@ package com.mini.pms.entity;
 import com.mini.pms.entity.type.MemberStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,35 +33,40 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
-    String name;
+    private String name;
 
     @Email
+    @NotBlank
     @Column(unique = true)
-    String email;
+    private String email;
 
-    String password;
+    @NotBlank
+    @Size(min = 8, max = 255)
+    private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    List<Role> roles;
+    private List<Role> roles;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault(value = "'ACTIVE'")
-    MemberStatus status;
+    private MemberStatus status;
 
     @OneToMany(mappedBy = "owner")
-    List<Property> properties;
+    private List<Property> properties;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
     @BatchSize(size = 10)
-    List<Offer> offers;
+    private List<Offer> offers;
 
-    @CreatedDate LocalDateTime createdAt;
+    @CreatedDate
+    private LocalDateTime createdAt;
 
-    @LastModifiedDate LocalDateTime updatedAt;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }

@@ -38,7 +38,7 @@ public class PmsApplication implements CommandLineRunner {
         var prop =
                 Property.builder()
                         .title("Renting a home")
-                        .category(PropertyCategory.Home)
+                        .category(PropertyCategory.HOME)
                         .type(PropertyType.SELL)
                         .latitude(10d)
                         .longitude(20d)

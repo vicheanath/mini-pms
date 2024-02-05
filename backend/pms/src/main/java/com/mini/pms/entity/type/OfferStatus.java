@@ -1,10 +1,10 @@
 package com.mini.pms.entity.type;
 
 public enum OfferStatus {
-    Pending,
-    Rejected,
-    Agreed,
-    Canceled;
+    PENDING,
+    REJECTED,
+    AGREED,
+    CANCELED;
 
     public static String a() {
         return "";
