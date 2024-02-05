@@ -73,7 +73,7 @@ const Login = ({ show, handleClose }) => {
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control {...register("password")} placeholder="Password" />
+              <Form.Control {...register("password")} type="password" placeholder="Password" />
               <Form.Text className="text-danger">
                 {errors.password?.message}
               </Form.Text>

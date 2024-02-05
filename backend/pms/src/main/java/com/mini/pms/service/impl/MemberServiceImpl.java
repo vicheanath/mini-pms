@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
@@ -19,5 +21,69 @@ public class MemberServiceImpl implements MemberService {
         return memberRepo
                 .findByEmail(email)
                 .orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public Member profile(long id) {
+        return memberRepo
+                .findById(id)
+                .orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public List<Member> findAll() {
+        return memberRepo.findAll();
+    }
+
+    @Override
+    public Member findById(Long id) {
+        return memberRepo
+                .findById(id)
+                .orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public Member update(Long id, Member member) {
+        return memberRepo
+                .findById(id)
+                .map(
+                        m -> {
+                            m.setEmail(member.getEmail());
+                            m.setName(member.getName());
+                            return memberRepo.save(m);
+                        })
+                .orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public String changePassword(Long id, String password) {
+         // change password
+        Member member = memberRepo
+                .findById(id)
+                .orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
+
+        member.setPassword(password);
+
+        memberRepo.save(member);
+        return "Password changed successfully";
+    }
+
+    @Override
+    public String forgotPassword(String email) {
+       // send email to reset password
+        return "Email sent successfully";
+    }
+
+    @Override
+    public String resetPassword(String email, String password) {
+        // reset password
+        Member member = memberRepo
+                .findByEmail(email)
+                .orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
+
+        member.setPassword(password);
+
+        memberRepo.save(member);
+        return "Password reset successfully";
     }
 }

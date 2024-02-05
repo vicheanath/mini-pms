@@ -77,14 +77,14 @@ const AddProperty = () => {
                     value="Rent"
                     className="form-check-input me-2"
                   />
-                  <label for="Rent">Rent</label>
+                  <label htmlFor="sellerType">Rent</label>
                   <input
                     type="radio"
                     {...register("sellerType")}
                     value="Sale"
                     className="form-check-input me-2"
                   />
-                  <label for="Sale">Sale</label>
+                  <label htmlFor="sellerType">Sale</label>
                   {errors.sellerType && <p>{errors.sellerType.message}</p>}
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="title">
