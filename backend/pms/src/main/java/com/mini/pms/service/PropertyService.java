@@ -1,3 +1,8 @@
 package com.mini.pms.service;
 
-public interface PropertyService {}
+import com.mini.pms.entity.Property;
+
+public interface PropertyService {
+
+    Property findById(long id);
+}

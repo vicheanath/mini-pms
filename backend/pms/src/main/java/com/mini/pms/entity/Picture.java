@@ -38,12 +38,14 @@ public class Picture {
 
     String name;
     long size;
+    String url;
 
     @Column(unique = true)
     String key;
 
     @ManyToOne(fetch = FetchType.EAGER)
     Property property;
+
 
     @CreatedDate LocalDateTime createdAt;
 

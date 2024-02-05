@@ -1,6 +1,5 @@
 package com.mini.pms.configuration;
 
-
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.context.annotation.Bean;
@@ -50,7 +49,9 @@ public class SecurityConfig {
                             String contextPath = "**/api/v1";
                             authorize
                                     .requestMatchers(
-                                            contextPath + "/public", contextPath + "/auth/**")
+                                            contextPath + "/public",
+                                            contextPath + "/auth/**",
+                                            contextPath + "/files/**")
                                     .permitAll()
                                     .requestMatchers(contextPath + "/admins/**")
                                     .hasAuthority("Admin")
@@ -59,8 +60,7 @@ public class SecurityConfig {
                                     .requestMatchers(contextPath + "/customers/**")
                                     .hasAuthority("Customer")
                                     .anyRequest()
-                                    .authenticated()
-                            ;
+                                    .authenticated();
                         })
                 .exceptionHandling(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
