@@ -52,7 +52,7 @@ public class PmsApplication implements CommandLineRunner {
     }
 
     void createOffer() {
-        var prop = propertyRepo.findById(1l).orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
+        var prop = propertyRepo.findById(1L).orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
         var customer = memberRepo.findByEmail("c@c.com").orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
         var offer = Offer.builder()
                 .remark("Hello")
