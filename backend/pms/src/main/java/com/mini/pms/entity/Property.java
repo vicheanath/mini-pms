@@ -6,6 +6,7 @@ import com.mini.pms.entity.type.PropertyStatus;
 import com.mini.pms.entity.type.PropertyType;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
@@ -22,8 +23,11 @@ import lombok.NoArgsConstructor;
 
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,19 +37,22 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
+@DynamicInsert
+@DynamicUpdate
 public class Property {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    
+
     String title;
     double price;
     String location;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "property")
     List<Picture> pictures;
-    
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "property")
     @BatchSize(size = 10)
     List<Offer> offers;
