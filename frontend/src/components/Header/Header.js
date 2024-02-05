@@ -15,7 +15,7 @@ import Register from "../Register";
 import { logout } from "../../features/authSlice";
 
 const Header = () => {
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated,user } = useSelector((state) => state.auth);
 
   const navLinks = [
     { title: "Buy", path: "/buy" },
@@ -53,7 +53,7 @@ const Header = () => {
           {isAuthenticated ? (
             <Dropdown>
               <Dropdown.Toggle variant="light" id="dropdown-basic">
-                <FiUser />
+                <FiUser />  {user?.email}
               </Dropdown.Toggle>
 
               <Dropdown.Menu>

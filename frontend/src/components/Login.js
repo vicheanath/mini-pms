@@ -6,7 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "react-query";
 import { accessTokenKey, api, refreshTokenKey } from "../libs/api";
 import { useDispatch } from "react-redux";
-import { login } from "../features/authSlice";
+import { login, setUser } from "../features/authSlice";
+import { jwtDecode } from "jwt-decode";
+
 const Login = ({ show, handleClose }) => {
   const LoginSchema = z.object({
     email: z.string().email(),
@@ -28,6 +30,9 @@ const Login = ({ show, handleClose }) => {
           refreshToken: res.data.refreshToken,
         })
       );
+      const user = jwtDecode(res.data.accessToken);
+      dispatch(setUser(user));
+      localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem(accessTokenKey, res.data.accessToken);
       localStorage.setItem(refreshTokenKey, res.data.refreshToken);
       handleClose();

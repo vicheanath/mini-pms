@@ -4,7 +4,7 @@ import { accessTokenKey, refreshTokenKey } from "../libs/api";
 
 const accessToken = localStorage.getItem(accessTokenKey);
 const refreshToken = localStorage.getItem(refreshTokenKey);
-
+const user = JSON.parse(localStorage.getItem("user"));
 
 export const authSlice = createSlice({
   name: "auth",
@@ -12,7 +12,7 @@ export const authSlice = createSlice({
     isAuthenticated: false,
     accessToken: accessToken,
     refreshToken: refreshToken,
-    user: null,
+    user: user || null,
   },
   reducers: {
     login: (state, action) => {
