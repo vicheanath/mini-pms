@@ -1,30 +1,29 @@
 import { useEffect } from "react";
 import Layout from "./components/Layout/Layout";
 import { Router, UnauthorizedRouter } from "./routes/Router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsAuthenticated } from "./features/authSlice";
 
-function App() {
+const App = () => {
+  const dispatch = useDispatch();
+  const { isAuthenticated,accessToken} = useSelector((state) => state.auth);
   const handleCheckAuth = () => {
-    console.log("Checking auth");
+    if (accessToken) {
+      dispatch(setIsAuthenticated());
+    }
   };
 
   useEffect(() => {
-    
     handleCheckAuth();
   }, []);
 
-  const { isAuthenticated } = useSelector((state) => state.auth);
   return (
     <>
-      {isAuthenticated ? (
-        <Layout>
-          <Router />
-        </Layout>
-      ) : (
-        <UnauthorizedRouter />
-      )}
+      <Layout>
+        <Router />
+      </Layout>
     </>
   );
-}
+};
 
 export default App;

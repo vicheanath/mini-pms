@@ -1,12 +1,10 @@
 import axios from "axios";
 import { apiBaseUrl } from "./constants";
-import { selectAccessToken, selectRefreshToken } from "../features/auth/authSlice";
-import { getCookie, setCookie } from "../hooks/useCookie";
 export const accessTokenKey = "access";
 export const refreshTokenKey = "refresh";
 
-const accessToken = getCookie(accessTokenKey)
-const refreshToken = getCookie(refreshTokenKey)
+const accessToken = localStorage.getItem(accessTokenKey) 
+const refreshToken = localStorage.getItem(refreshTokenKey);
 export const api = axios.create({
   baseURL: apiBaseUrl,
   headers: {
@@ -22,7 +20,7 @@ export const refreshAccessTokenFn = async () => {
   if (response.status === 200) {
     const { accessToken } = response.data;
     api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-    setCookie(accessTokenKey, accessToken, { expires: 1 });
+    localStorage.setItem(accessTokenKey, accessToken);
   }
 };
 

@@ -1,14 +1,16 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
+import Register from "../components/Register";
 import Profile from "../pages/Profile";
 import Dashboard from "../pages/Dashboard";
+import Home from "../pages/Home";
+import PropertyDetail from "../pages/PropertyDetail";
 
 const Router = () => {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/property/:id" element={<PropertyDetail/>} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
@@ -18,8 +20,6 @@ const Router = () => {
 const UnauthorizedRouter = () => {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
     </Routes>
   );

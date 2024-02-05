@@ -1,8 +1,9 @@
-import { useTokenStore } from "../modules/auth/useTokenStore";
+
+import { accessTokenKey } from "./api";
 import { apiBaseUrl } from "./constants";
 
 export const defaultQueryFn = async ({ queryKey }) => {
-  const { accessToken } = useTokenStore.getState();
+  const accessToken  = localStorage.getItem(accessTokenKey);
   const r = await fetch(`${apiBaseUrl}${queryKey}`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
