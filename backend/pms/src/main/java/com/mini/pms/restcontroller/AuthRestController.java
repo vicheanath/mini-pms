@@ -26,10 +26,9 @@ public class AuthRestController {
         return authService.issueAccessToken(authRequest);
     }
 
-//    @PostMapping("/token/refresh")
-//    public String refresh(@RequestBody AuthRequest authRequest) {
-//        return authService.issueAccessToken(authRequest);
-//    }
-
+    //    @PostMapping("/token/refresh")
+    //    public String refresh(@RequestBody AuthRequest authRequest) {
+    //        return authService.issueAccessToken(authRequest);
+    //    }
 
 }
