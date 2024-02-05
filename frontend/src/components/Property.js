@@ -15,10 +15,10 @@ const Property = ({
       <Card.Img variant="top" src={image} />
       <Card.Body>
         <Card.Title>{type}</Card.Title>
-        <Card.Text Text>
-          <p>Price: {price}</p>
-          <p>Location: {location}</p>
-          <p>Rooms: {numberOfRooms}</p>
+        <Card.Text>
+          Price: {price} <br />
+          Location: {location} <br />
+          Rooms: {numberOfRooms} <br />
         </Card.Text>
         <Button variant="primary" onClick={addToFavorite}>
           <MdFavoriteBorder /> Add to favorite

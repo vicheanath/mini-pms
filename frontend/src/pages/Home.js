@@ -25,14 +25,14 @@ const Home = () => {
         <Col>
           <div className="d-flex gap-2">
             <select className="form-select" aria-label="Default select example" defaultValue={0}>
-              <option selected>Sort By</option>
+              <option value={0}>Sort By</option>
               <option value="1">Price</option>
               <option value="2">Location</option>
               <option value="3">Rooms</option>
             </select>
 
             <select className="form-select" aria-label="Default select example" defaultValue={0}>
-              <option selected>Filter By</option>
+              <option value={0}>Filter By</option>
               <option value="1">Price</option>
               <option value="2">Location</option>
               <option value="3">Rooms</option>
