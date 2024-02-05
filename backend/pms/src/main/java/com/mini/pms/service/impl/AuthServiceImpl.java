@@ -1,7 +1,7 @@
 package com.mini.pms.service.impl;
 
 import com.mini.pms.customexception.PlatformException;
-import com.mini.pms.entity.TokenType;
+import com.mini.pms.entity.type.TokenType;
 import com.mini.pms.restcontroller.request.AuthRequest;
 import com.mini.pms.restcontroller.response.TokenResponse;
 import com.mini.pms.service.AuthService;

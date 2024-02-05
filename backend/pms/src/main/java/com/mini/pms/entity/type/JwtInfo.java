@@ -1,4 +1,4 @@
-package com.mini.pms.entity;
+package com.mini.pms.entity.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
