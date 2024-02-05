@@ -8,6 +8,7 @@ import { accessTokenKey, api, refreshTokenKey } from "../libs/api";
 import { useDispatch } from "react-redux";
 import { login, setUser } from "../features/authSlice";
 import { jwtDecode } from "jwt-decode";
+import { apiBaseUrl } from "../libs/constants";
 
 const Login = ({ show, handleClose }) => {
   const LoginSchema = z.object({
@@ -23,20 +24,32 @@ const Login = ({ show, handleClose }) => {
   const dispatch = useDispatch();
 
   const loginMutation = useMutation(async (data) => {
-    api.post("/auth/token", data).then((res) => {
-      dispatch(
-        login({
-          accessToken: res.data.accessToken,
-          refreshToken: res.data.refreshToken,
-        })
-      );
-      const user = jwtDecode(res.data.accessToken);
-      dispatch(setUser(user));
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem(accessTokenKey, res.data.accessToken);
-      localStorage.setItem(refreshTokenKey, res.data.refreshToken);
-      handleClose();
-    });
+    // api.post("/auth/token", data).then((res) => {
+      
+    // });
+    fetch(apiBaseUrl + "auth/token", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const { accessToken, refreshToken } = res;
+        dispatch(
+          login({
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+          })
+        );
+        const user = jwtDecode(accessToken);
+        dispatch(setUser(user));
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem(accessTokenKey, accessToken);
+        localStorage.setItem(refreshTokenKey, refreshToken);
+        handleClose();
+      });
   });
 
   const onSubmit = (data) => {
