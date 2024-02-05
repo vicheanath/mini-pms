@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { Button, Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { FiUser } from "react-icons/fi";
+import { FiUser,FiDatabase,FiPlus } from "react-icons/fi";
 import Login from "../Login";
 import {
   closeLoginModal,
@@ -14,16 +14,10 @@ import {
 import Register from "../Register";
 import { logout } from "../../features/authSlice";
 
-const Header = () => {
+const Header = ({navLinks}) => {
   const { isAuthenticated,user } = useSelector((state) => state.auth);
 
-  const navLinks = [
-    { title: "Buy", path: "/buy" },
-    { title: "Rent", path: "/rent" },
-    { title: "Sell", path: "/sell" },
-    { title: "Dashboard", path: "/dashboard" },
-    { title: "Profile", path: "/profile" },
-  ];
+ 
 
   const { pathname } = useLocation();
   const isActive = (path) => {
@@ -38,7 +32,7 @@ const Header = () => {
     <nav className="navbar navbar-expand-lg bg-primary">
       <div className="container">
         <Link className="navbar-brand" to="/">
-          BMS
+          PMS
         </Link>
         <div className="collapse navbar-collapse" id="navbarColor01">
           <ul className="navbar-nav me-auto">
@@ -50,6 +44,14 @@ const Header = () => {
               </li>
             ))}
           </ul>
+          <div className="d-flex gap-3">
+          <Button variant="outline-light" href="/admin/dashboard">
+            <FiDatabase /> Admin
+          </Button>
+          <Button variant="outline-light" href="/add-property">
+            <FiPlus /> Add Property
+          </Button>
+
           {isAuthenticated ? (
             <Dropdown>
               <Dropdown.Toggle variant="light" id="dropdown-basic">
@@ -97,6 +99,7 @@ const Header = () => {
         show={isLoginModalOpen}
         handleClose={() => dispatch(closeLoginModal())}
       />
+    </div>
     </nav>
   );
 };
