@@ -49,6 +49,7 @@ public class Property {
     private String title;
     private double price;
     private String location;
+    private String description;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "property")
     private List<Picture> pictures;

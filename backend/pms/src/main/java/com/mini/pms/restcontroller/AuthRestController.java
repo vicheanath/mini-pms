@@ -1,6 +1,8 @@
 package com.mini.pms.restcontroller;
 
+import com.mini.pms.entity.Member;
 import com.mini.pms.restcontroller.request.AuthRequest;
+import com.mini.pms.restcontroller.request.RegisterRequest;
 import com.mini.pms.restcontroller.response.TokenResponse;
 import com.mini.pms.service.AuthService;
 
@@ -30,5 +32,17 @@ public class AuthRestController {
     //    public String refresh(@RequestBody AuthRequest authRequest) {
     //        return authService.issueAccessToken(authRequest);
     //    }
+
+    @PostMapping("register/owner")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Member registerOwner(@RequestBody RegisterRequest registerRequest) {
+        return authService.registerOwner(registerRequest);
+    }
+
+    @PostMapping("register/customer")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Member registerCustomer(@RequestBody RegisterRequest registerRequest) {
+       return authService.registerCustomer(registerRequest);
+    }
 
 }

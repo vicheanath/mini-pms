@@ -1,5 +1,4 @@
-INSERT INTO member
-    (email, name, password, created_at, updated_at, status)
+INSERT INTO member(email, name, password, created_at, updated_at, status)
 VALUES ('a@a.com', 'Mr.A', '$2a$10$n32EL8n2AN/L40gbWMl3AOIyQNmXXNcaeqyBFrKnN50itVQNt91DW', CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP, 'ACTIVATED'),
        ('b@b.com', 'Mr.B', '$2a$10$n32EL8n2AN/L40gbWMl3AOIyQNmXXNcaeqyBFrKnN50itVQNt91DW', CURRENT_TIMESTAMP,

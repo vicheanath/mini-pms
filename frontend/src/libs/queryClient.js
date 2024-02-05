@@ -9,16 +9,23 @@ import axios from "axios";
 export const queryClient = new QueryClient({
   defaultOptions: {
     mutations: {
-      onError: async (e) => {},
+      onError: async (e) => {
+        const err = JSON.parse(e.message);
+        console.log(err);
+      },
     },
     queries: {
       retry: async (count, e) => {
-        
+        const err = JSON.parse(e.message);
+        console.log(err);
+        if (err.code2 === 401) {
+          localStorage.clear();
+          window.location.href = "/";
+        }
       },
       staleTime: 60 * 1000 * 1, // 5 minutes
       onError: (e) => {
-        // refresh token if expired
-        
+        console.log(e);
       },
       queryFn: defaultQueryFn,
     },

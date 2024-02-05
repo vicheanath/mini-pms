@@ -1,8 +1,13 @@
 package com.mini.pms.service.impl;
 
 import com.mini.pms.customexception.PlatformException;
+import com.mini.pms.entity.Member;
+import com.mini.pms.entity.Role;
 import com.mini.pms.entity.type.TokenType;
+import com.mini.pms.repo.MemberRepo;
+import com.mini.pms.repo.RoleRepo;
 import com.mini.pms.restcontroller.request.AuthRequest;
+import com.mini.pms.restcontroller.request.RegisterRequest;
 import com.mini.pms.restcontroller.response.TokenResponse;
 import com.mini.pms.service.AuthService;
 
@@ -33,6 +38,17 @@ public class AuthServiceImpl implements AuthService {
     private final long REFRESH_TOKEN_EXPIRED = 1000 * 60 * 20; // 20mn
 
     private final AuthenticationManager authManager;
+
+
+    private final RoleRepo roleRepo;
+    private final MemberRepo memberRepo;
+
+
+    @Override
+    public Member getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return memberRepo.findByEmail(authentication.getName()).orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
+    }
 
     @Override
     public Authentication authenticate(String email, String password) {
@@ -90,4 +106,35 @@ public class AuthServiceImpl implements AuthService {
 
         return tokenRes.build();
     }
+
+    @Override
+    public Member registerCustomer(RegisterRequest authRequest) {
+        authRequest.setRole("Customer");
+        return register(authRequest);
+    }
+
+    @Override
+    public Member registerOwner(RegisterRequest authRequest) {
+        authRequest.setRole("Owner");
+        return register(authRequest);
+    }
+
+    @Override
+    public Member registerAdmin(RegisterRequest authRequest) {
+        authRequest.setRole("Admin");
+        return register(authRequest);
+    }
+
+    private Member register(RegisterRequest authRequest) {
+        Role role =  roleRepo.findByName(authRequest.getRole());
+        Member member = Member.builder()
+                .name(authRequest.getName())
+                .email(authRequest.getEmail())
+                .password(authRequest.getPassword())
+                .roles(List.of(role))
+                .build();
+        return  memberRepo.save(member);
+    }
+
+
 }
