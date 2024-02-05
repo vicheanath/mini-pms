@@ -37,7 +37,11 @@ CREATE DATABASE "pms-db";
 
 ---
 
-#### 4. Create Access Token
+#### 4. Open API Documentation
+
+```http://localhost:8080/swagger-ui/index.html```
+
+#### 5. Create Access Token
 
 You can paste this in Postman or run in a terminal
 
