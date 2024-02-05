@@ -10,12 +10,14 @@ import NotFound from "../pages/NotFound";
 import Users from "../pages/admin/Users";
 import Properties from "../pages/admin/Properties";
 import Offers from "../pages/admin/Offers";
+import AddProperty from "../pages/AddProperty";
 const Router = () => {
   return (
     <Routes>
       <Route element={<Layout />}>
         <Route path="" element={<Home />} />
         <Route path="property/:id" element={<PropertyDetail />} />
+        <Route path="add-property" element={<AddProperty />} />
         <Route path="profile" element={<Profile />} />
         <Route path="dashboard" element={<Dashboard />} />
       </Route>

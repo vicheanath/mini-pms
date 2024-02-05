@@ -1,8 +1,9 @@
 import React from "react";
 import { FiFacebook, FiInstagram, FiTwitter } from "react-icons/fi";
-import { Button } from "react-bootstrap";
+import { Button ,Container} from "react-bootstrap";
 const Footer = () => {
   return (
+    <Container>
     <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
       <div className="col-md-4 d-flex align-items-center">
         <a
@@ -33,6 +34,7 @@ const Footer = () => {
         </li>
       </ul>
     </footer>
+    </Container>
   );
 };
 
