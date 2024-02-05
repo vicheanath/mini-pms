@@ -1,4 +1,4 @@
-package com.mini.pms.entity;
+package com.mini.pms.entity.type;
 
 public enum TokenType {
     ACCESS_TOKEN,

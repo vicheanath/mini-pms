@@ -1,6 +1,6 @@
 package com.mini.pms.service;
 
-import com.mini.pms.entity.TokenType;
+import com.mini.pms.entity.type.TokenType;
 import com.mini.pms.restcontroller.request.AuthRequest;
 import com.mini.pms.restcontroller.response.TokenResponse;
 import org.springframework.security.core.Authentication;

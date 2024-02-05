@@ -1,8 +1,8 @@
 package com.mini.pms.service.impl;
 
 import com.mini.pms.customexception.PlatformException;
-import com.mini.pms.entity.JwtInfo;
-import com.mini.pms.entity.TokenType;
+import com.mini.pms.entity.type.JwtInfo;
+import com.mini.pms.entity.type.TokenType;
 import com.mini.pms.service.VerifyJwtService;
 
 import io.jsonwebtoken.ExpiredJwtException;

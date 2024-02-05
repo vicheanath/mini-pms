@@ -1,10 +1,9 @@
 package com.mini.pms.configuration;
 
-import com.mini.pms.entity.JwtInfo;
+import com.mini.pms.entity.type.JwtInfo;
 import com.mini.pms.service.VerifyJwtService;
 
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import java.io.IOException;
 import java.util.Objects;
 
 @Component
@@ -31,8 +29,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-            HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+            HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
 
         try {
             var authorize = request.getHeader(HttpHeaders.AUTHORIZATION);
