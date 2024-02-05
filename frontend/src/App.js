@@ -19,9 +19,7 @@ const App = () => {
 
   return (
     <>
-      <Layout>
         <Router />
-      </Layout>
     </>
   );
 };
