@@ -71,14 +71,6 @@ response:
 
 <br>
 
-Enabling mail service `application.yml` file
-
-```yaml
-mail:
-enabled: ${ENABLED:true}
-```
-<br>
-
 #### 1. Upload a Picture API
 
 Request:
@@ -112,6 +104,14 @@ curl --location 'http://localhost:8080/api/v1/files/16a1ddc7-b440-4dc7-8b4b-aba6
 ## III. Email Service
 
 <br>
+
+Enabling mail service `application.yml` file
+
+```yaml
+mail:
+enabled: ${ENABLED:true}
+```
+
 
 #### 1. Using Email Server for the Internal System
 
