@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { login, setUser } from "../features/authSlice";
 import { jwtDecode } from "jwt-decode";
 import { apiBaseUrl } from "../libs/constants";
+import { Link } from "react-router-dom";
 
 const Login = ({ show, handleClose }) => {
   const LoginSchema = z.object({
@@ -75,10 +76,14 @@ const Login = ({ show, handleClose }) => {
                 {errors.password?.message}
               </Form.Text>
             </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" label="Remember me" />
-            </Form.Group>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <Form.Check type="checkbox" label="Remember me" /> 
+              <Form.Label>
+                <Link to="/forgot-password" onClick={handleClose}>
+                Forgot password?
+                </Link>
+                </Form.Label>
+            </div>
             <Button variant="primary" type="submit" style={{ width: "100%" }}>
               Login
             </Button>
