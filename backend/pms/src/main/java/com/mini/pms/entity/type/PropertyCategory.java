@@ -4,5 +4,7 @@ public enum PropertyCategory {
     HOME,
     APARTMENT,
     CONDO,
-    TOWNHOUSE
+    TOWNHOUSE,
+
+
 }

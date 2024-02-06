@@ -3,10 +3,8 @@ package com.mini.pms.entity;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mini.pms.entity.type.PropertyCategory;
 import com.mini.pms.entity.type.PropertyOfferStatus;
 import com.mini.pms.entity.type.PropertyStatus;
-import com.mini.pms.entity.type.PropertyType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
@@ -63,11 +61,11 @@ public class Property {
     @ManyToOne(fetch = FetchType.EAGER)
     private Member owner;
 
-    @Enumerated(EnumType.STRING)
-    private PropertyCategory category;
+    private String category;
 
-    @Enumerated(EnumType.STRING)
-    private PropertyType type;
+    private String subCategory;
+
+    private String type;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault(value = "'AVAILABLE'")

@@ -1,15 +1,19 @@
 package com.mini.pms.restcontroller;
 
 
+import com.mini.pms.restcontroller.request.PropertyRequest;
 import com.mini.pms.restcontroller.response.PageResponse;
 import com.mini.pms.restcontroller.response.PropertyResponse;
 import com.mini.pms.service.PropertyService;
+import com.mini.pms.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,8 +42,7 @@ public class PropertyRestController {
                     direction = Sort.Direction.DESC,
                     sort = {"createdAt"}
             )
-            Pageable pageable,
-            Principal principal
+            Pageable pageable
     ) {
         var props = propService.findAll(
                 search,
@@ -49,11 +52,20 @@ public class PropertyRestController {
                 type,
                 numberOfRoom,
                 location,
-                pageable,
-                principal
+                pageable
         );
 
         return ResponseEntity.ok(new PageResponse(props, PropertyResponse.class));
+    }
+
+    @PostMapping
+    public ResponseEntity<PropertyResponse> createProperty(
+            @RequestBody PropertyRequest propertyRequest,
+            Principal principal
+    ) {
+        return ResponseEntity.ok(
+                Util.mapObj(propService.createProperty(propertyRequest, principal), PropertyResponse.class)
+        );
     }
 
 }

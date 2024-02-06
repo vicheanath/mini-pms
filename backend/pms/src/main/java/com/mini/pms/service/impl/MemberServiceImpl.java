@@ -27,7 +27,7 @@ public class MemberServiceImpl implements MemberService {
     public Member findByEmail(String email) {
         return memberRepo
                 .findByEmail(email)
-                .orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new PlatformException("User not found", HttpStatus.NOT_FOUND));
     }
 
     @Override

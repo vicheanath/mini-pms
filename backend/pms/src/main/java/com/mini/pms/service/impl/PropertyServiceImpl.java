@@ -3,7 +3,10 @@ package com.mini.pms.service.impl;
 import com.mini.pms.customexception.PlatformException;
 import com.mini.pms.entity.Property;
 import com.mini.pms.repo.PropertyRepo;
+import com.mini.pms.restcontroller.request.PropertyRequest;
+import com.mini.pms.service.MemberService;
 import com.mini.pms.service.PropertyService;
+import com.mini.pms.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Where;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,7 @@ import java.util.Objects;
 public class PropertyServiceImpl implements PropertyService {
 
     private final PropertyRepo propertyRepo;
+    private final MemberService memberService;
 
     @Override
     public Page<Property> findAll(
@@ -31,14 +35,10 @@ public class PropertyServiceImpl implements PropertyService {
             String type,
             String numberOfRoom,
             String location,
-            Pageable pageable,
-            Principal principal
+            Pageable pageable
     ) {
 
-        var email = principal.getName();
-
-        Specification<Property> spec = Specification.where((root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.join("owner").get("email"), email));
+        Specification<Property> spec = Specification.allOf();
 
 
         if (Objects.nonNull(minPrice)) {
@@ -82,5 +82,17 @@ public class PropertyServiceImpl implements PropertyService {
                 .findById(id)
                 .orElseThrow(
                         () -> new PlatformException("Property not found", HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public Property createProperty(PropertyRequest propertyRequest, Principal principal) {
+
+
+        var owner = memberService.findByEmail(principal.getName());
+
+        var prop = Util.mapObj(propertyRequest, Property.class);
+        prop.setOwner(owner);
+
+        return propertyRepo.save(prop);
     }
 }
