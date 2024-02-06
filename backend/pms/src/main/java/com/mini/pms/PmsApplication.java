@@ -8,6 +8,7 @@ import com.mini.pms.entity.type.PropertyType;
 import com.mini.pms.repo.MemberRepo;
 import com.mini.pms.repo.OfferRepo;
 import com.mini.pms.repo.PropertyRepo;
+import com.mini.pms.service.EmailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -27,6 +28,8 @@ public class PmsApplication implements CommandLineRunner {
     @Autowired MemberRepo memberRepo;
 
     @Autowired OfferRepo offerRepo;
+
+    @Autowired EmailService emailService;
 
     void createProperty() {
         var owner =
@@ -52,13 +55,17 @@ public class PmsApplication implements CommandLineRunner {
     }
 
     void createOffer() {
-        var prop = propertyRepo.findById(1L).orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
-        var customer = memberRepo.findByEmail("c@c.com").orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
-        var offer = Offer.builder()
-                .remark("Hello")
-                .property(prop)
-                .customer(customer)
-                .build();
+        var prop =
+                propertyRepo
+                        .findById(1L)
+                        .orElseThrow(
+                                () -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
+        var customer =
+                memberRepo
+                        .findByEmail("c@c.com")
+                        .orElseThrow(
+                                () -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
+        var offer = Offer.builder().remark("Hello").property(prop).customer(customer).build();
 
         offerRepo.save(offer);
     }
@@ -67,5 +74,8 @@ public class PmsApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         createProperty();
         createOffer();
+
+        //        emailService.sendSimpleMail(
+        //                "Hello Everyone", "Hi Dear, How are you?", "dengbunthai@gmail.com");
     }
 }
