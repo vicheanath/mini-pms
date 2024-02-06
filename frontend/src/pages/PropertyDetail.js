@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Image, Button, Badge, Card } from "react-bootstrap";
 import { MdOutlineLocalOffer } from "react-icons/md";
+import OfferForm from "./Customer/OfferForm";
 const DumpProperty = {
   id: 1,
   price: 100.0,
@@ -16,11 +17,19 @@ const DumpProperty = {
 };
 
 const PropertyDetail = () => {
+
+  
+  const [navigateToOfferForm, setnavigateToOfferForm] = useState(false);
+
+  const requestOfferClicked = () => {
+    setnavigateToOfferForm(true)
+}
   const position = [51.505, -0.09];
 
   return (
+    
     <React.Fragment>
-      <Row className="mt-4">
+      {!navigateToOfferForm && (<div><Row className="mt-4">
         <Col md={6}>
           <Image src={DumpProperty.image} />
         </Col>
@@ -33,7 +42,7 @@ const PropertyDetail = () => {
           Status :<Badge bg="success">{DumpProperty.status}</Badge>
         </Col>
         <Col md={4}>
-          <Button variant="secondary">
+          <Button variant="secondary" onClick={requestOfferClicked}>
             <MdOutlineLocalOffer /> Request Offer
           </Button>
         </Col>
@@ -43,7 +52,9 @@ const PropertyDetail = () => {
           <h4>Description</h4>
           <p>{DumpProperty.description}</p>
         </Col>
-      </Row>
+      </Row></div>)}
+      { navigateToOfferForm ? <OfferForm id={DumpProperty.id} /> : null}
+
     </React.Fragment>
   );
 };
