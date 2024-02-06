@@ -23,12 +23,4 @@ public class MemberRestController {
          Member m = authService.getAuthenticatedUser();
          return memberService.update(m.getId(), member);
      }
-
-    @GetMapping("/change-password")
-    public String changePassword(String password) {
-        Member m = authService.getAuthenticatedUser();
-        return memberService.changePassword(m.getId(), password);
-    }
-
-
 }
