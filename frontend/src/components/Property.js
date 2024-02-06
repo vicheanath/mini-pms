@@ -1,22 +1,25 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 import { MdFavoriteBorder } from "react-icons/md";
-
+import { Link } from "react-router-dom";
 const Property = ({
   price,
   numberOfRooms,
   type,
   location,
-  image,
+  pictures,
+  id,
   addToFavorite,
 }) => {
   return (
     <Card>
-      <Card.Img variant="top" src={image} />
+      <Card.Img variant="top" src={pictures[0]} />
       <Card.Body>
         <Card.Title>{type}</Card.Title>
         <Card.Text>
+        <Link to={`/property/${id}`}>
           Price: {price} <br />
+        </Link>
           Location: {location} <br />
           Rooms: {numberOfRooms} <br />
         </Card.Text>

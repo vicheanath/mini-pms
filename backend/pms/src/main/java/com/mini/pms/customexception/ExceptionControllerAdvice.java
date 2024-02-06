@@ -1,9 +1,9 @@
 package com.mini.pms.customexception;
 
+import jakarta.servlet.ServletException;
 import jakarta.validation.ValidationException;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -18,7 +18,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +26,9 @@ import java.util.Map;
 @Log4j2
 public class ExceptionControllerAdvice  extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({PlatformException.class})
+    @ExceptionHandler({RuntimeException.class, ServletException.class})
     public ResponseEntity<ExceptionResponse> handleException(Exception e) {
+        e.printStackTrace();
         log.error(e);
         if (e instanceof PlatformException) {
             var platform = (PlatformException) e;
@@ -45,10 +45,6 @@ public class ExceptionControllerAdvice  extends ResponseEntityExceptionHandler {
             String message, HttpStatusCode code) {
         return ResponseEntity.status(code)
                 .body(ExceptionResponse.builder().message(message).code(code).build());
-    }
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ExceptionResponse> handleResourceNotFoundException(RuntimeException exception, WebRequest webRequest) {
-        return createResponseEntity(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     /**

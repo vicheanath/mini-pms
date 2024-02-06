@@ -1,9 +1,7 @@
 package com.mini.pms.restcontroller.response;
 
-import com.mini.pms.entity.type.PropertyCategory;
 import com.mini.pms.entity.type.PropertyOfferStatus;
 import com.mini.pms.entity.type.PropertyStatus;
-import com.mini.pms.entity.type.PropertyType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,8 +23,9 @@ public class PropertyResponse {
 
     private List<String> pictures;
     private long ownerId;
-    private PropertyCategory category;
-    private PropertyType type;
+    private String category;
+    private String subCategory;
+    private String type;
 
     private PropertyOfferStatus offerStatus;
     private PropertyStatus status;

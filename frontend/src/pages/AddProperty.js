@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Form,
@@ -12,15 +12,22 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSelector } from "react-redux";
+import { apiBaseUrl } from "../libs/constants";
+import { api } from "../libs/api";
+import { useMutation } from "react-query";
 
 const SELLER_TYPES = ["Rent", "Sale"];
-const PROPERTY_TYPES = ["House", "Apartment", "Condo"];
+const CATEGORY = ["House", "Apartment", "Condo"];
 const HOUSE_TYPES = ["Single Family", "Multi Family", "Townhouse"];
 const APARTMENT_TYPES = ["Studio", "Loft", "Duplex"];
 const CONDO_TYPES = ["High Rise", "Low Rise", "Mid Rise"];
 
 const AddProperty = () => {
   const [propertyType, setPropertyType] = React.useState(HOUSE_TYPES);
+  const { accessToken } = useSelector((state) => state.auth);
+  const [images, setImages] = React.useState({});
+  const [imageKeys, setImageKeys] = React.useState([]);
   const handleChangePropertyType = (type) => {
     switch (type) {
       case "House":
@@ -38,11 +45,14 @@ const AddProperty = () => {
     }
   };
   const PropertySchema = z.object({
+    type: z.string(),
     title: z.string().min(3).max(50),
+    price: z.string().min(1),
     description: z.string().min(3).max(200),
-    price: z.number(),
-    address: z.string().min(3).max(200),
-    image: z.string().url(),
+    location: z.string().min(3).max(200),
+    category: z.string().min(3).max(200),
+    subCategory: z.string().min(3).max(200),
+    numberOfRoom: z.string().min(1),
   });
 
   const {
@@ -50,15 +60,64 @@ const AddProperty = () => {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm({ resolver: zodResolver(PropertySchema) });
+  } = useForm({ resolver: zodResolver(PropertySchema) , defaultValues: { type: "RENT" }});
+
+
+  const propertyMutation = useMutation(data => {
+    api.post("properties", data);
+
+  });
 
   const onSubmit = (data) => {
+    data.pictures = imageKeys;
     console.log(data);
+    propertyMutation.mutate(data);
+  };
+  const type = watch("type");
+  const category = watch("category");
+  const handleRemoveImage = (index) => {
+    setImages((prev) => {
+      const temp = { ...prev };
+      delete temp[index];
+      return temp;
+    });
   };
 
-  const watchImage = watch("image") || {};
-  const imageArray = Object.keys(watchImage).map((key) => watchImage[key]);
-  const sellerType = watch("sellerType");
+  const handleUploadImage = (files) => {
+    setImages((prev) => {
+      const temp = { ...prev };
+      for (let i = 0; i < files.length; i++) {
+        temp[i] = files[i];
+      }
+      return temp;
+    });
+
+    for (let i = 0; i < files.length; i++) {
+      const formData = new FormData();
+      formData.append("file", files[i]);
+
+      fetch(apiBaseUrl + "files/upload", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          setImageKeys((prev) => {
+            return [...prev, result.key];
+          });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  };
+
+  const imageArr = Object.keys(images).map((key) => images[key]);
+
+
   return (
     <div className="mt-4">
       <Card className="mt-4">
@@ -73,19 +132,18 @@ const AddProperty = () => {
                   <Form.Label>Seller Type</Form.Label>
                   <input
                     type="radio"
-                    {...register("sellerType")}
-                    value="Rent"
+                    {...register("type")}
+                    value="RENT"
                     className="form-check-input me-2"
                   />
-                  <label htmlFor="sellerType">Rent</label>
+                  <label htmlFor="type">Rent</label>
                   <input
                     type="radio"
-                    {...register("sellerType")}
-                    value="Sale"
+                    {...register("type")}
+                    value="SALE"
                     className="form-check-input me-2"
                   />
-                  <label htmlFor="sellerType">Sale</label>
-                  {errors.sellerType && <p>{errors.sellerType.message}</p>}
+                  <label htmlFor="type">Sale</label>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="title">
                   <Form.Label>Title</Form.Label>
@@ -94,18 +152,15 @@ const AddProperty = () => {
                     placeholder="Enter title"
                     {...register("title")}
                   />
-                  {errors.title && <p>{errors.title.message}</p>}
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="numberOfRooms">
+                <Form.Group className="mb-3" controlId="numberOfRoom">
                   <Form.Label>Number of Rooms</Form.Label>
                   <Form.Control
                     type="number"
                     placeholder="Enter number of rooms"
-                    {...register("numberOfRooms")}
+                    {...register("numberOfRoom")}
                   />
-                  {errors.numberOfRooms && (
-                    <p>{errors.numberOfRooms.message}</p>
-                  )}
+                
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="price">
@@ -116,11 +171,13 @@ const AddProperty = () => {
                       placeholder="Enter price"
                       {...register("price")}
                     />
-                    {errors.price && <p>{errors.price.message}</p>}
-                    <InputGroup.Text>{
-                        sellerType === "Rent" ? "$ / month" : "$"
-                    }</InputGroup.Text>
+
+                    <InputGroup.Text>
+                      {type === "Rent" ? "$ / month" : "$"}
+                    </InputGroup.Text>
                   </InputGroup>
+                  <Form.Text className="text-danger">
+                  </Form.Text>
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -131,20 +188,21 @@ const AddProperty = () => {
                     className="form-control"
                     {...register("description")}
                   ></textarea>
-                  {errors.description && <p>{errors.description.message}</p>}
+                  <Form.Text className="text-danger">
+                  </Form.Text>
                 </Form.Group>
               </Col>
             </Row>
             <Row className="mb-3">
               <Col md={6}>
-                <Form.Group className="mb-3" controlId="type">
-                  <Form.Label>Property Type</Form.Label>
+                <Form.Group className="mb-3" controlId="category">
+                  <Form.Label>category</Form.Label>
                   <select
-                    {...register("type")}
+                    {...register("category")}
                     onChange={(e) => handleChangePropertyType(e.target.value)}
                     className="form-control"
                   >
-                    {HOUSE_TYPES.map((type, index) => {
+                    {CATEGORY.map((type, index) => {
                       return (
                         <option key={index} value={type}>
                           {type}
@@ -152,13 +210,15 @@ const AddProperty = () => {
                       );
                     })}
                   </select>
+                  <Form.Text className="text-danger">
+                  </Form.Text>
                 </Form.Group>
               </Col>
               <Col md={6}>
-                <Form.Group className="mb-3" controlId="houseType">
-                  <Form.Label>House Type</Form.Label>
-                  <Form.Control as="select" {...register("houseType")}>
-                    <option value="">Select House Type</option>
+                <Form.Group className="mb-3" controlId="subCategory">
+                  <Form.Label>{category} Type</Form.Label>
+                  <select {...register("subCategory")}>
+                    <option value="">Select {category} type</option>
                     {propertyType.map((type, index) => {
                       return (
                         <option key={index} value={type}>
@@ -166,31 +226,34 @@ const AddProperty = () => {
                         </option>
                       );
                     })}
-                  </Form.Control>
+                  </select>
+                  <Form.Text className="text-danger">
+                  </Form.Text>
                 </Form.Group>
               </Col>
             </Row>
 
             <Form.Group className="mb-3" controlId="address">
-              <Form.Label>Address</Form.Label>
+              <Form.Label>location</Form.Label>
               <textarea
-                {...register("address")}
+                {...register("location")}
                 className="form-control"
               ></textarea>
-              {errors.address && <p>{errors.address.message}</p>}
+              <Form.Text className="text-danger">
+              </Form.Text>
             </Form.Group>
             <Form.Group className="mb-3" controlId="image">
               <Form.Label>Image</Form.Label>
               <Form.Control
                 multiple
                 type="file"
-                placeholder="Enter image url"
-                {...register("image")}
+                placeholder="Enter image"
+                {...register("pictures")}
+                onChange={(e) => handleUploadImage(e.target.files)}
               />
-              {errors.image && <p>{errors.image.message}</p>}
 
               <Row className="mt-3">
-                {imageArray?.map((img, index) => {
+                {imageArr?.map((img, index) => {
                   return (
                     <Col key={index} md={3}>
                       <Image
@@ -199,7 +262,11 @@ const AddProperty = () => {
                         style={{ height: "200px" }}
                       />
                       <p>{img.name}</p>
-                      <Button variant="danger" size="sm">
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => handleRemoveImage(index)}
+                      >
                         Remove
                       </Button>
                     </Col>

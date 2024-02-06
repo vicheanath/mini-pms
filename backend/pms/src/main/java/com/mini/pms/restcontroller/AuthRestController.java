@@ -9,6 +9,7 @@ import com.mini.pms.restcontroller.response.TokenResponse;
 import com.mini.pms.service.AuthService;
 
 import com.mini.pms.service.MemberService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -45,8 +46,10 @@ public class AuthRestController {
        return authService.registerCustomer(registerRequest);
     }
     @PutMapping("change-password")
+    @Transactional
     public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest passwordRequest) {
-        return new ResponseEntity<>(memberService.changePassword(passwordRequest), HttpStatus.OK);
+        var s = memberService.changePassword(passwordRequest);
+        return new ResponseEntity<>(s, HttpStatus.OK);
     }
 
     @PostMapping("forgot-password")

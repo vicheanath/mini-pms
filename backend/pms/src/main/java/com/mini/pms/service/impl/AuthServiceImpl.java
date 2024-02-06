@@ -24,17 +24,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AuthServiceImpl implements AuthService {
 
     @Value("${jwt.secret}")
     private String secret;
 
-    private final long ACCESS_TOKEN_EXPIRED = 1000 * 60 * 10; // 10mn
+    private final long ACCESS_TOKEN_EXPIRED = 1000 * 60 * 1000; // 10mn
     private final long REFRESH_TOKEN_EXPIRED = 1000 * 60 * 20; // 20mn
 
     private final AuthenticationManager authManager;
