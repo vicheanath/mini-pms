@@ -88,7 +88,6 @@ public class PropertyServiceImpl implements PropertyService {
 
 
         var owner = memberService.findByEmail(principal.getName());
-
         var prop = Util.mapObj(propertyRequest, Property.class);
         prop.setOwner(owner);
 

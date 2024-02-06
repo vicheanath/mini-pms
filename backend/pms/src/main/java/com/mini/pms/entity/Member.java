@@ -1,5 +1,6 @@
 package com.mini.pms.entity;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.mini.pms.entity.type.MemberStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -71,4 +72,6 @@ public class Member {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+
 }
