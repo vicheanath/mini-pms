@@ -55,9 +55,9 @@ const Login = ({ show, handleClose }) => {
   };
   return (
     <div>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Login</Modal.Title>
+      <Modal show={show} onHide={handleClose} size="md" aria-labelledby="contained-modal-title-vcenter">
+        <Modal.Header closeButton >
+          <Modal.Title id="contained-modal-title-vcenter">Login</Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-4">
           <Form onSubmit={handleSubmit(onSubmit)}>

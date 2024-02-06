@@ -60,7 +60,8 @@ public class SecurityConfig {
                                     .requestMatchers(
                                             contextPath + "/public",
                                             contextPath + "/auth/**",
-                                            contextPath + "/files/**")
+                                            contextPath + "/files/**",
+                                            contextPath + "/properties/**")
                                     .permitAll()
                                     .requestMatchers(contextPath + "/admins/**")
                                     .hasAuthority("Admin")

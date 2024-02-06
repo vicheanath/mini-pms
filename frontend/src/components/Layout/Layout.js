@@ -5,9 +5,8 @@ import {Outlet} from "react-router-dom";
 import Footer from "../Footer";
 const Layout = ({ children }) => {
   const navLinks = [
-    { title: "Buy", path: "/?type=buy" },
-    { title: "Rent", path: "/?type=rent" },
-    { title: "Sell", path: "/?type=sell" },
+    { title: "Rent", path: "/?type=RENT" },
+    { title: "Sell", path: "/?type=SELL" },
     { title: "Dashboard", path: "/dashboard" },
     { title: "Profile", path: "/profile" },
   ];
