@@ -9,12 +9,14 @@ import com.mini.pms.repo.MemberRepo;
 import com.mini.pms.repo.OfferRepo;
 import com.mini.pms.repo.PropertyRepo;
 import com.mini.pms.service.EmailService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
+
+import java.util.Random;
+import java.util.stream.Stream;
 
 @SpringBootApplication
 public class PmsApplication implements CommandLineRunner {
@@ -23,13 +25,17 @@ public class PmsApplication implements CommandLineRunner {
         SpringApplication.run(PmsApplication.class, args);
     }
 
-    @Autowired PropertyRepo propertyRepo;
+    @Autowired
+    PropertyRepo propertyRepo;
 
-    @Autowired MemberRepo memberRepo;
+    @Autowired
+    MemberRepo memberRepo;
 
-    @Autowired OfferRepo offerRepo;
+    @Autowired
+    OfferRepo offerRepo;
 
-    @Autowired EmailService emailService;
+    @Autowired
+    EmailService emailService;
 
     void createProperty() {
         var owner =
@@ -38,20 +44,27 @@ public class PmsApplication implements CommandLineRunner {
                         .orElseThrow(
                                 () -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
 
-        var prop =
-                Property.builder()
-                        .title("Renting a home")
-                        .category(PropertyCategory.HOME)
-                        .type(PropertyType.SELL)
-                        .latitude(10d)
-                        .longitude(20d)
-                        .location("ABC")
-                        .numberOfRoom(3)
-                        .price(3000)
-                        .owner(owner)
-                        .build();
+        var props =
+                Stream.generate(() -> {
+                    return Property.builder()
+                            .title("Renting a home")
+                            .category(
+                                    PropertyCategory.values()[new Random().nextInt(0, 3)]
+                            )
+                            .type(
+                                    PropertyType.values()[new Random().nextInt(0, 1)]
+                            )
+                            .latitude(10d)
+                            .longitude(20d)
+                            .location("ABC")
+                            .numberOfRoom(new Random().nextInt(2, 10))
+                            .price(new Random().nextDouble(100, 3000))
+                            .owner(owner)
+                            .build();
+                }).limit(30).toList();
 
-        propertyRepo.save(prop);
+
+        propertyRepo.saveAll(props);
     }
 
     void createOffer() {
