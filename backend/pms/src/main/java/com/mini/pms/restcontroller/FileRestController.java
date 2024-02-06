@@ -27,8 +27,8 @@ public class FileRestController {
     private final PictureService picService;
 
     @PostMapping("upload")
-    public UploadFileInfo upload(MultipartFile file, long propertyId, Principal principal) throws IOException {
-        return picService.upload(file, propertyId, principal);
+    public UploadFileInfo upload(MultipartFile file, Principal principal) throws IOException {
+        return picService.upload(file, principal);
     }
 
     @GetMapping(
