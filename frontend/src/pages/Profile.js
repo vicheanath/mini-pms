@@ -15,10 +15,10 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "react-query";
 import Loading from "../components/Loading";
+import { api } from "../libs/api";
 const Profile = () => {
-  const { data, isLoading, isError } = useQuery("users/profile");
+  const { data, isLoading, isError, refetch } = useQuery("users/profile");
   const ProfileSchema = z.object({
-    email: z.string().email(),
     phone: z.string().min(3).max(20),
     address: z.string().min(3).max(20),
     city: z.string().min(3).max(20),
@@ -48,12 +48,21 @@ const Profile = () => {
     formState: { errors: errorsChangePassword },
   } = useForm({ resolver: zodResolver(ChangePasswordSchema) });
 
+  const updateProfile = useMutation((data) => {
+    return api.put("users/profile", data);
+  });
+
+  const changePassword = useMutation((data) => {
+    return api.put("users/change-password", data);
+  });
+
   const onSubmit = (data) => {
-    console.log(data);
+    updateProfile.mutate(data);
+    // refetch();
   };
 
   const onChangePassword = (data) => {
-    console.log(data);
+    changePassword.mutate(data);
   };
 
   if (isError) return <div>Error loading profile</div>;
@@ -67,11 +76,12 @@ const Profile = () => {
             <Card.Body>
               <Image src="https://via.placeholder.com/150" roundedCircle />
               <Card.Title>Username</Card.Title>
-              <Card.Text>Email: {data?.email}</Card.Text>
-              <Card.Text>Phone:</Card.Text>
-              <Card.Text>Address:</Card.Text>
-              <Card.Text>City:</Card.Text>
-              <Card.Text>Zip:</Card.Text>
+              <Card.Text>Email: {data.email}</Card.Text>
+              <Card.Text>Phone: {data.phone}</Card.Text>
+              <Card.Text>Address: {data.address}</Card.Text>
+              <Card.Text>City:{data.city}</Card.Text>
+              <Card.Text>State:{data.state}</Card.Text>
+              <Card.Text>Zip:{data.zip}</Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -81,18 +91,6 @@ const Profile = () => {
             <Card.Body>
               <Card.Title>Update Profile</Card.Title>
               <Form onSubmit={handleSubmit(onSubmit)}>
-                <Form.Group controlId="formBasicEmail">
-                  <Form.Label>Email address</Form.Label>
-                  <Form.Control
-                    type="email"
-                    placeholder="Enter email"
-                    {...register("email")}
-                  />
-                  <Form.Text className="text-danger">
-                    {errors.email?.message}
-                  </Form.Text>
-                </Form.Group>
-
                 <Form.Group controlId="formBasicPhone">
                   <Form.Label>Phone</Form.Label>
                   <Form.Control
@@ -126,6 +124,17 @@ const Profile = () => {
                   />
                   <Form.Text className="text-danger">
                     {errors.city?.message}
+                  </Form.Text>
+                </Form.Group>
+                <Form.Group controlId="formBasicState">
+                  <Form.Label>State</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter state"
+                    {...register("state")}
+                  />
+                  <Form.Text className="text-danger">
+                    {errors.state?.message}
                   </Form.Text>
                 </Form.Group>
 
