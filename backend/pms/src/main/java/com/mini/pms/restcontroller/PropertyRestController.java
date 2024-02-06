@@ -1,14 +1,13 @@
 package com.mini.pms.restcontroller;
 
 
-import com.mini.pms.restcontroller.request.PropertyRequest;
 import com.mini.pms.entity.Property;
+import com.mini.pms.restcontroller.request.PropertyRequest;
 import com.mini.pms.restcontroller.response.PageResponse;
 import com.mini.pms.restcontroller.response.PropertyResponse;
 import com.mini.pms.service.PropertyService;
 import com.mini.pms.util.Util;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.Utils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;

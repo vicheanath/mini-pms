@@ -7,10 +7,8 @@ import com.mini.pms.restcontroller.FileRestController;
 import com.mini.pms.restcontroller.response.DownloadFileInfo;
 import com.mini.pms.restcontroller.response.UploadFileInfo;
 import com.mini.pms.service.PictureService;
-import com.mini.pms.service.PropertyService;
-
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -34,7 +32,6 @@ public class PictureServiceImpl implements PictureService {
     private final String DIR = "src/main/resources/zfilestorage";
 
     private final PictureRepo picRepo;
-    private final PropertyService propertyService;
 
     @Override
     public UploadFileInfo upload(MultipartFile file, Principal principal)
@@ -78,6 +75,20 @@ public class PictureServiceImpl implements PictureService {
         var resource = new UrlResource(path.toUri());
 
         return new DownloadFileInfo(resource, pic);
+    }
+
+    @Override
+    public Picture findByKey(String key) {
+        var pic = picRepo.findByKey(key)
+                .orElseThrow(() -> new PlatformException("Picture not found", HttpStatus.NOT_FOUND));
+        return pic;
+    }
+
+    @Override
+    @Transactional
+    public Picture update(Picture picture) {
+        findByKey(picture.getKey());
+        return picRepo.save(picture);
     }
 
     private void writeFile(InputStream file, String key) throws IOException {

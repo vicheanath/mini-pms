@@ -14,19 +14,14 @@ public class PropertyRequest {
     private double price;
     private String location;
     private String description;
-
     private List<String> pictures;
-    private long ownerId;
     private String category;
     private String subCategory;
     private String type;
-
     private String offerStatus;
     private String status;
     private int numberOfRoom;
     private double latitude;
     private double longitude;
-    private String createdAt;
-    private String updatedAt;
 
 }
