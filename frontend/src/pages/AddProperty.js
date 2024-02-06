@@ -73,7 +73,7 @@ const AddProperty = () => {
   const propertyMutation = useMutation((data) => {
     api.post("properties", data).then((res) => {
       console.log(res);
-      navigate("/");
+      // navigate("/");
     }).catch((error) => {
       console.log(error);
     });
@@ -168,6 +168,9 @@ const AddProperty = () => {
                     placeholder="Enter title"
                     {...register("title")}
                   />
+                  <Form.Text className="text-danger">
+                    {errors.title?.message}
+                  </Form.Text>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="numberOfRoom">
                   <Form.Label>Number of Rooms</Form.Label>
@@ -176,6 +179,9 @@ const AddProperty = () => {
                     placeholder="Enter number of rooms"
                     {...register("numberOfRoom")}
                   />
+                  <Form.Text className="text-danger">
+                    {errors.numberOfRoom?.message}
+                  </Form.Text>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="price">
@@ -191,7 +197,9 @@ const AddProperty = () => {
                       {type === "Rent" ? "$ / month" : "$"}
                     </InputGroup.Text>
                   </InputGroup>
-                  <Form.Text className="text-danger"></Form.Text>
+                  <Form.Text className="text-danger">
+                    {errors.price?.message}
+                  </Form.Text>
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -202,7 +210,10 @@ const AddProperty = () => {
                     className="form-control"
                     {...register("description")}
                   ></textarea>
-                  <Form.Text className="text-danger"></Form.Text>
+                  <Form.Text className="text-danger">
+                    {errors.description?.message}
+                  </Form.Text>
+
                 </Form.Group>
               </Col>
             </Row>
@@ -223,7 +234,9 @@ const AddProperty = () => {
                       );
                     })}
                   </select>
-                  <Form.Text className="text-danger"></Form.Text>
+                  <Form.Text className="text-danger">
+                    {errors.category?.message}
+                  </Form.Text>
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -239,7 +252,9 @@ const AddProperty = () => {
                       );
                     })}
                   </select>
-                  <Form.Text className="text-danger"></Form.Text>
+                  <Form.Text className="text-danger">
+                    {errors.subCategory?.message}
+                  </Form.Text>
                 </Form.Group>
               </Col>
             </Row>
@@ -250,7 +265,9 @@ const AddProperty = () => {
                 {...register("location")}
                 className="form-control"
               ></textarea>
-              <Form.Text className="text-danger"></Form.Text>
+              <Form.Text className="text-danger">
+                {errors.location?.message}
+              </Form.Text>
             </Form.Group>
             <Form.Group className="mb-3" controlId="image">
               <Form.Label>Image</Form.Label>
