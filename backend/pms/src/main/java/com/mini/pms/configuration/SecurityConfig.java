@@ -61,7 +61,9 @@ public class SecurityConfig {
                                             contextPath + "/public",
                                             contextPath + "/auth/**",
                                             contextPath + "/files/**",
-                                            contextPath + "/properties/**")
+                                            contextPath + "/properties",
+                                            contextPath + "/properties/**"
+                                    )
                                     .permitAll()
                                     .requestMatchers(contextPath + "/admins/**")
                                     .hasAuthority("Admin")

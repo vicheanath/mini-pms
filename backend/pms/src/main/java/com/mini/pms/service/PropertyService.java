@@ -1,6 +1,7 @@
 package com.mini.pms.service;
 
 import com.mini.pms.entity.Property;
+import com.mini.pms.restcontroller.request.PropertyRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,9 +17,10 @@ public interface PropertyService {
             String type,
             String numberOfRoom,
             String location,
-            Pageable pageable,
-            Principal principal
+            Pageable pageable
     );
 
     Property findById(long id);
+
+    Property createProperty(PropertyRequest propertyRequest, Principal principal);
 }

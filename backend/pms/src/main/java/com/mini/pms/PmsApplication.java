@@ -49,10 +49,10 @@ public class PmsApplication implements CommandLineRunner {
                     return Property.builder()
                             .title("Renting a home")
                             .category(
-                                    PropertyCategory.values()[new Random().nextInt(0, 3)]
+                                    PropertyCategory.values()[new Random().nextInt(0, 3)].name()
                             )
                             .type(
-                                    PropertyType.values()[new Random().nextInt(0, 1)]
+                                    PropertyType.values()[new Random().nextInt(0, 1)].name()
                             )
                             .latitude(10d)
                             .longitude(20d)
