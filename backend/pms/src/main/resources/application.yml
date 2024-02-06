@@ -1,4 +1,5 @@
 spring:
+  reset-password-url: http://localhost:3000/change-password
   application:
     name: pms
   datasource:
@@ -45,4 +46,4 @@ management:
 jwt:
   secret: ${JWT_SECRET:1234}
 mail:
-  enabled: ${ENABLED:false}
+  enabled: ${ENABLED:true}

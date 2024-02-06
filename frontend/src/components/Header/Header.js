@@ -58,7 +58,7 @@ const Header = ({ navLinks }) => {
                 <FiDatabase /> Admin
               </Button>
             )}
-            {isCustomer && (
+            {isOwner && (
               <Button variant="outline-light" href="/add-property">
                 <FiPlus /> Add Property
               </Button>
