@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Form,
@@ -12,6 +12,8 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSelector } from "react-redux";
+import { apiBaseUrl } from "../libs/constants";
 
 const SELLER_TYPES = ["Rent", "Sale"];
 const PROPERTY_TYPES = ["House", "Apartment", "Condo"];
@@ -21,6 +23,9 @@ const CONDO_TYPES = ["High Rise", "Low Rise", "Mid Rise"];
 
 const AddProperty = () => {
   const [propertyType, setPropertyType] = React.useState(HOUSE_TYPES);
+  const { accessToken } = useSelector((state) => state.auth);
+  const [images, setImages] = React.useState({});
+  const [imageKeys, setImageKeys] = React.useState([]);
   const handleChangePropertyType = (type) => {
     switch (type) {
       case "House":
@@ -53,12 +58,53 @@ const AddProperty = () => {
   } = useForm({ resolver: zodResolver(PropertySchema) });
 
   const onSubmit = (data) => {
+    data.image = imageKeys;
     console.log(data);
   };
-
-  const watchImage = watch("image") || {};
-  const imageArray = Object.keys(watchImage).map((key) => watchImage[key]);
   const sellerType = watch("sellerType");
+
+  const handleRemoveImage = (index) => {
+    setImages((prev) => {
+      const temp = { ...prev };
+      delete temp[index];
+      return temp;
+    });
+  };
+
+  const handleUploadImage = (files) => {
+    setImages((prev) => {
+      const temp = { ...prev };
+      for (let i = 0; i < files.length; i++) {
+        temp[i] = files[i];
+      }
+      return temp;
+    });
+
+    for (let i = 0; i < files.length; i++) {
+      const formData = new FormData();
+      formData.append("file", files[i]);
+
+      fetch(apiBaseUrl + "files/upload", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          setImageKeys((prev) => {
+            return [...prev, result.key];
+          });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  };
+
+  const imageArr = Object.keys(images).map((key) => images[key]);
+
   return (
     <div className="mt-4">
       <Card className="mt-4">
@@ -116,11 +162,14 @@ const AddProperty = () => {
                       placeholder="Enter price"
                       {...register("price")}
                     />
-                    {errors.price && <p>{errors.price.message}</p>}
-                    <InputGroup.Text>{
-                        sellerType === "Rent" ? "$ / month" : "$"
-                    }</InputGroup.Text>
+
+                    <InputGroup.Text>
+                      {sellerType === "Rent" ? "$ / month" : "$"}
+                    </InputGroup.Text>
                   </InputGroup>
+                  <Form.Text className="text-danger">
+                    {errors.price && errors.price.message}
+                  </Form.Text>
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -131,7 +180,9 @@ const AddProperty = () => {
                     className="form-control"
                     {...register("description")}
                   ></textarea>
-                  {errors.description && <p>{errors.description.message}</p>}
+                  <Form.Text className="text-danger">
+                    {errors.description && errors.description.message}
+                  </Form.Text>
                 </Form.Group>
               </Col>
             </Row>
@@ -177,20 +228,23 @@ const AddProperty = () => {
                 {...register("address")}
                 className="form-control"
               ></textarea>
-              {errors.address && <p>{errors.address.message}</p>}
+              <Form.Text className="text-danger">
+                {errors.address && errors.address.message}
+              </Form.Text>
             </Form.Group>
             <Form.Group className="mb-3" controlId="image">
               <Form.Label>Image</Form.Label>
               <Form.Control
                 multiple
                 type="file"
-                placeholder="Enter image url"
+                placeholder="Enter image"
                 {...register("image")}
+                onChange={(e) => handleUploadImage(e.target.files)}
               />
               {errors.image && <p>{errors.image.message}</p>}
 
               <Row className="mt-3">
-                {imageArray?.map((img, index) => {
+                {imageArr?.map((img, index) => {
                   return (
                     <Col key={index} md={3}>
                       <Image
@@ -199,7 +253,11 @@ const AddProperty = () => {
                         style={{ height: "200px" }}
                       />
                       <p>{img.name}</p>
-                      <Button variant="danger" size="sm">
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => handleRemoveImage(index)}
+                      >
                         Remove
                       </Button>
                     </Col>

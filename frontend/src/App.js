@@ -1,12 +1,11 @@
 import { useEffect } from "react";
-import Layout from "./components/Layout/Layout";
-import { Router, UnauthorizedRouter } from "./routes/Router";
+import { Router } from "./routes/Router";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsAuthenticated } from "./features/authSlice";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated,accessToken} = useSelector((state) => state.auth);
+  const { accessToken} = useSelector((state) => state.auth);
   const handleCheckAuth = () => {
     if (accessToken) {
       dispatch(setIsAuthenticated());
@@ -14,7 +13,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    handleCheckAuth();
+    handleCheckAuth(accessToken);
   }, []);
 
   return (

@@ -37,9 +37,7 @@ public class PropertyServiceImpl implements PropertyService {
 
         var email = principal.getName();
 
-        Specification<Property> spec = Specification.where((root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.join("owner").get("email"), email));
-
+        Specification<Property> spec = Specification.where(null);
 
         if (Objects.nonNull(minPrice)) {
             spec = spec.and((root, query, criteriaBuilder) ->

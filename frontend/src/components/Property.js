@@ -7,12 +7,12 @@ const Property = ({
   numberOfRooms,
   type,
   location,
-  image,
+  pictures,
   addToFavorite,
 }) => {
   return (
     <Card>
-      <Card.Img variant="top" src={image} />
+      <Card.Img variant="top" src={pictures[0]} />
       <Card.Body>
         <Card.Title>{type}</Card.Title>
         <Card.Text>
