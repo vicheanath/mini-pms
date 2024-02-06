@@ -12,7 +12,6 @@ public class PlatformException extends RuntimeException {
     private HttpStatusCode httpStatusCode;
 
     public PlatformException(String message, HttpStatusCode httpStatusCode) {
-        super(message);
         this.message = message;
         this.httpStatusCode = httpStatusCode;
     }

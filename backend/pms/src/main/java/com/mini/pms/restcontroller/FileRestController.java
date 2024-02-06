@@ -9,25 +9,23 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.print.attribute.standard.Media;
 import java.io.IOException;
 import java.security.Principal;
 
 @RestController
 @RequestMapping("api/v1/files")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class FileRestController {
 
     private final PictureService picService;
 
-    @PostMapping("upload")
-    public UploadFileInfo upload(MultipartFile file, Principal principal) throws IOException {
+    @PostMapping( "upload")
+    public UploadFileInfo upload(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
         return picService.upload(file, principal);
     }
 
