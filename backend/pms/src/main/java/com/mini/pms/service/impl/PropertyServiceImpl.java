@@ -2,9 +2,11 @@ package com.mini.pms.service.impl;
 
 import com.mini.pms.customexception.PlatformException;
 import com.mini.pms.entity.Property;
+import com.mini.pms.repo.PictureRepo;
 import com.mini.pms.repo.PropertyRepo;
 import com.mini.pms.restcontroller.request.PropertyRequest;
 import com.mini.pms.service.MemberService;
+import com.mini.pms.service.PictureService;
 import com.mini.pms.service.PropertyService;
 import com.mini.pms.util.Util;
 import lombok.RequiredArgsConstructor;
@@ -25,51 +27,36 @@ public class PropertyServiceImpl implements PropertyService {
 
     private final PropertyRepo propertyRepo;
     private final MemberService memberService;
+    private final PictureService picService;
+    private final PictureRepo picRepo;
 
     @Override
-    public Page<Property> findAll(
-            String search,
-            Double minPrice,
-            Double maxPrice,
-            String category,
-            String type,
-            String numberOfRoom,
-            String location,
-            Pageable pageable
-    ) {
+    public Page<Property> findAll(String search, Double minPrice, Double maxPrice, String category, String type, String numberOfRoom, String location, Pageable pageable) {
 
         Specification<Property> spec = Specification.allOf();
 
         if (Objects.nonNull(minPrice)) {
-            spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.greaterThanOrEqualTo(root.get("price"), minPrice)
-            );
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("price"), minPrice));
         }
 
         if (Objects.nonNull(maxPrice)) {
-            spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.lessThanOrEqualTo(root.get("price"), maxPrice)
-            );
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("price"), maxPrice));
         }
 
         if (Objects.nonNull(category)) {
-            spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get("category"), category));
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("category"), category));
         }
 
         if (Objects.nonNull(type)) {
-            spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get("type"), type));
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("type"), type));
         }
 
         if (Objects.nonNull(numberOfRoom)) {
-            spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get("numberOfRoom"), numberOfRoom));
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("numberOfRoom"), numberOfRoom));
         }
 
         if (Objects.nonNull(location)) {
-            spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get("location"), location));
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("location"), location));
         }
 
         return propertyRepo.findAll(spec, pageable);
@@ -77,10 +64,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public Property findById(long id) {
-        return propertyRepo
-                .findById(id)
-                .orElseThrow(
-                        () -> new PlatformException("Property not found", HttpStatus.NOT_FOUND));
+        return propertyRepo.findById(id).orElseThrow(() -> new PlatformException("Property not found", HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -88,9 +72,23 @@ public class PropertyServiceImpl implements PropertyService {
 
 
         var owner = memberService.findByEmail(principal.getName());
-        var prop = Util.mapObj(propertyRequest, Property.class);
-        prop.setOwner(owner);
 
-        return propertyRepo.save(prop);
+        var requestProp = Util.mapObj(propertyRequest, Property.class);
+        requestProp.setOwner(owner);
+
+        var prop = propertyRepo.save(requestProp);
+
+        var keys = propertyRequest.getPictures();
+        if (!keys.isEmpty()) {
+            var pics = keys.stream().map(key -> {
+                var pic = picService.findByKey(key);
+                pic.setProperty(prop);
+                return pic;
+            }).toList();
+            picRepo.saveAll(pics);
+            prop.setPictures(pics);
+        }
+
+        return prop;
     }
 }
