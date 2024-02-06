@@ -1,5 +1,6 @@
 package com.mini.pms.restcontroller;
 
+import com.mini.pms.restcontroller.response.UploadFileInfo;
 import com.mini.pms.service.PictureService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/files")
@@ -27,8 +27,8 @@ public class FileRestController {
     private final PictureService picService;
 
     @PostMapping("upload")
-    public Map upload(MultipartFile file, long propertyId, Principal principal) throws IOException {
-        return Map.of("url", picService.upload(file, propertyId, principal));
+    public UploadFileInfo upload(MultipartFile file, long propertyId, Principal principal) throws IOException {
+        return picService.upload(file, propertyId, principal);
     }
 
     @GetMapping(
