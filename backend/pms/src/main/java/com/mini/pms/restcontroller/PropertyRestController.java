@@ -2,16 +2,19 @@ package com.mini.pms.restcontroller;
 
 
 import com.mini.pms.restcontroller.request.PropertyRequest;
+import com.mini.pms.entity.Property;
 import com.mini.pms.restcontroller.response.PageResponse;
 import com.mini.pms.restcontroller.response.PropertyResponse;
 import com.mini.pms.service.PropertyService;
 import com.mini.pms.util.Util;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.Utils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,6 +59,11 @@ public class PropertyRestController {
         );
 
         return ResponseEntity.ok(new PageResponse(props, PropertyResponse.class));
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<PropertyResponse> findById(@PathVariable("id") Long id) {
+        Property prop = propService.findById(id);
+        return ResponseEntity.ok(Util.mapObj(prop, PropertyResponse.class));
     }
 
     @PostMapping

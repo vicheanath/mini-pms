@@ -40,7 +40,6 @@ public class PropertyServiceImpl implements PropertyService {
 
         Specification<Property> spec = Specification.allOf();
 
-
         if (Objects.nonNull(minPrice)) {
             spec = spec.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.greaterThanOrEqualTo(root.get("price"), minPrice)

@@ -20,7 +20,6 @@ export const queryClient = new QueryClient({
         console.log(err);
         if (err.code2 === 401) {
           localStorage.clear();
-          window.location.href = "/";
         }
       },
       staleTime: 60 * 1000 * 1, // 5 minutes

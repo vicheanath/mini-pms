@@ -61,7 +61,6 @@ public class SecurityConfig {
                                             contextPath + "/public",
                                             contextPath + "/auth/**",
                                             contextPath + "/files/**",
-
                                             contextPath + "/properties",
                                             contextPath + "/properties/**"
                                     )
