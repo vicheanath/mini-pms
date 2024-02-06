@@ -1,5 +1,6 @@
 package com.mini.pms.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -44,6 +45,7 @@ public class Picture {
     private String key;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference
     private Property property;
 
     @CreatedDate
