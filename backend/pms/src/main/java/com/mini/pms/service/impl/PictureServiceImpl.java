@@ -37,10 +37,8 @@ public class PictureServiceImpl implements PictureService {
     private final PropertyService propertyService;
 
     @Override
-    public UploadFileInfo upload(MultipartFile file, long propertyId, Principal principal)
+    public UploadFileInfo upload(MultipartFile file, Principal principal)
             throws IOException {
-
-        var property = propertyService.findById(propertyId);
 
         var key = UUID.randomUUID().toString();
         writeFile(file.getInputStream(), key);
@@ -57,7 +55,6 @@ public class PictureServiceImpl implements PictureService {
                         .key(key)
                         .name(name)
                         .size(size)
-                        .property(property)
                         .url(url)
                         .build();
 

@@ -9,7 +9,7 @@ import java.net.MalformedURLException;
 import java.security.Principal;
 
 public interface PictureService {
-    UploadFileInfo upload(MultipartFile file, long propertyId, Principal principal)
+    UploadFileInfo upload(MultipartFile file, Principal principal)
         throws IOException;
 
     DownloadFileInfo download(String key) throws MalformedURLException;

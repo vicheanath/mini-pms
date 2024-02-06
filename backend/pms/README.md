@@ -78,8 +78,7 @@ Request:
 curl --location 'http://localhost:8080/api/v1/files/upload' \
 --header 'Content-Type: multipart/form-data' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWJqZWN0IjoiQUNDRVNTX1RPS0VOIiwicm9sZXMiOlt7InJvbGUiOiJBZG1pbiJ9XSwiZXhwIjoxNzA3MTgxMDYxLCJpYXQiOjE3MDcxODA0NjEsImVtYWlsIjoiYUBhLmNvbSJ9.NgZm43M-N9aQWi46RoyAM6IDEzIHjo5IMZGMD4s080iWoWre-Z-97RLn4ypETOoSHZ4aenK80Z9azqczOieOAQ' \
---form 'file=@"/C:/Users/dengb/OneDrive/Pictures/logo.PNG"' \
---form 'propertyId="1"'
+--form 'file=@"/C:/Users/dengb/OneDrive/Pictures/logo.PNG"'
 ```
 
 Response
