@@ -7,7 +7,7 @@ import org.springframework.core.io.Resource;
 
 @Data
 @AllArgsConstructor
-public class FileInfo {
+public class DownloadFileInfo {
     private Resource resource;
     private Picture picture;
 }
