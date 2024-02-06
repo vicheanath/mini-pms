@@ -1,10 +1,12 @@
 package com.mini.pms.entity;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.pms.entity.type.PropertyCategory;
 import com.mini.pms.entity.type.PropertyOfferStatus;
 import com.mini.pms.entity.type.PropertyStatus;
 import com.mini.pms.entity.type.PropertyType;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
@@ -15,12 +17,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -51,7 +51,9 @@ public class Property {
     private String location;
     private String description;
 
+    @JsonProperty
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "property")
+    @JsonManagedReference
     private List<Picture> pictures;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "property")
@@ -85,4 +87,16 @@ public class Property {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @JsonGetter("pictures")
+    public List<String> getPictures() {
+
+        return pictures.isEmpty() ? List.of("https://photos.zillowstatic.com/fp/8352ff644b62e323d9697de553de11c7-cc_ft_768.webp"
+                , "https://photos.zillowstatic.com/fp/8352ff644b62e323d9697de553de11c7-cc_ft_768.webp")
+
+                : pictures.stream()
+                .map(Picture::getUrl)
+                .toList();
+
+    }
 }

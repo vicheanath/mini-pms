@@ -36,6 +36,13 @@ spring:
 server:
   port: ${SERVER_PORT:8080}
 
+management:
+  endpoints:
+    enabled-by-default: false
+  endpoint:
+    info:
+      enabled: true
+
 jwt:
   secret: ${JWT_SECRET:1234}
 mail:
