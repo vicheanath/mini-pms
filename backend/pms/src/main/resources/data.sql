@@ -6,7 +6,10 @@ VALUES ('a@a.com', 'Mr.A', '$2a$10$n32EL8n2AN/L40gbWMl3AOIyQNmXXNcaeqyBFrKnN50it
        ('c@c.com', 'Mr.C', '$2a$10$n32EL8n2AN/L40gbWMl3AOIyQNmXXNcaeqyBFrKnN50itVQNt91DW', CURRENT_TIMESTAMP,
         CURRENT_TIMESTAMP, 'ACTIVATED'),
          ('vnath@miu.edu', 'Vishal Nath', '$2a$10$n32EL8n2AN/L40gbWMl3AOIyQNmXXNcaeqyBFrKnN50itVQNt91DW', CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP, 'ACTIVATED');
+        CURRENT_TIMESTAMP, 'ACTIVATED'),
+       ('dengbunthai@gmail.com', 'Bunthai', '$2a$10$n32EL8n2AN/L40gbWMl3AOIyQNmXXNcaeqyBFrKnN50itVQNt91DW', CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP, 'ACTIVATED')
+    ;
 
 
 INSERT INTO role(name, created_at, updated_at)

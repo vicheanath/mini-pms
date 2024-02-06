@@ -8,21 +8,26 @@ import com.mini.pms.repo.PasswordResetTokenRepo;
 import com.mini.pms.restcontroller.request.ChangePasswordRequest;
 import com.mini.pms.restcontroller.request.ForgotPasswordRequest;
 import com.mini.pms.service.MemberService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberServiceImpl implements MemberService {
     @Value("${spring.reset-password-url}")
     private String resetPasswordUrl;
     private final MemberRepo memberRepo;
     private final PasswordResetTokenRepo passwordTokenRepository;
     private final EmailServiceImpl emailService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
     public Member findByEmail(String email) {
         return memberRepo
@@ -66,6 +71,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public String changePassword(ChangePasswordRequest changePasswordRequest) {
         if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmNewPassword()))
             throw new PlatformException("Password does not match", HttpStatus.BAD_REQUEST);
@@ -77,7 +83,7 @@ public class MemberServiceImpl implements MemberService {
          // change password
         Member member = getUserByPasswordResetToken(changePasswordRequest.getToken())
                 .orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
-        member.setPassword(changePasswordRequest.getNewPassword());
+        member.setPassword(bCryptPasswordEncoder.encode(changePasswordRequest.getNewPassword()));
         memberRepo.save(member);
         return "Password changed successfully";
     }

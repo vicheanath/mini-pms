@@ -8,7 +8,10 @@ import com.mini.pms.entity.type.PropertyType;
 import com.mini.pms.repo.MemberRepo;
 import com.mini.pms.repo.OfferRepo;
 import com.mini.pms.repo.PropertyRepo;
+import com.mini.pms.restcontroller.request.ForgotPasswordRequest;
+import com.mini.pms.service.AuthService;
 import com.mini.pms.service.EmailService;
+import com.mini.pms.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -36,6 +39,12 @@ public class PmsApplication implements CommandLineRunner {
 
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    AuthService authService;
+
+    @Autowired
+    MemberService memberService;
 
     void createProperty() {
         var owner =
@@ -88,7 +97,12 @@ public class PmsApplication implements CommandLineRunner {
         createProperty();
         createOffer();
 
+
         //        emailService.sendSimpleMail(
         //                "Hello Everyone", "Hi Dear, How are you?", "dengbunthai@gmail.com");
+
+        var f = new ForgotPasswordRequest();
+        f.setEmail("dengbunthai@gmail.com");
+        memberService.forgotPassword(f);
     }
 }
