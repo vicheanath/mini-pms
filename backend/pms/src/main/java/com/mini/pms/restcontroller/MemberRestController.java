@@ -4,6 +4,8 @@ import com.mini.pms.entity.Member;
 import com.mini.pms.service.AuthService;
 import com.mini.pms.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,11 +26,18 @@ public class MemberRestController {
          return memberService.update(m.getId(), member);
      }
 
-    @GetMapping("/change-password")
-    public String changePassword(String password) {
+    @PutMapping("/change-password")
+    public ResponseEntity<String> changePassword(String password) {
         Member m = authService.getAuthenticatedUser();
-        return memberService.changePassword(m.getId(), password);
+        return new ResponseEntity<>(memberService.changePassword(m.getId(), password), HttpStatus.OK);
     }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(String email) {
+        return new ResponseEntity<>(memberService.forgotPassword(email), HttpStatus.OK);
+    }
+
+
 
 
 }
