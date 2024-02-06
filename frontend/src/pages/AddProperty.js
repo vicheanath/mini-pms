@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Button,
   Form,
@@ -16,7 +16,10 @@ import { useSelector } from "react-redux";
 import { apiBaseUrl } from "../libs/constants";
 import { api } from "../libs/api";
 import { useMutation } from "react-query";
-
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { getCurrLocation, icon, iconURL } from "../utils/map";
+import { FaLocationDot } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 const SELLER_TYPES = ["Rent", "Sale"];
 const CATEGORY = ["House", "Apartment", "Condo"];
 const HOUSE_TYPES = ["Single Family", "Multi Family", "Townhouse"];
@@ -28,6 +31,8 @@ const AddProperty = () => {
   const { accessToken } = useSelector((state) => state.auth);
   const [images, setImages] = React.useState({});
   const [imageKeys, setImageKeys] = React.useState([]);
+  const [latLong, setLatLong] = React.useState(null);
+  const navigate = useNavigate();
   const handleChangePropertyType = (type) => {
     switch (type) {
       case "House":
@@ -60,17 +65,24 @@ const AddProperty = () => {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm({ resolver: zodResolver(PropertySchema) , defaultValues: { type: "RENT" }});
+  } = useForm({
+    resolver: zodResolver(PropertySchema),
+    defaultValues: { type: "RENT" },
+  });
 
-
-  const propertyMutation = useMutation(data => {
-    api.post("properties", data);
-
+  const propertyMutation = useMutation((data) => {
+    api.post("properties", data).then((res) => {
+      console.log(res);
+      navigate("/");
+    }).catch((error) => {
+      console.log(error);
+    });
   });
 
   const onSubmit = (data) => {
     data.pictures = imageKeys;
-    console.log(data);
+    data.latitude = latLong.lat;
+    data.longitude = latLong.lng;
     propertyMutation.mutate(data);
   };
   const type = watch("type");
@@ -115,8 +127,12 @@ const AddProperty = () => {
     }
   };
 
-  const imageArr = Object.keys(images).map((key) => images[key]);
+  useEffect(() => {
+    const geo = getCurrLocation();
+    console.log(geo);
+  }, []);
 
+  const imageArr = Object.keys(images).map((key) => images[key]);
 
   return (
     <div className="mt-4">
@@ -160,7 +176,6 @@ const AddProperty = () => {
                     placeholder="Enter number of rooms"
                     {...register("numberOfRoom")}
                   />
-                
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="price">
@@ -176,8 +191,7 @@ const AddProperty = () => {
                       {type === "Rent" ? "$ / month" : "$"}
                     </InputGroup.Text>
                   </InputGroup>
-                  <Form.Text className="text-danger">
-                  </Form.Text>
+                  <Form.Text className="text-danger"></Form.Text>
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -188,8 +202,7 @@ const AddProperty = () => {
                     className="form-control"
                     {...register("description")}
                   ></textarea>
-                  <Form.Text className="text-danger">
-                  </Form.Text>
+                  <Form.Text className="text-danger"></Form.Text>
                 </Form.Group>
               </Col>
             </Row>
@@ -210,14 +223,13 @@ const AddProperty = () => {
                       );
                     })}
                   </select>
-                  <Form.Text className="text-danger">
-                  </Form.Text>
+                  <Form.Text className="text-danger"></Form.Text>
                 </Form.Group>
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3" controlId="subCategory">
                   <Form.Label>{category} Type</Form.Label>
-                  <select {...register("subCategory")}>
+                  <select {...register("subCategory")} className="form-control">
                     <option value="">Select {category} type</option>
                     {propertyType.map((type, index) => {
                       return (
@@ -227,8 +239,7 @@ const AddProperty = () => {
                       );
                     })}
                   </select>
-                  <Form.Text className="text-danger">
-                  </Form.Text>
+                  <Form.Text className="text-danger"></Form.Text>
                 </Form.Group>
               </Col>
             </Row>
@@ -239,8 +250,7 @@ const AddProperty = () => {
                 {...register("location")}
                 className="form-control"
               ></textarea>
-              <Form.Text className="text-danger">
-              </Form.Text>
+              <Form.Text className="text-danger"></Form.Text>
             </Form.Group>
             <Form.Group className="mb-3" controlId="image">
               <Form.Label>Image</Form.Label>
@@ -273,6 +283,11 @@ const AddProperty = () => {
                   );
                 })}
               </Row>
+              <Row className="mt-4">
+                <Col md={12}>
+                  <Map set={setLatLong} />
+                </Col>
+              </Row>
             </Form.Group>
             <Button variant="primary" type="submit">
               Submit
@@ -285,3 +300,72 @@ const AddProperty = () => {
 };
 
 export default AddProperty;
+
+const Map = ({ set }) => {
+  const [map, setMap] = useState(null);
+  const [latLong, setLatLong] = useState(null);
+
+  useEffect(() => {
+    set(latLong);
+  }, [latLong]);
+
+  const displayMap = useMemo(
+    () => (
+      <div className="map-container">
+        <div id="map-picker">
+          <FaLocationDot size={30} color="#333" />
+        </div>
+        <MapContainer
+          center={center}
+          zoom={zoom}
+          scrollWheelZoom={false}
+          style={{ height: "400px", width: "100%" }}
+          ref={setMap}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+        </MapContainer>
+      </div>
+    ),
+    []
+  );
+
+  return (
+    <div>
+      {map ? <DisplayPosition map={map} setLatLong={setLatLong} /> : null}
+      {displayMap}
+    </div>
+  );
+};
+
+const center = [41.023248, -91.966827];
+const zoom = 15;
+
+function DisplayPosition({ map, setLatLong }) {
+  const [position, setPosition] = useState(() => map.getCenter());
+
+  const onClick = useCallback(() => {
+    map.setView(center, zoom);
+  }, [map]);
+
+  const onMove = useCallback(() => {
+    setPosition(map.getCenter());
+    setLatLong(map.getCenter());
+  }, [map]);
+
+  useEffect(() => {
+    map.on("move", onMove);
+    return () => {
+      map.off("move", onMove);
+    };
+  }, [map, onMove]);
+
+  return (
+    <p>
+      latitude: {position.lat.toFixed(4)}, longitude: {position.lng.toFixed(4)}{" "}
+      <button onClick={onClick}>reset</button>
+    </p>
+  );
+}
