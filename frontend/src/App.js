@@ -3,6 +3,7 @@ import { Router } from "./routes/Router";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsAuthenticated } from "./features/authSlice";
 
+
 const App = () => {
   const dispatch = useDispatch();
   const { accessToken} = useSelector((state) => state.auth);

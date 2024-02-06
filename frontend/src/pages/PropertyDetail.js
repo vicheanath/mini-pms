@@ -5,7 +5,8 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import Loading from "../components/Loading";
 import { formatMoney } from "../utils/money";
-import { Map } from "@vis.gl/react-google-maps";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { icon } from "../utils/map";
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -61,7 +62,22 @@ const PropertyDetail = () => {
         </Col>
       </Row>
       <Row className="mt-4">
-        
+        <MapContainer
+          center={[data.latitude, data.longitude]}
+          zoom={5}
+          scrollWheelZoom={false}
+          style={{ height: "400px", width: "100%" }}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={[data.latitude, data.longitude]} icon={icon}>
+            <Popup>
+             {data.location}
+            </Popup>
+          </Marker>
+        </MapContainer>
       </Row>
     </React.Fragment>
   );

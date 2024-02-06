@@ -73,13 +73,11 @@ const Header = ({ navLinks }) => {
                 <Dropdown.Menu>
                   <Dropdown.Item href="/profile">Profile</Dropdown.Item>
                   <Dropdown.Item href="/favorite">Favorite</Dropdown.Item>
-                  <Dropdown.Item href="/change-password">
-                    Change Password
-                  </Dropdown.Item>
                   <Dropdown.Item
                     onClick={() => {
                       dispatch(logout());
                       localStorage.clear();
+                      window.location.reload();
                     }}
                   >
                     Logout
