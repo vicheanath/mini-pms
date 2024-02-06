@@ -1,6 +1,8 @@
 package com.mini.pms.service;
 
 import com.mini.pms.entity.Member;
+import com.mini.pms.restcontroller.request.ChangePasswordRequest;
+import com.mini.pms.restcontroller.request.ForgotPasswordRequest;
 
 import java.util.List;
 
@@ -15,10 +17,10 @@ public interface MemberService {
 
     Member update(Long id, Member member);
 
-    String changePassword(Long id, String password);
+    String changePassword(ChangePasswordRequest changePasswordRequest);
 
 
-    String forgotPassword(String email);
+    String forgotPassword(ForgotPasswordRequest forgotPasswordRequest);
 
     String resetPassword(String email, String password);
 

@@ -1,4 +1,5 @@
 spring:
+  reset-password-url: http://localhost:3000/change-password
   application:
     name: pms
   datasource:
@@ -21,8 +22,21 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  mail:
+    host: smtp.gmail.com
+    username: 'mailserverpms@gmail.com'
+    port: '587'
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+          auth: 'true'
+    password: 'bnuo kirn gjpd lzbm'
 server:
   port: ${SERVER_PORT:8080}
 
 jwt:
   secret: ${JWT_SECRET:1234}
+mail:
+  enabled: ${ENABLED:true}

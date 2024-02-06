@@ -4,7 +4,8 @@ import com.mini.pms.customexception.PlatformException;
 import com.mini.pms.entity.Picture;
 import com.mini.pms.repo.PictureRepo;
 import com.mini.pms.restcontroller.FileRestController;
-import com.mini.pms.restcontroller.response.FileInfo;
+import com.mini.pms.restcontroller.response.DownloadFileInfo;
+import com.mini.pms.restcontroller.response.UploadFileInfo;
 import com.mini.pms.service.PictureService;
 import com.mini.pms.service.PropertyService;
 
@@ -36,10 +37,8 @@ public class PictureServiceImpl implements PictureService {
     private final PropertyService propertyService;
 
     @Override
-    public String upload(MultipartFile file, long propertyId, Principal principal)
+    public UploadFileInfo upload(MultipartFile file, Principal principal)
             throws IOException {
-
-        var property = propertyService.findById(propertyId);
 
         var key = UUID.randomUUID().toString();
         writeFile(file.getInputStream(), key);
@@ -56,17 +55,16 @@ public class PictureServiceImpl implements PictureService {
                         .key(key)
                         .name(name)
                         .size(size)
-                        .property(property)
                         .url(url)
                         .build();
 
         picRepo.save(pic);
 
-        return url;
+        return new UploadFileInfo(url, key);
     }
 
     @Override
-    public FileInfo download(String key) throws MalformedURLException {
+    public DownloadFileInfo download(String key) throws MalformedURLException {
 
         var pic =
                 picRepo.findByKey(key)
@@ -79,7 +77,7 @@ public class PictureServiceImpl implements PictureService {
         Path path = uploadPath.resolve(key);
         var resource = new UrlResource(path.toUri());
 
-        return new FileInfo(resource, pic);
+        return new DownloadFileInfo(resource, pic);
     }
 
     private void writeFile(InputStream file, String key) throws IOException {

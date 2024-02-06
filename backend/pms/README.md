@@ -1,4 +1,4 @@
-## Setup Environment
+## I. Setup Environment
 
 #### 1. Run Service
 
@@ -41,6 +41,8 @@ CREATE DATABASE "pms-db";
 
 ```http://localhost:8080/swagger-ui/index.html```
 
+---
+
 #### 5. Create Access Token
 
 You can paste this in Postman or run in a terminal
@@ -65,14 +67,18 @@ response:
 
 ---
 
-#### 5. Upload a Picture API
+## II. File Service
+
+<br>
+
+#### 1. Upload a Picture API
 
 Request:
 ```shell
 curl --location 'http://localhost:8080/api/v1/files/upload' \
 --header 'Content-Type: multipart/form-data' \
---form 'file=@"/C:/Users/dengb/OneDrive/Pictures/logo.PNG"' \
---form 'propertyId="1"'
+--header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWJqZWN0IjoiQUNDRVNTX1RPS0VOIiwicm9sZXMiOlt7InJvbGUiOiJBZG1pbiJ9XSwiZXhwIjoxNzA3MTgxMDYxLCJpYXQiOjE3MDcxODA0NjEsImVtYWlsIjoiYUBhLmNvbSJ9.NgZm43M-N9aQWi46RoyAM6IDEzIHjo5IMZGMD4s080iWoWre-Z-97RLn4ypETOoSHZ4aenK80Z9azqczOieOAQ' \
+--form 'file=@"/C:/Users/dengb/OneDrive/Pictures/logo.PNG"'
 ```
 
 Response
@@ -84,10 +90,60 @@ Response
 
 ---
 
-#### 6. Display or Download API
+#### 2. Display or Download API
 
 Request:
 ```shell
 curl --location 'http://localhost:8080/api/v1/files/16a1ddc7-b440-4dc7-8b4b-aba60a567d4a/download'
 ```
 
+---
+
+
+## III. Email Service
+
+<br>
+
+Enabling mail service `application.yml` file
+
+```yaml
+mail:
+enabled: ${ENABLED:true}
+```
+
+
+#### 1. Using Email Server for the Internal System
+
+```java
+class Application {
+
+    @Autowired EmailService emailService;
+    
+    public static void main(String[] args) {
+        var title = "Hello Everyone";
+        var body = "Dear All, How are you?";
+        var receiverEmail = "a@a.come";
+        
+        // Sending an email
+        emailService.sendSimpleMail(title, body, receiverEmail);
+    }
+}
+
+```
+
+<br>
+
+#### 2. Email with API
+
+Request to send an email from frontend
+
+```shell
+curl --location 'http://localhost:8080/api/v1/emails/send' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWJqZWN0IjoiQUNDRVNTX1RPS0VOIiwicm9sZXMiOlt7InJvbGUiOiJBZG1pbiJ9XSwiZXhwIjoxNzA3MTgxMDYxLCJpYXQiOjE3MDcxODA0NjEsImVtYWlsIjoiYUBhLmNvbSJ9.NgZm43M-N9aQWi46RoyAM6IDEzIHjo5IMZGMD4s080iWoWre-Z-97RLn4ypETOoSHZ4aenK80Z9azqczOieOAQ' \
+--data-raw '{
+    "title": "How are you",
+    "content": "everyone good",
+    "recipient": "a@a.com"
+}'
+```
