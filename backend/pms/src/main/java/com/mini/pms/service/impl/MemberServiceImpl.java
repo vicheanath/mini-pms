@@ -44,15 +44,18 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member update(Long id, Member member) {
-        return memberRepo
+        Member m = memberRepo
                 .findById(id)
-                .map(
-                        m -> {
-                            m.setEmail(member.getEmail());
-                            m.setName(member.getName());
-                            return memberRepo.save(m);
-                        })
                 .orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
+
+        m.setPhone(member.getPhone());
+        m.setAddress(member.getAddress());
+        m.setCity(member.getCity());
+        m.setState(member.getState());
+        m.setZip(member.getZip());
+
+        return  memberRepo.save(m);
+
     }
 
     @Override
@@ -82,7 +85,6 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
 
         member.setPassword(password);
-
         memberRepo.save(member);
         return "Password reset successfully";
     }

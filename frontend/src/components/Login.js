@@ -24,9 +24,6 @@ const Login = ({ show, handleClose }) => {
   const dispatch = useDispatch();
 
   const loginMutation = useMutation(async (data) => {
-    // api.post("/auth/token", data).then((res) => {
-      
-    // });
     fetch(apiBaseUrl + "auth/token", {
       method: "POST",
       body: JSON.stringify(data),

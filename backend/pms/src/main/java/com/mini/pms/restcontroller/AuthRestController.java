@@ -33,13 +33,13 @@ public class AuthRestController {
     //        return authService.issueAccessToken(authRequest);
     //    }
 
-    @PostMapping("register/owner")
+    @PostMapping("owner/register")
     @ResponseStatus(HttpStatus.CREATED)
     public Member registerOwner(@RequestBody RegisterRequest registerRequest) {
         return authService.registerOwner(registerRequest);
     }
 
-    @PostMapping("register/customer")
+    @PostMapping("customer/register")
     @ResponseStatus(HttpStatus.CREATED)
     public Member registerCustomer(@RequestBody RegisterRequest registerRequest) {
        return authService.registerCustomer(registerRequest);
