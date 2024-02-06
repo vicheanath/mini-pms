@@ -1,6 +1,14 @@
 import React from "react";
 import dumpProperties from "../dump/property.json";
-import { Row, Col, Button, Pagination,DropdownButton,Dropdown,Form } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Button,
+  Pagination,
+  DropdownButton,
+  Dropdown,
+  Form,
+} from "react-bootstrap";
 import Property from "../components/Property";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -12,7 +20,6 @@ const Home = () => {
     `properties?${query.toString()}`
   );
   const navigate = useNavigate();
-
 
   return (
     <>
@@ -44,33 +51,42 @@ const Home = () => {
             <select
               className="form-select"
               aria-label="Default select example"
-              defaultValue="asc"
+              defaultValue="price,asc"
               onChange={(e) => {
+                console.log(e.target.value);
                 query.set("sort", e.target.value);
                 navigate(`/?${query.toString()}`);
               }}
             >
-              <option value="asc">Price Low to High</option>
-              <option value="desc">Price High to Low</option>
+              <option value="price,asc">Price Low to High</option>
+              <option value="price,asc">Price High to Low</option>
             </select>
 
-            <DropdownButton id="dropdown-basic-button" title="Price" variant="outline-primary ">
+            <DropdownButton
+              id="dropdown-basic-button"
+              title="Price"
+              variant="outline-primary "
+            >
               <Dropdown.Item>
-              <Form className="p-4">
-                <div className="d-flex justify-content-between">
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Min Price</Form.Label>
-                  <Form.Control type="number" placeholder="Min Price" />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label>Max Price</Form.Label>
-                  <Form.Control type="number" placeholder="Max Price" />
-                </Form.Group>
-                </div>
-                <Button variant="primary" type="submit" style={{ width: "100%" }}>
-                  Apply
-                </Button>
-              </Form>
+                <Form className="p-4">
+                  <div className="d-flex justify-content-between">
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Label>Min Price</Form.Label>
+                      <Form.Control type="number" placeholder="Min Price" />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                      <Form.Label>Max Price</Form.Label>
+                      <Form.Control type="number" placeholder="Max Price" />
+                    </Form.Group>
+                  </div>
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    style={{ width: "100%" }}
+                  >
+                    Apply
+                  </Button>
+                </Form>
               </Dropdown.Item>
             </DropdownButton>
 
@@ -80,16 +96,12 @@ const Home = () => {
       </Row>
 
       <Row className="mt-4">
-        {
-          isLoading ? <Loading /> : null
-        }
+        {isLoading ? <Loading /> : null}
 
         {data?.data.map((property, index) => {
           return (
-            <Col key={index} md={4} className="mb-4">
-              <Link to={`/property/${property.id}`} key={property.id}>
-                <Property key={index} {...property} />
-              </Link>
+            <Col key={property.id} md={4} className="mb-4">
+              <Property key={index} {...property} />
             </Col>
           );
         })}
