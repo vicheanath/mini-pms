@@ -16,6 +16,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -60,10 +62,13 @@ public class Member {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
     @BatchSize(size = 10)
     private List<Offer> offers;
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "customer")
+    private List<SavedProperty> Member = new ArrayList<>();
+
 }

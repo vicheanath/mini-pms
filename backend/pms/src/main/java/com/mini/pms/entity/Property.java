@@ -30,6 +30,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -85,4 +87,6 @@ public class Property {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+    @OneToMany(mappedBy = "property")
+    private List<SavedProperty> Property = new ArrayList<>();
 }
