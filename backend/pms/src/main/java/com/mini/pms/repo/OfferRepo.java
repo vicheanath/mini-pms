@@ -19,15 +19,15 @@ import java.util.List;
 public interface OfferRepo extends JpaRepository<Offer, Long> {
 
         // Method to get all offers made by a specific customer
-        @Query("select o from Offer o where o.customer = :customer order by o.createdAt desc")
-        Page<Offer> findAllOffersByCustomer(@Param("customer") Member customer, Pageable pageable);
+        @Query("select o from Offer o where o.customer.id = :customerID order by o.createdAt desc")
+        Page<Offer> findAllOffersByCustomer(@Param("customerID") long customerID, Pageable pageable);
         // Method to get all offers for a specific property
-        @Query("select o from Offer o where o.property = :property order by o.createdAt desc")
-        Page<Offer> findAllOffersByProperty(@Param("property") Property property, Pageable pageable);
+        @Query("select o from Offer o where o.property.id = :propertyID order by o.createdAt desc")
+        Page<Offer> findAllOffersByProperty(@Param("propertyID") long propertyID, Pageable pageable);
         // Method to get all offers for a property with a specific status
-        @Query("select o from Offer o where o.property.offerStatus = :status and o.property= :property order by o.createdAt desc")
-        Page<Offer> findAllByPropertyAndStatus(@Param("property") Property property, @Param("status") OfferStatus status, Pageable pageable);
+        @Query("select o from Offer o where o.property.id= :propertyID and o.status = :status order by o.createdAt desc")
+        Page<Offer> findAllByPropertyAndStatus(@Param("propertyID") long propertyID, @Param("status") String status, Pageable pageable);
         // Custom query method to find offers made by a customer for properties with a specific status
-        @Query("select o from Offer o where o.customer = :customer and o.property.offerStatus = :status order by o.createdAt desc ")
-        Page<Offer> findAllByCustomerAndProperty_Status(@Param("customer") Member customer, @Param("status") PropertyStatus status, Pageable pageable);
+        @Query("select o from Offer o where o.customer.id = :customerID and o.property.offerStatus = :status order by o.createdAt desc ")
+        Page<Offer> findAllByCustomerAndProperty_Status(@Param("customerID") long customerID, @Param("status") String status, Pageable pageable);
 }

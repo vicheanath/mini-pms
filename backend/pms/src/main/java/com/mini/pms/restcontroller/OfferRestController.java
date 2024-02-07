@@ -40,7 +40,7 @@ public class OfferRestController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllOffers(
+    public ResponseEntity<Page<OfferResponse>> getAllOffers(
             @PageableDefault(
                     size = 50,
                     direction = Sort.Direction.DESC,
@@ -48,9 +48,10 @@ public class OfferRestController {
             )
             Pageable pageable
     ) {
-        Page<Offer> offers = offerService.getAllOffers(pageable);
-        return new ResponseEntity<>(offers, HttpStatus.OK);
+        Page<OfferResponse> offerResponses = offerService.getAllOffers(pageable);
+        return new ResponseEntity<>(offerResponses, HttpStatus.OK);
     }
+
 
     @PostMapping("/submit")
     public ResponseEntity<?> submitOffer
@@ -69,7 +70,7 @@ public class OfferRestController {
 
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<?> getAllOffersByCustomer(
-            @PathVariable long customerId,
+            @PathVariable("customerId") long customerId,
 
             @PageableDefault(
                     size = 50,
@@ -80,7 +81,7 @@ public class OfferRestController {
     ) {
         try {
             Member customer = memberService.findById(customerId);
-            Page<Offer> offers = offerService.getAllOffersByCustomer(customer, pageable);
+            Page<Offer> offers = offerService.getAllOffersByCustomer(customerId, pageable);
             return new ResponseEntity<>(new PageResponse(offers, OfferResponse.class), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -89,7 +90,7 @@ public class OfferRestController {
 
     @GetMapping("/property/{propertyId}")
     public ResponseEntity<?> getAllOffersForProperty(
-            @PathVariable long propertyId,
+            @PathVariable("propertyId") long propertyId,
             @PageableDefault(
                     size = 50,
                     direction = Sort.Direction.DESC,
@@ -99,17 +100,17 @@ public class OfferRestController {
     ) {
         try {
             Property property = propertyService.findById(propertyId);
-            Page<Offer> offers = offerService.getAllOffersForProperty(property, pageable);
+            Page<Offer> offers = offerService.getAllOffersForProperty(propertyId, pageable);
             return new ResponseEntity<>(offers, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
-    @GetMapping("/property/{propertyId}/status/{status}")
+    @GetMapping("/property/{propertyId}/offer-status/{offerStatus}")
     public ResponseEntity<?> getOffersForPropertyByStatus(
-            @PathVariable long propertyId,
-            @PathVariable OfferStatus status,
+            @PathVariable("propertyId") long propertyId,
+            @PathVariable("offerStatus") String offerStatus,
             @PageableDefault(
                     size = 50,
                     direction = Sort.Direction.DESC,
@@ -119,7 +120,26 @@ public class OfferRestController {
     ) {
         try {
             Property property = propertyService.findById(propertyId);
-            Page<Offer> offers = offerService.getOffersForPropertyByStatus(property, status, pageable);
+            Page<Offer> offers = offerService.getOffersForPropertyByStatus(propertyId, offerStatus, pageable);
+            return new ResponseEntity<>(offers, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+    @GetMapping("/property/{customerID}/property-status/{propertyStatus}")
+    public ResponseEntity<?> findAllByCustomerAndProperty_Status(
+            @PathVariable("customerID") long propertyId,
+            @PathVariable("propertyStatus") String propertyStatus,
+            @PageableDefault(
+                    size = 50,
+                    direction = Sort.Direction.DESC,
+                    sort = {"createdAt"}
+            )
+            Pageable pageable
+    ) {
+        try {
+            Property property = propertyService.findById(propertyId);
+            Page<Offer> offers = offerService.getOffersForPropertyByStatus(propertyId, propertyStatus, pageable);
             return new ResponseEntity<>(offers, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

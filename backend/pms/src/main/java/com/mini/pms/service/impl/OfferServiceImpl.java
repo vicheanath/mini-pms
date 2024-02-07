@@ -8,6 +8,7 @@ import com.mini.pms.entity.type.OfferStatus;
 import com.mini.pms.entity.type.PropertyOfferStatus;
 import com.mini.pms.repo.OfferRepo;
 import com.mini.pms.repo.PropertyRepo;
+import com.mini.pms.restcontroller.response.OfferResponse;
 import com.mini.pms.service.OfferService;
 //import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OfferServiceImpl implements OfferService {
@@ -51,18 +53,23 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public Page<Offer> getAllOffersByCustomer(Member customer, Pageable pageable) {
-        return offerRepo.findAllOffersByCustomer(customer, pageable);
+    public Page<Offer> getAllOffersByCustomer(long customerID, Pageable pageable) {
+        return offerRepo.findAllOffersByCustomer(customerID, pageable);
     }
 
     @Override
-    public Page<Offer> getAllOffersForProperty(Property property, Pageable pageable) {
-        return offerRepo.findAllOffersByProperty(property, pageable);
+    public Page<Offer> getAllOffersForProperty(long propertyID, Pageable pageable) {
+        return offerRepo.findAllOffersByProperty(propertyID, pageable);
     }
 
     @Override
-    public Page<Offer> getOffersForPropertyByStatus(Property property, OfferStatus status, Pageable pageable) {
-        return offerRepo.findAllByPropertyAndStatus(property, status, pageable);
+    public Page<Offer> getOffersForPropertyByStatus(long propertyID, String status, Pageable pageable) {
+        return offerRepo.findAllByPropertyAndStatus(propertyID, status, pageable);
+    }
+
+    @Override
+    public Page<Offer> findAllByCustomerAndProperty_Status(long customerID, String status, Pageable pageable) {
+        return offerRepo.findAllByCustomerAndProperty_Status(customerID, status, pageable);
     }
 
     @Override
@@ -117,8 +124,26 @@ public class OfferServiceImpl implements OfferService {
                 .orElseThrow(() -> new PlatformException("Offer not found", HttpStatus.NOT_FOUND));
     }
 
+//    @Override
+//    public Page<Offer> getAllOffers(Pageable pageable) {
+//        return offerRepo.findAll(pageable);
+//    }
+
+    // OfferResponse
     @Override
-    public Page<Offer> getAllOffers(Pageable pageable) {
-        return offerRepo.findAll(pageable);
+    public Page<OfferResponse> getAllOffers(Pageable pageable) {
+        Page<Offer> offers = offerRepo.findAll(pageable);
+        return offers.map(this::mapToOfferResponse);
     }
+
+    private OfferResponse mapToOfferResponse(Offer offer) {
+        OfferResponse offerResponse = new OfferResponse();
+        offerResponse.setId(offer.getId());
+        offerResponse.setCustomerId(offer.getCustomer().getId());
+        offerResponse.setPropertyId(offer.getProperty().getId());
+        offerResponse.setRemark(offer.getRemark());
+        offerResponse.setStatus(offer.getStatus().toString()); // Assuming OfferStatus is an enum
+        return offerResponse;
+    }
+
 }
