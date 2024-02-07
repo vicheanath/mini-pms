@@ -6,6 +6,9 @@ import com.mini.pms.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("api/v1/users")
 @RequiredArgsConstructor
@@ -23,4 +26,11 @@ public class MemberRestController {
          Member m = authService.getAuthenticatedUser();
          return memberService.update(m.getId(), member);
      }
+     @GetMapping()
+     public List<Member> findAll() {
+         Member m = authService.getAuthenticatedUser();
+         return memberService.findAll();
+     }
+
+
 }
