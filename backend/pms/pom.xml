@@ -11,10 +11,10 @@
     <groupId>com.mini</groupId>
     <artifactId>pms</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>pms</name>
+    <name>mini-pms</name>
     <description>PMS project for Spring Boot</description>
     <properties>
-        <java.version>21</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>
