@@ -1,4 +1,3 @@
-import { render } from "@testing-library/react";
 import React, { useState, useEffect } from "react";
 import { Row, Col, Button, Table, Badge } from "react-bootstrap";
 import { useQuery } from "react-query";

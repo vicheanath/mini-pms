@@ -73,12 +73,15 @@ const Header = ({ navLinks }) => {
                 <Dropdown.Menu>
                   <Dropdown.Item href="/profile">Profile</Dropdown.Item>
                   {isOwner && <Dropdown.Item href="/my-properties">My Properties</Dropdown.Item>}
+                  {isCustomer && <Dropdown.Item href="/my-offer">My Offers</Dropdown.Item>}
                   <Dropdown.Item href="/favorite">Favorite</Dropdown.Item>
                   <Dropdown.Item
                     onClick={() => {
                       dispatch(logout());
                       localStorage.clear();
+                      window.location.href = "/";
                       window.location.reload();
+
                     }}
                   >
                     Logout
