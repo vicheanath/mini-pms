@@ -31,7 +31,10 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             var authorize = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-            if (Objects.nonNull(authorize) && authorize.startsWith("Bearer ")) {
+            if (Objects.nonNull(authorize)
+                    && authorize.startsWith("Bearer ")
+                    && !authorize.equals("Bearer null")
+            ) {
                 var jwtInfo = extractJwt(authorize);
                 var member = detailsService.loadUserByUsername(jwtInfo.getEmail());
                 var authentication =

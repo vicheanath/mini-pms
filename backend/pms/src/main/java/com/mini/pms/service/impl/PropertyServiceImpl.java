@@ -31,9 +31,18 @@ public class PropertyServiceImpl implements PropertyService {
     private final PictureRepo picRepo;
 
     @Override
-    public Page<Property> findAll(String search, Double minPrice, Double maxPrice, String category, String type, String numberOfRoom, String location, Pageable pageable) {
+    public Page<Property> findAll(String search, Double minPrice, Double maxPrice, String category, String type, String numberOfRoom, String location, Pageable pageable, Principal principal) {
 
         Specification<Property> spec = Specification.allOf();
+
+        if (Objects.nonNull(search)) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.and(
+                            criteriaBuilder.like(
+                                    criteriaBuilder.lower(root.get("location")), "%" + search.toLowerCase() + "%")
+                    )
+            );
+        }
 
         if (Objects.nonNull(minPrice)) {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("price"), minPrice));
@@ -59,7 +68,18 @@ public class PropertyServiceImpl implements PropertyService {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("location"), location));
         }
 
-        return propertyRepo.findAll(spec, pageable);
+        var props = propertyRepo.findAll(spec, pageable);
+
+        if (Objects.nonNull(principal)) {
+            props = props.map(p -> {
+                p.setFavorite(p.getFavorites().stream().anyMatch(
+                        f -> f.getMember().getEmail().equals(principal.getName())
+                ));
+                return p;
+            });
+        }
+
+        return props;
     }
 
     @Override

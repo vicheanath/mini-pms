@@ -17,8 +17,11 @@ VALUES ('Admin', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        ('Owner', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
        ('Customer', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO user_role(user_id, role_id)
+INSERT INTO member_role(member_id, role_id)
 VALUES (1, 1),
        (2, 2),
        (3, 3),
        (4, 1);
+
+INSERT INTO public.favorite (member_id,property_id) VALUES
+    (2,30);

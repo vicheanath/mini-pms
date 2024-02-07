@@ -44,7 +44,8 @@ public class PropertyRestController {
                     direction = Sort.Direction.DESC,
                     sort = {"createdAt"}
             )
-            Pageable pageable
+            Pageable pageable,
+            Principal principal
     ) {
         var props = propService.findAll(
                 search,
@@ -54,7 +55,8 @@ public class PropertyRestController {
                 type,
                 numberOfRoom,
                 location,
-                pageable
+                pageable,
+                principal
         );
 
         return ResponseEntity.ok(new PageResponse(props, PropertyResponse.class));
