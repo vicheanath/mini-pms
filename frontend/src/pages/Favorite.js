@@ -1,11 +1,33 @@
-import React from 'react'
-import { useQuery } from 'react-query'
-
+import React from "react";
+import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
+import Loading from "../components/Loading";
+import Property from "../components/Property";
+import { Row, Col } from "react-bootstrap";
+import { api } from "../libs/api";
 const Favorite = () => {
-  const {data , isLoading , isError} = useQuery('favorite')
-  return (
-    <div>Favorite</div>
-  )
-}
+  const { data, isLoading, isError } = useQuery(`favorites`);
 
-export default Favorite
+  const removeFavorite = (id) => {
+    api.delete(`favorites/${id}`).then((res) => {
+      console.log(res);
+    });
+  };
+  if (isLoading) return <Loading />;
+  return (
+    <div className="container">
+      <h2 className="mt-4">Favorite</h2>
+      <Row>
+        {data.map((property) => {
+          return (
+            <Col md={4} key={property.id}>
+              <Property key={property.id} {...property} removeFavorite={removeFavorite} />
+            </Col>
+          )
+        })}
+      </Row>
+    </div>
+  );
+};
+
+export default Favorite;

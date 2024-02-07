@@ -8,8 +8,8 @@ import com.mini.pms.restcontroller.request.AddFavoriteRequestDto;
 
 public interface FavoriteService {
 //    void addFavorite(long propertyId);
-    void addFavorite(AddFavoriteRequestDto addFavoriteRequestDto);
-    void removeFavorite(long propertyId);
+    void addFavorite(long propertyId, long memberId);
+    void removeFavorite(long propertyId, long memberId);
     boolean isFavorite(long propertyId);
     List<Property> getFavoriteByMemberId(long memberId);
     List<Member> getFavoritePropertyId(long propertyId);

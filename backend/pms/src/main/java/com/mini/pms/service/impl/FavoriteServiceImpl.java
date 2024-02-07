@@ -24,17 +24,17 @@ public class FavoriteServiceImpl implements FavoriteService{
     @Autowired
     private PropertyService propertyService;
     @Override
-    public void addFavorite(AddFavoriteRequestDto addFavoriteRequestDto) {
+    public void addFavorite(long propertyId, long memberId) {
         // Retrieve the Member and Property entities using the IDs provided in the DTO
-        Member member = memberService.findById(addFavoriteRequestDto.getMemberId());
-        Property property = propertyService.findById(addFavoriteRequestDto.getPropertyId());
+        Member member = memberService.findById(memberId);
+        Property property = propertyService.findById(propertyId);
         // Check if the member exists
         if (member == null) {
-            throw new MemberNotFoundException("Member with ID " + addFavoriteRequestDto.getMemberId() + " not found.");
+            throw new MemberNotFoundException("Member with ID " + memberId + " not found.");
         }
         // Check if the property exists
         if (property == null) {
-            throw new PropertyNotFoundException("Property with ID " + addFavoriteRequestDto.getPropertyId() + " not found.");
+            throw new PropertyNotFoundException("Property with ID " + propertyId + " not found.");
         }
         // At this point, both member and property exist
         // Create a new Favorite entity and set its member and property
@@ -47,8 +47,8 @@ public class FavoriteServiceImpl implements FavoriteService{
     }
 
     @Override
-    public void removeFavorite(long propertyId) {
-        Member member = memberService.profile(propertyId);
+    public void removeFavorite(long propertyId, long memberId) {
+        Member member = memberService.profile(memberId);
         Property property = propertyService.findById(propertyId);
         favoriteRepo.deleteByMemberAndProperty(member, property);
     }

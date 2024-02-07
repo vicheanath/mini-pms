@@ -14,12 +14,19 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { useQuery } from "react-query";
 import Loading from "../components/Loading";
+import { api } from "../libs/api";
 const Home = () => {
   const query = new URLSearchParams(window.location.search);
   const { data, isFetching, isLoading, refetch } = useQuery(
     `properties?${query.toString()}`
   );
   const navigate = useNavigate();
+
+  const addFavorite = async (id) => {
+    api.post(`favorites/${id}`).then((res) => {
+      console.log(res);
+    });
+  }
 
   return (
     <>
@@ -101,7 +108,7 @@ const Home = () => {
         {data?.data.map((property, index) => {
           return (
             <Col key={property.id} md={4} className="mb-4">
-              <Property key={index} {...property} />
+              <Property key={index} {...property}  addFavorite={addFavorite} />
             </Col>
           );
         })}
