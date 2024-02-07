@@ -1,19 +1,20 @@
 package com.mini.pms.service.impl;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import com.mini.pms.customexception.MemberNotFoundException;
 import com.mini.pms.customexception.PropertyNotFoundException;
 import com.mini.pms.entity.Favorite;
-import com.mini.pms.restcontroller.request.AddFavoriteRequestDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.mini.pms.entity.Property;
 import com.mini.pms.entity.Member;
+import com.mini.pms.entity.Property;
 import com.mini.pms.repo.FavoriteRepo;
 import com.mini.pms.service.FavoriteService;
 import com.mini.pms.service.MemberService;
 import com.mini.pms.service.PropertyService;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FavoriteServiceImpl implements FavoriteService{
@@ -47,6 +48,7 @@ public class FavoriteServiceImpl implements FavoriteService{
     }
 
     @Override
+    @Transactional
     public void removeFavorite(long propertyId, long memberId) {
         Member member = memberService.profile(memberId);
         Property property = propertyService.findById(propertyId);
