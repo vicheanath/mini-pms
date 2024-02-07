@@ -22,11 +22,6 @@ const Home = () => {
   );
   const navigate = useNavigate();
 
-  const addFavorite = async (id) => {
-    api.post(`favorites/${id}`).then((res) => {
-      console.log(res);
-    });
-  }
 
   return (
     <>
@@ -60,13 +55,13 @@ const Home = () => {
               aria-label="Default select example"
               defaultValue="price,asc"
               onChange={(e) => {
-                console.log(e.target.value);
                 query.set("sort", e.target.value);
                 navigate(`/?${query.toString()}`);
               }}
             >
+              <option value="price,asc">Sort By</option>
               <option value="price,asc">Price Low to High</option>
-              <option value="price,asc">Price High to Low</option>
+              <option value="price,desc">Price High to Low</option>
             </select>
 
             <DropdownButton
@@ -108,7 +103,7 @@ const Home = () => {
         {data?.data.map((property, index) => {
           return (
             <Col key={property.id} md={4} className="mb-4">
-              <Property key={index} {...property}  addFavorite={addFavorite} />
+              <Property key={index} {...property}   refetch={refetch}  />
             </Col>
           );
         })}

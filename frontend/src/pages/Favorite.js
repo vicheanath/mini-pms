@@ -6,13 +6,9 @@ import Property from "../components/Property";
 import { Row, Col } from "react-bootstrap";
 import { api } from "../libs/api";
 const Favorite = () => {
-  const { data, isLoading, isError } = useQuery(`favorites`);
+  const { data, isLoading, isError ,refetch} = useQuery(`favorites`);
 
-  const removeFavorite = (id) => {
-    api.delete(`favorites/${id}`).then((res) => {
-      console.log(res);
-    });
-  };
+  
   if (isLoading) return <Loading />;
   return (
     <div className="container">
@@ -21,7 +17,7 @@ const Favorite = () => {
         {data.map((property) => {
           return (
             <Col md={4} key={property.id}>
-              <Property key={property.id} {...property} removeFavorite={removeFavorite} />
+              <Property key={property.id} {...property} refetch={refetch} />
             </Col>
           )
         })}
