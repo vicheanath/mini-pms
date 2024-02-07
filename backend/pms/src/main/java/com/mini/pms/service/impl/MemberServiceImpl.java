@@ -87,6 +87,20 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public String changeMyPassword(ChangePasswordRequest changePasswordRequest, String email) {
+        Member member = memberRepo
+                .findByEmail(email)
+                .orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
+        if (!bCryptPasswordEncoder.matches(changePasswordRequest.getOldPassword(), member.getPassword()))
+            throw new PlatformException("Incorrect old password", HttpStatus.BAD_REQUEST);
+        if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmNewPassword()))
+            throw new PlatformException("Password does not match", HttpStatus.BAD_REQUEST);
+        member.setPassword(bCryptPasswordEncoder.encode(changePasswordRequest.getNewPassword()));
+        memberRepo.save(member);
+        return "Password changed successfully";
+    }
+
+    @Override
     public String forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
         Member member = memberRepo
                 .findByEmail(forgotPasswordRequest.getEmail())
@@ -95,12 +109,7 @@ public class MemberServiceImpl implements MemberService {
         String token = UUID.randomUUID().toString();
         createPasswordResetTokenForUser(member, token);
 
-//        write email content render it as html
-        String content = "<html><body>"
-                + "<h1>Reset Password</h1>"
-                + "<p>Click the link below to reset your password</p>"
-                + "<a href='" + resetPasswordUrl + "?token=" + token + "'>Reset Password</a>"
-                + "</body></html>";
+        String content = "To reset your password, click the link below:\n" + resetPasswordUrl + "?token=" + token;
 
 
         emailService.sendSimpleMail("PMS Reset Password", content, member.getEmail());

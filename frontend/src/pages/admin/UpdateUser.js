@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,16 +14,34 @@ const UpdateUser = ({ show, handleClose, user, refetch }) => {
     address: z.string().min(3).max(20),
     city: z.string().min(3).max(20),
     zip: z.string().min(3).max(20),
+    status: z.enum(["ACTIVE", "INACTIVE"]),
   });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(UserUpdateSchema) , defaultValues: user});
-  console.log(user);
+    setValue,
+  } = useForm({ resolver: zodResolver(UserUpdateSchema) });
+
+  useEffect(() => {
+    if (user) {
+      setValue("email", user.email);
+      setValue("name", user.name);
+      setValue("phone", user.phone);
+      setValue("address", user.address);
+      setValue("city", user.city);
+      setValue("zip", user.zip);
+      setValue("status", user.status);
+    }
+  }, [user]);
+
   const updateUser = useMutation((data) => {
-    return api.put("users", data);
+    return api.put("admins/users/" + user.id, data).then((res) => {
+      refetch();
+      handleClose();
+    });
+    
   });
 
   const onSubmit = (data) => {
@@ -117,6 +135,17 @@ const UpdateUser = ({ show, handleClose, user, refetch }) => {
               />
               <Form.Text className="text-danger">
                 {errors.zip?.message}
+              </Form.Text>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicStatus">
+              <Form.Label>Status</Form.Label>
+              <Form.Select {...register("status")}>
+                <option value="ACTIVE">Active</option>
+                <option value="INACTIVE">Inactive</option>
+              </Form.Select>
+              <Form.Text className="text-danger">
+                {errors.status?.message}
               </Form.Text>
             </Form.Group>
 

@@ -1,6 +1,7 @@
 package com.mini.pms.service;
 
 import com.mini.pms.entity.Member;
+import com.mini.pms.restcontroller.request.MemberRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,4 +13,6 @@ public interface AdminService {
 
     @Transactional
     void approve(long id);
+
+    Member update(long id , MemberRequest member);
 }

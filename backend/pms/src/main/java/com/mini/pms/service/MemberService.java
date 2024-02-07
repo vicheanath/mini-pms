@@ -15,7 +15,7 @@ public interface MemberService {
 
     String changePassword(ChangePasswordRequest changePasswordRequest);
 
-
+    String changeMyPassword(ChangePasswordRequest changePasswordRequest, String email);
     String forgotPassword(ForgotPasswordRequest forgotPasswordRequest);
 
     String resetPassword(String email, String password);
