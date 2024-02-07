@@ -2,6 +2,7 @@ package com.mini.pms.service.impl;
 
 import com.mini.pms.customexception.PlatformException;
 import com.mini.pms.entity.Picture;
+import com.mini.pms.entity.Property;
 import com.mini.pms.repo.PictureRepo;
 import com.mini.pms.restcontroller.FileRestController;
 import com.mini.pms.restcontroller.response.DownloadFileInfo;
@@ -24,6 +25,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -49,12 +52,12 @@ public class PictureServiceImpl implements PictureService {
                         .build()
                         .toString();
 
-        var pic =  Picture.builder()
-                        .key(key)
-                        .name(name)
-                        .size(size)
-                        .url(url)
-                        .build();
+        var pic = Picture.builder()
+                .key(key)
+                .name(name)
+                .size(size)
+                .url(url)
+                .build();
 
         var a = picRepo.save(pic);
         System.out.println(a);
@@ -86,10 +89,32 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
+    public List<Picture> findByKey(List<String> keys) {
+        return picRepo.findByKeyIn(keys);
+    }
+
+    @Override
     @Transactional
-    public Picture update(Picture picture) {
-        findByKey(picture.getKey());
-        return picRepo.save(picture);
+    public List<Picture> updateByProperty(Property property, List<String> keys) {
+
+        List<Picture> existingPics = findByKey(keys);
+
+        var existingKeys = existingPics.stream().map(Picture::getKey).toList();
+        if (existingPics.size() != keys.size()) {
+            var notFoundKeys = keys.stream().filter(k -> existingKeys.stream().noneMatch(f -> f.equals(k))).toList();
+            throw new PlatformException("keys: " + notFoundKeys + " are not found", HttpStatus.BAD_REQUEST);
+        }
+
+        var unMatchOwnerKeys = existingPics.stream()
+                .filter(f -> !(Objects.isNull(f.getProperty()) || f.getProperty().getId() == property.getId()))
+                .map(Picture::getKey)
+                .toList();
+        if (!unMatchOwnerKeys.isEmpty()) {
+            throw new PlatformException("keys: " + unMatchOwnerKeys + " key already join to another property", HttpStatus.BAD_REQUEST);
+        }
+
+        existingPics = existingPics.stream().peek(p -> p.setProperty(property)).toList();
+        return picRepo.saveAll(existingPics);
     }
 
     private void writeFile(InputStream file, String key) throws IOException {

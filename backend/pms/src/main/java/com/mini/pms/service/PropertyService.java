@@ -14,4 +14,6 @@ public interface PropertyService {
     Property findById(long id);
 
     Property createProperty(PropertyRequest propertyRequest, Principal principal);
+
+    Property updateProperty(long id, PropertyRequest propertyRequest, Principal principal);
 }

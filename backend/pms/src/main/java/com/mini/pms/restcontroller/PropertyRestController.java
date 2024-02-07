@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,6 +64,7 @@ public class PropertyRestController {
 
         return ResponseEntity.ok(new PageResponse(props, PropertyResponse.class));
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<PropertyResponse> findById(@PathVariable("id") Long id) {
         Property prop = propService.findById(id);
@@ -76,6 +78,17 @@ public class PropertyRestController {
     ) {
         return ResponseEntity.ok(
                 Util.mapObj(propService.createProperty(propertyRequest, principal), PropertyResponse.class)
+        );
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<PropertyResponse> updateProperty(
+            @PathVariable long id,
+            @RequestBody PropertyRequest propertyRequest,
+            Principal principal
+    ) {
+        return ResponseEntity.ok(
+                Util.mapObj(propService.updateProperty(id, propertyRequest, principal), PropertyResponse.class)
         );
     }
 

@@ -62,6 +62,7 @@ public class Property {
     private List<Offer> offers;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonManagedReference
     private Member owner;
 
     private String category;

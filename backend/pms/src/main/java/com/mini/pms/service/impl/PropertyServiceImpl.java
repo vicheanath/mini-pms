@@ -29,7 +29,7 @@ public class PropertyServiceImpl implements PropertyService {
     private final PictureRepo picRepo;
 
     @Override
-    public Page<Property> findAll(Long memberId ,String search, Double minPrice, Double maxPrice, String category, String type, String numberOfRoom, String location, Pageable pageable, Principal principal) {
+    public Page<Property> findAll(Long memberId, String search, Double minPrice, Double maxPrice, String category, String type, String numberOfRoom, String location, Pageable pageable, Principal principal) {
 
         Specification<Property> spec = Specification.allOf();
 
@@ -94,25 +94,47 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public Property createProperty(PropertyRequest propertyRequest, Principal principal) {
 
-
         var owner = memberService.findByEmail(principal.getName());
+
+        if (owner.getRoles().stream().noneMatch(r -> Objects.equals(r.getName(), "Owner"))) {
+            throw new PlatformException("Only owner role is allowed to create a property", HttpStatus.BAD_REQUEST);
+        }
 
         var requestProp = Util.mapObj(propertyRequest, Property.class);
         requestProp.setOwner(owner);
 
         var prop = propertyRepo.save(requestProp);
 
-        var keys = propertyRequest.getPictures();
-        if (!keys.isEmpty()) {
-            var pics = keys.stream().map(key -> {
-                var pic = picService.findByKey(key);
-                pic.setProperty(prop);
-                return pic;
-            }).toList();
-            picRepo.saveAll(pics);
-            prop.setPictures(pics);
-        }
+        var pics = picService.updateByProperty(prop, propertyRequest.getPictures());
+        prop.setPictures(pics);
 
         return prop;
+    }
+
+    @Override
+
+    public Property updateProperty(long id, PropertyRequest propertyRequest, Principal principal) {
+        var prop = findById(id);
+
+        if (!prop.getOwner().getEmail().equals(principal.getName())) {
+            throw new PlatformException("Invalid Property's Owner", HttpStatus.BAD_REQUEST);
+        }
+
+        prop.setTitle(propertyRequest.getTitle());
+        prop.setPrice(propertyRequest.getPrice());
+        prop.setLocation(propertyRequest.getLocation());
+        prop.setDescription(propertyRequest.getDescription());
+        prop.setCategory(propertyRequest.getCategory());
+        prop.setSubCategory(propertyRequest.getSubCategory());
+        prop.setType(propertyRequest.getType());
+        prop.setNumberOfRoom(propertyRequest.getNumberOfRoom());
+        prop.setLatitude(propertyRequest.getLatitude());
+        prop.setLongitude(propertyRequest.getLongitude());
+
+
+        var pics = picService.updateByProperty(prop, propertyRequest.getPictures());
+        prop.setPictures(pics);
+
+        return propertyRepo.save(prop);
     }
 }

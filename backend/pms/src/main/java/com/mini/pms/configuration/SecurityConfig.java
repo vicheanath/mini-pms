@@ -58,7 +58,6 @@ public class SecurityConfig {
                             String contextPath = "**/api/v1";
                             authorize
                                     .requestMatchers(
-                                            contextPath + "/public",
                                             contextPath + "/auth/**"
                                     )
                                     .permitAll()
