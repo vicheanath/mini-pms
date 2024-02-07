@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Button, Badge } from "react-bootstrap";
 import { MdFavoriteBorder, MdOutlineFavorite } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -19,13 +19,18 @@ const Property = ({
   const addFavorite = async (id) => {
     api.post(`favorites/${id}`).then((res) => {
       console.log(res);
+      setIsFav(true);
     });
   };
   const removeFavorite = (id) => {
     api.delete(`favorites/${id}`).then((res) => {
       console.log(res);
+      setIsFav(false);
     });
   };
+
+  const [isFav, setIsFav] = useState(favorite);
+
   return (
     <Card>
       <Card.Img variant="top" src={pictures[0]} height={300} img-fluid />
@@ -50,14 +55,15 @@ const Property = ({
             }>{offerStatus}</Badge>
           </span>
         
+        
         <Button
-          variant={favorite ? "danger" : "primary"}
+          variant={isFav ? "danger" : "primary"}
           onClick={() => {
-            favorite ? removeFavorite(id) : addFavorite(id);
+            isFav ? removeFavorite(id) : addFavorite(id);
             refetch();
           }}
         >
-          {favorite ? <MdOutlineFavorite /> : <MdFavoriteBorder />}
+          {isFav ? <MdOutlineFavorite /> : <MdFavoriteBorder />}
         </Button>
         {
           viewOffer && (

@@ -1,7 +1,6 @@
 package com.mini.pms.service.impl;
 
-import com.mini.pms.customexception.MemberNotFoundException;
-import com.mini.pms.customexception.PropertyNotFoundException;
+import com.mini.pms.customexception.PlatformException;
 import com.mini.pms.entity.Favorite;
 import com.mini.pms.entity.Member;
 import com.mini.pms.entity.Property;
@@ -11,32 +10,34 @@ import com.mini.pms.service.MemberService;
 import com.mini.pms.service.PropertyService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class FavoriteServiceImpl implements FavoriteService{
+public class FavoriteServiceImpl implements FavoriteService {
     @Autowired
     private FavoriteRepo favoriteRepo;
     @Autowired
     private MemberService memberService;
     @Autowired
     private PropertyService propertyService;
+
     @Override
     public void addFavorite(long propertyId, long memberId) {
         // Retrieve the Member and Property entities using the IDs provided in the DTO
         Member member = memberService.findById(memberId);
         Property property = propertyService.findById(propertyId);
-        // Check if the member exists
-        if (member == null) {
-            throw new MemberNotFoundException("Member with ID " + memberId + " not found.");
+
+        var existingFav = favoriteRepo.findByMemberAndProperty(member, property);
+
+        if (existingFav.isPresent()) {
+            throw new PlatformException("Favorite already exist", HttpStatus.BAD_REQUEST);
         }
-        // Check if the property exists
-        if (property == null) {
-            throw new PropertyNotFoundException("Property with ID " + propertyId + " not found.");
-        }
+
+
         // At this point, both member and property exist
         // Create a new Favorite entity and set its member and property
         Favorite favorite = new Favorite();
@@ -71,6 +72,7 @@ public class FavoriteServiceImpl implements FavoriteService{
     public List<Member> getFavoritePropertyId(long propertyId) {
         return favoriteRepo.findFavoritesUsersByPropertyId(propertyId);
     }
+
     @Override
     public List<Property> findFavoritesByMemberId(long memberId) {
         List<Favorite> favorites = favoriteRepo.findByMemberId(memberId);
@@ -79,10 +81,10 @@ public class FavoriteServiceImpl implements FavoriteService{
                 .collect(Collectors.toList());
     }
 
-//    @Override
-//     public void unFavorite(long favoriteId) {
-//         favoriteRepo.deleteById(favoriteId);
-//     }
+    public Favorite findFavoriteByMemberAndProperty(Member member, Property property) {
+        return favoriteRepo.findByMemberAndProperty(member, property)
+                .orElseThrow(() -> new PlatformException("Not Found", HttpStatus.NOT_FOUND));
+    }
 
-    
+
 }
