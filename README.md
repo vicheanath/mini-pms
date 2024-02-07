@@ -61,7 +61,7 @@ This is a mini property management system that allows users to create, read, upd
 `cd frontend && npm install`
 
 4. Start the backend server
-`cd backend `
+`cd backend/pms `
 
  - Run Docker Compose to start the PostgreSQL database
  - `docker-compose up -d`
