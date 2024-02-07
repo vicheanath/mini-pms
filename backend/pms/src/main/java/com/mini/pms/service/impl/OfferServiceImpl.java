@@ -1,5 +1,6 @@
 package com.mini.pms.service.impl;
 
+import com.mini.pms.customexception.PlatformException;
 import com.mini.pms.entity.Member;
 import com.mini.pms.entity.Offer;
 import com.mini.pms.entity.Property;
@@ -9,6 +10,9 @@ import com.mini.pms.repo.OfferRepo;
 import com.mini.pms.repo.PropertyRepo;
 import com.mini.pms.service.OfferService;
 //import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -47,18 +51,18 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public List<Offer> getAllOffersByCustomer(Member customer) {
-        return offerRepo.findAllOffersByCustomer(customer);
+    public Page<Offer> getAllOffersByCustomer(Member customer, Pageable pageable) {
+        return offerRepo.findAllOffersByCustomer(customer, pageable);
     }
 
     @Override
-    public List<Offer> getAllOffersForProperty(Property property) {
-        return offerRepo.findAllOffersByProperty(property);
+    public Page<Offer> getAllOffersForProperty(Property property, Pageable pageable) {
+        return offerRepo.findAllOffersByProperty(property, pageable);
     }
 
     @Override
-    public List<Offer> getOffersForPropertyByStatus(Property property, OfferStatus status) {
-        return offerRepo.findAllByPropertyAndStatus(property, status);
+    public Page<Offer> getOffersForPropertyByStatus(Property property, OfferStatus status, Pageable pageable) {
+        return offerRepo.findAllByPropertyAndStatus(property, status, pageable);
     }
 
     @Override
@@ -105,9 +109,16 @@ public class OfferServiceImpl implements OfferService {
         // Let's determine if offer can be canceled
         return offer.getProperty().getOfferStatus() != PropertyOfferStatus.CONTINGENT;
     }
+
     @Override
-    public Offer findById(long offerId){
-        Optional<Offer> optionalOffer = offerRepo.findById(offerId);
-        return optionalOffer.orElse(null);
+    public Offer findById(long offerId) {
+        return offerRepo
+                .findById(offerId)
+                .orElseThrow(() -> new PlatformException("Offer not found", HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public Page<Offer> getAllOffers(Pageable pageable) {
+        return offerRepo.findAll(pageable);
     }
 }
