@@ -15,7 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -40,11 +43,6 @@ public class MemberServiceImpl implements MemberService {
         return memberRepo
                 .findById(id)
                 .orElseThrow(() -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
-    }
-
-    @Override
-    public List<Member> findAll() {
-        return memberRepo.findAll();
     }
 
     @Override
