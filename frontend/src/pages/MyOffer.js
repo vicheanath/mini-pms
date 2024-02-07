@@ -51,7 +51,7 @@ const MyOffer = () => {
                     <Badge bg="primary">{offer.status}</Badge>
                   </td>
                   <td>
-                    {offer.status === "CANCELLED" ? (
+                    {offer.status !== "CANCELLED" ? (
                       <Button
                         variant="danger"
                         onClick={() => handleCancel(offer.id)}

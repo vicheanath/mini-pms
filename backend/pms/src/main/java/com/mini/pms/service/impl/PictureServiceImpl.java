@@ -7,6 +7,7 @@ import com.mini.pms.restcontroller.FileRestController;
 import com.mini.pms.restcontroller.response.DownloadFileInfo;
 import com.mini.pms.restcontroller.response.UploadFileInfo;
 import com.mini.pms.service.PictureService;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.UrlResource;
@@ -32,6 +33,7 @@ public class PictureServiceImpl implements PictureService {
     private final String DIR = "src/main/resources/zfilestorage";
 
     private final PictureRepo picRepo;
+    private final EntityManager em;
 
     @Override
     public UploadFileInfo upload(MultipartFile file, Principal principal)
@@ -47,16 +49,15 @@ public class PictureServiceImpl implements PictureService {
                         .build()
                         .toString();
 
-        var pic =
-                Picture.builder()
+        var pic =  Picture.builder()
                         .key(key)
                         .name(name)
                         .size(size)
                         .url(url)
                         .build();
 
-        picRepo.save(pic);
-
+        var a = picRepo.save(pic);
+        System.out.println(a);
         return new UploadFileInfo(url, key);
     }
 
