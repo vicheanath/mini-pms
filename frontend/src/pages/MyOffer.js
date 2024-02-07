@@ -37,6 +37,7 @@ const MyOffer = () => {
               </tr>
             </thead>
             <tbody>
+              
               {data?.data.map((offer, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>

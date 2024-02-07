@@ -16,8 +16,10 @@ import ForgotPassword from "../pages/ForgotPassword";
 import ChangePassword from "../pages/ChangePassword";
 import Favorite from "../pages/Favorite";
 import MyProperty from "../pages/MyProperty";
-import RequestOffer from "../pages/RequestOffer";
 import MyOffer from "../pages/MyOffer";
+import Contact from "../pages/Contact";
+import About from "../pages/About";
+import PricacyPilicy from "../pages/PricacyPilicy";
 const Router = () => {
   return (
     <Routes>
@@ -32,6 +34,9 @@ const Router = () => {
         <Route path="my-properties" element={<MyProperty />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="change-password" element={<ChangePassword />} />
+        <Route path="contact" element={< Contact/>} />
+        <Route path="about" element={< About/>} />
+        <Route path="privacy-policy" element={<PricacyPilicy />} />
       </Route>
       <Route path="admin" element={<AdminLayout />}>
         <Route path="dashboard" element={<Dashboard />} />

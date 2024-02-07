@@ -96,15 +96,15 @@ public class PmsApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        createProperty();
-        createOffer();
+//        createProperty();
+//        createOffer();
 
 
         //        emailService.sendSimpleMail(
         //                "Hello Everyone", "Hi Dear, How are you?", "dengbunthai@gmail.com");
 
-        var f = new ForgotPasswordRequest();
-        f.setEmail("dengbunthai@gmail.com");
-        memberService.forgotPassword(f);
+//        var f = new ForgotPasswordRequest();
+//        f.setEmail("dengbunthai@gmail.com");
+//        memberService.forgotPassword(f);
     }
 }

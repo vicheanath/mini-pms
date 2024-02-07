@@ -2,8 +2,8 @@ import React from 'react'
 import { useQuery } from 'react-query'
 import { Row, Col, Button, Table, Badge } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../libs/api";
 import Loading from '../../components/Loading';
+import { formatMoney } from '../../utils/money';
 
 const Offers = () => {
   const query = new URLSearchParams(window.location.search);
@@ -41,10 +41,11 @@ const Offers = () => {
             <thead>
               <tr>
                 <th>#</th>
+                <th>Remark</th>
+                <th>Offer By</th>
                 <th>Property</th>
-                <th>Offer</th>
+                <th>Price</th>
                 <th>Status</th>
-                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -52,31 +53,11 @@ const Offers = () => {
                 <tr key={offer.id}>
                   <td>{index + 1}</td>
                   <td>{offer.remark}</td>
-                  <td>{offer.amount}</td>
+                  <td>{offer.customer.name}</td>
+                  <td>{offer.property.title}</td>
+                  <td className="text-right">{formatMoney(offer.price)}</td>
                   <td>
                     <Badge bg={offer.status === "Pending" ? "warning" : offer.status === "Approved" ? "success" : "danger"}>{offer.status}</Badge>
-                  </td>
-                  <td>
-                    <Button
-                      variant="primary"
-                      onClick={() => {
-                        api.post(`admins/offers/${offer.id}/approve`).then((res) => {
-                          refetch();
-                        });
-                      }}
-                    >
-                      Approve
-                    </Button>
-                    <Button
-                      variant="danger"
-                      onClick={() => {
-                        api.post(`admins/offers/${offer.id}/reject`).then((res) => {
-                          refetch();
-                        });
-                      }}
-                    >
-                      Reject
-                    </Button>
                   </td>
                 </tr>
               ))}

@@ -55,13 +55,13 @@ const AddProperty = () => {
   };
   const PropertySchema = z.object({
     type: z.string(),
-    title: z.string().min(3).max(50),
-    price: z.string().min(1),
-    description: z.string().min(3).max(200),
-    location: z.string().min(3).max(200),
-    category: z.string().min(3).max(200),
+    title: z.string().min(3).max(150),
+    price: z.string().nullable(),
+    description: z.string().min(3).max(255),
+    location: z.string().min(3).max(255),
+    category: z.string().min(3).max(255),
     subCategory: z.string().min(3).max(200),
-    numberOfRoom: z.string().min(1),
+    numberOfRoom: z.string().nullable(),
   });
 
   const {
@@ -76,8 +76,7 @@ const AddProperty = () => {
 
   const propertyMutation = useMutation((data) => {
     api.post("properties", data).then((res) => {
-      console.log(res);
-      // navigate("/");
+      navigate("/my-properties", {state: {message: "Property added successfully"}});
     }).catch((error) => {
       console.log(error);
     });
