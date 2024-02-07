@@ -40,4 +40,6 @@ jobs:
     #   - name: Run Tests
     #     run: cd backend/pms && mvn test
 
+      - name: Build with Maven
+        run: cd backend/pms && mvn clean package
 
