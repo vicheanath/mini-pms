@@ -57,7 +57,7 @@ const Offers = () => {
                   <td>{offer.property.title}</td>
                   <td className="text-right">{formatMoney(offer.price)}</td>
                   <td>
-                    <Badge bg={offer.status === "Pending" ? "warning" : offer.status === "Approved" ? "success" : "danger"}>{offer.status}</Badge>
+                    <Badge bg={offer.status === "PENDING" ? "warning" : offer.status === "APPROVED" ? "success" : "danger"}>{offer.status}</Badge>
                   </td>
                 </tr>
               ))}
