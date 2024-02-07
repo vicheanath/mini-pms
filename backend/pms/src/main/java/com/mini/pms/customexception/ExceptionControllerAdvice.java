@@ -3,7 +3,8 @@ package com.mini.pms.customexception;
 import jakarta.servlet.ServletException;
 import jakarta.validation.ValidationException;
 import lombok.NonNull;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -23,20 +24,22 @@ import java.util.List;
 import java.util.Map;
 
 @ControllerAdvice
-@Log4j2
 public class ExceptionControllerAdvice  extends ResponseEntityExceptionHandler {
+
+    private static final Logger logger = LogManager.getLogger(ExceptionControllerAdvice.class);
 
     @ExceptionHandler({RuntimeException.class, ServletException.class})
     public ResponseEntity<ExceptionResponse> handleException(Exception e) {
-        e.printStackTrace();
-        log.error(e);
-        if (e instanceof PlatformException) {
-            var platform = (PlatformException) e;
+        e.fillInStackTrace();
+        logger.error(e.fillInStackTrace());
+        if (e instanceof PlatformException platform) {
             return createResponseEntity(platform.getMessage(), platform.getHttpStatusCode());
         } else if (e instanceof AccessDeniedException) {
             return createResponseEntity("Access Denied", HttpStatus.FORBIDDEN);
         } else if (e instanceof NoResourceFoundException) {
             return createResponseEntity("Resource Not Found", HttpStatus.NOT_FOUND);
+        } else if(e instanceof ValidationException) {
+            return createResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return createResponseEntity("General Error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -67,10 +70,5 @@ public class ExceptionControllerAdvice  extends ResponseEntityExceptionHandler {
             errors.put(fieldName, message);
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<ExceptionResponse> handleValidationException(ValidationException exception) {
-        return createResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
