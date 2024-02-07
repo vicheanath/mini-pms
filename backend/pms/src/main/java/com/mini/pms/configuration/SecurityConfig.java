@@ -1,10 +1,10 @@
 package com.mini.pms.configuration;
 
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -29,12 +29,12 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
     private static final String[] STATIC_RESOURCES = {
-        "/images/**",
-        "/js/**",
-        "/webjars/**",
-        "/swagger-resources/",
-        "/swagger-ui/**",
-        "/v3/api-docs/**"
+            "/images/**",
+            "/js/**",
+            "/webjars/**",
+            "/swagger-resources/",
+            "/swagger-ui/**",
+            "/v3/api-docs/**"
     };
 
     @Bean
@@ -59,13 +59,17 @@ public class SecurityConfig {
                             authorize
                                     .requestMatchers(
                                             contextPath + "/public",
-                                            contextPath + "/auth/**",
-                                            contextPath + "/files/**",
-                                            contextPath + "/properties/**",
-                                            contextPath + "/properties"
-                                            )
-
+                                            contextPath + "/auth/**"
+                                    )
                                     .permitAll()
+
+                                    .requestMatchers(HttpMethod.GET,
+                                            contextPath + "/properties/**",
+                                            contextPath + "/properties",
+                                            contextPath + "/files/**"
+                                    )
+                                    .permitAll()
+
                                     .requestMatchers(contextPath + "/admins/**")
                                     .hasAuthority("Admin")
                                     .requestMatchers(contextPath + "/owners/**")
