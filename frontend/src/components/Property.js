@@ -11,7 +11,7 @@ const Property = ({
   location,
   pictures,
   id,
-  status,
+  offerStatus,
   favorite,
   refetch,
   viewOffer,
@@ -28,17 +28,28 @@ const Property = ({
   };
   return (
     <Card>
-      <Card.Img variant="top" src={pictures[0]} />
+      <Card.Img variant="top" src={pictures[0]} height={300} img-fluid />
       <Card.Body>
         <Link to={`/property/${id}`}>
           <Card.Title>{formatMoney(price)}</Card.Title>
         </Link>
         <Card.Text className="d-flex justify-content-between">
           <span>Location: {location} </span>
-          <span>Rooms: {numberOfRoom}</span> 
-          <Badge bg="primary">{status}</Badge>
+         
         </Card.Text>
-        <div className="d-flex gap-2">
+        <div className="d-flex justify-content-between">
+          <span>
+            <span className="me-3">
+             Rooms: {numberOfRoom}</span> 
+            <Badge bg={
+              offerStatus === "PENDING"
+                ? "warning"
+                : offerStatus === "APPROVED"
+                ? "success"
+                : "danger"
+            }>{offerStatus}</Badge>
+          </span>
+        
         <Button
           variant={favorite ? "danger" : "primary"}
           onClick={() => {

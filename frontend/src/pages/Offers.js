@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "react-query";
 import Loading from "../components/Loading";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Row, Col, Button, Table, Badge } from "react-bootstrap";
 import { api } from "../libs/api";
 import { formatMoney } from "../utils/money";
@@ -66,6 +66,15 @@ const Offers = () => {
               </tr>
             </thead>
             <tbody>
+            {data?.data.length === 0 && ( 
+                <tr>
+                  <td colSpan="7">
+                      You don't have any offer yet.{" "}
+                      <Link to="/add-property">Add Property</Link>
+                 
+                  </td>
+                </tr>
+              )}
               {data?.data.map((offer, index) => (
                 <tr key={offer.id}>
                   <td>{index + 1}</td>

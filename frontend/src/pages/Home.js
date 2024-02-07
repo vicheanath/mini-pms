@@ -10,16 +10,45 @@ import {
 } from "react-bootstrap";
 import Property from "../components/Property";
 import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 import { useQuery } from "react-query";
 import Loading from "../components/Loading";
 import { CATEGORY } from "./AddProperty";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 const Home = () => {
   const query = new URLSearchParams(window.location.search);
   const { data, isFetching, isLoading, refetch } = useQuery(
     `properties?${query.toString()}`
   );
   const navigate = useNavigate();
+  const filterSchema = z.object({
+    category: z.string().nullable(),
+    minPrice: z.string().nullable(),
+    maxPrice: z.string().nullable(),
+    numberOfRoom: z.string().nullable(),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(filterSchema),
+  });
+
+  const onSubmit = (data) => {
+    console.log(data);
+    for (const key in data) {
+      if (data[key] === "") {
+        query.delete(key);
+      } else {
+        query.set(key, data[key]);
+      }
+    }
+    navigate(`/?${query.toString()}`);
+  };
 
   return (
     <>
@@ -73,12 +102,13 @@ const Home = () => {
               </select>
             </Form.Group>
 
-            <Form className="d-flex gap-2">
+            <Form className="d-flex gap-2" onSubmit={handleSubmit(onSubmit)}>
               <Form.Group className="mb-3">
                 <select
                   name="category"
                   className="form-select"
                   aria-label="Default select example"
+                  {...register("category")}
                 >
                   <option value="">Type</option>
                   {CATEGORY.map((category, index) => {
@@ -94,25 +124,36 @@ const Home = () => {
                 <Form.Control
                   type="number"
                   placeholder="Min Price"
-                  name="minPrice"
+                  {...register("minPrice")}
                 />
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Control
                   type="number"
                   placeholder="Max Price"
-                  name="maxPrice"
+                  {...register("maxPrice")}
                 />
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Control
                   type="number"
                   placeholder="Number of Room"
-                  name="numberOfRoom"
+                  {...register("numberOfRoom")}
                 />
               </Form.Group>
-              <Form.Group className="mb-3">
-                <Button variant="outline-primary">Filter</Button>
+              <Form.Group className="mb-3 d-flex gap-2">
+                <Button variant="outline-primary" type="submit">
+                  Filter
+                </Button>
+                <Button
+                  variant="outline-secondary"
+                  onClick={() => {
+                    query.delete("search");
+                    navigate(`/?${query.toString()}`);
+                  }}
+                >
+                  Clear
+                </Button>
               </Form.Group>
             </Form>
           </div>

@@ -3,7 +3,10 @@ import { useQuery } from "react-query";
 import Loading from "../components/Loading";
 import Property from "../components/Property";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 const MyProperty = () => {
+  const {state} = useLocation();
+  
   const { data, isFetching, isLoading, refetch } = useQuery(
     `properties?memberId=123`
   );
@@ -17,6 +20,9 @@ const MyProperty = () => {
   return (
     <div className="container">
       <h2 className="mt-4">My Property</h2>
+      {state?.message && (
+        <div className="alert alert-success">{state.message}</div>
+      )}
       <div className="row">
         {data?.data.length === 0 && (
           <div className="col-md-12">

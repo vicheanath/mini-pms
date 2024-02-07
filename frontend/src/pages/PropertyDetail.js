@@ -24,7 +24,8 @@ import { api } from "../libs/api";
 const PropertyDetail = () => {
   const { id } = useParams();
   const { user } = useSelector((state) => state.auth);
-  const isOwner = Object.keys(user?.roles).includes("Owner");
+  const isOwner = user?.roles.map((role) => role.role).includes("Owner");
+  console.log(isOwner);
   const { data, isLoading, isError } = useQuery(`properties/${id}`);
   const navigate = useNavigate();
   const [show, setShow] = React.useState(false);
@@ -72,6 +73,8 @@ const PropertyDetail = () => {
                     className="d-block w-100"
                     src={picture}
                     alt="First slide"
+                    img-fluid
+                    height={500}
                   />
                 </Carousel.Item>
               );
@@ -83,7 +86,13 @@ const PropertyDetail = () => {
             <h3>{formatMoney(data.price)}</h3>
             <p>{data.location}</p>
             <p> Rooms: {data.numberOfRoom}</p>
-            Status :<Badge bg="success">{data.status}</Badge>
+            Status :<Badge bg={
+              data.offerStatus === "PENDING"
+                ? "warning"
+                : data.offerStatus === "APPROVED"
+                ? "success"
+                : "danger"
+            }>{data.offerStatus}</Badge>
             <div className="mt-4">
               {
                 isOwner ? "": (

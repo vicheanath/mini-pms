@@ -9,7 +9,7 @@ const RequestOffer = ({
   requestOfferMutation,
 }) => {
   const RequestOfferSchema = z.object({
-    remark: z.string().min(3).max(20),
+    remark: z.string().min(3).max(225),
     price: z.string(),
   });
   const {
