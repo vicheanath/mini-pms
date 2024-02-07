@@ -1,4 +1,4 @@
-FROM openjdk:21-ea-slim
+FROM openjdk:17-alpine
 
 WORKDIR /app
 
