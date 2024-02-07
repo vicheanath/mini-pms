@@ -9,17 +9,13 @@ import com.mini.pms.entity.type.PropertyOfferStatus;
 import com.mini.pms.repo.OfferRepo;
 import com.mini.pms.repo.PropertyRepo;
 import com.mini.pms.service.OfferService;
-//import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OfferServiceImpl implements OfferService {
@@ -35,12 +31,13 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     @Transactional(rollbackFor = DataAccessException.class)
-    public Offer submitOffer(Member customer, Property property, String remark) {
+    public Offer submitOffer(Member customer, Property property, double price, String remark) {
         try {
             Offer offer = new Offer();
             offer.setCustomer(customer);
             offer.setProperty(property);
             offer.setRemark(remark);
+            offer.setPrice(price);
             offer.setStatus(OfferStatus.PENDING);
             return offerRepo.save(offer);
         } catch (DataAccessException ex) {
@@ -97,7 +94,8 @@ public class OfferServiceImpl implements OfferService {
 
         if (isOfferCancelable(offer)) {
             // Offer can be canceled, delete it from the database
-            offerRepo.delete(offer);
+            offer.setStatus(OfferStatus.CANCELED);
+            offerRepo.save(offer);
         } else {
             // Offer cannot be canceled due to 'contingency'
             throw new IllegalStateException("Offer cannot be canceled after 'contingency'.");

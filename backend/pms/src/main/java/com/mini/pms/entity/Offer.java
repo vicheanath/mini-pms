@@ -39,6 +39,9 @@ public class Offer {
 
     private String remark;
 
+    private double price;
+
+
     @ManyToOne
     private Member customer;
 

@@ -1,8 +1,8 @@
 package com.mini.pms.restcontroller.response;
 
-import com.mini.pms.entity.Property;
-import com.mini.pms.entity.type.OfferStatus;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 public class OfferResponse {
@@ -11,4 +11,6 @@ public class OfferResponse {
     private long propertyId;
     private String remark;
     private String status;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

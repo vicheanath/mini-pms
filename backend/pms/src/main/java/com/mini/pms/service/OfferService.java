@@ -4,15 +4,15 @@ import com.mini.pms.entity.Member;
 import com.mini.pms.entity.Offer;
 import com.mini.pms.entity.Property;
 import com.mini.pms.entity.type.OfferStatus;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface OfferService {
 
-    // Method to submit an offer for a property
-    Offer submitOffer(Member customer, Property property, String remark);
+    @Transactional(rollbackFor = DataAccessException.class)
+    Offer submitOffer(Member customer, Property property, double price, String remark);
 
     // Method to get all offers made by a specific customer
     Page<Offer> getAllOffersByCustomer(Member customer, Pageable pageable);
