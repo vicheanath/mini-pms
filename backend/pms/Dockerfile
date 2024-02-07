@@ -2,7 +2,7 @@ FROM openjdk:17-alpine
 
 WORKDIR /app
 
-COPY backend/pms/target/*.jar app.jar
+COPY target/*.jar app.jar
 
 EXPOSE 8080
 
