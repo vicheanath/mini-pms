@@ -7,10 +7,11 @@ import java.time.LocalDateTime;
 @Data
 public class OfferResponse {
     private long id;
-    private long customerId;
-    private long propertyId;
+    private MemberResponse customer;
+    private PropertyResponse property;
     private String remark;
     private String status;
+    private Double price;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

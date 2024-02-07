@@ -10,24 +10,28 @@ import NotFound from "../pages/NotFound";
 import Users from "../pages/admin/Users";
 import Properties from "../pages/admin/Properties";
 import Offers from "../pages/admin/Offers";
+import ClientOffers from "../pages/Offers";
 import AddProperty from "../pages/AddProperty";
 import ForgotPassword from "../pages/ForgotPassword";
 import ChangePassword from "../pages/ChangePassword";
 import Favorite from "../pages/Favorite";
 import MyProperty from "../pages/MyProperty";
+import RequestOffer from "../pages/RequestOffer";
+import MyOffer from "../pages/MyOffer";
 const Router = () => {
   return (
     <Routes>
       <Route element={<Layout />}>
         <Route path="" element={<Home />} />
         <Route path="property/:id" element={<PropertyDetail />} />
+        <Route path="property/:id/offers" element={<ClientOffers />} />
+        <Route path="my-offer" element={<MyOffer />} />
         <Route path="add-property" element={<AddProperty />} />
         <Route path="profile" element={<Profile />} />
         <Route path="favorite" element={<Favorite />} />
         <Route path="my-properties" element={<MyProperty />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="change-password" element={<ChangePassword />} />
-
       </Route>
       <Route path="admin" element={<AdminLayout />}>
         <Route path="dashboard" element={<Dashboard />} />
@@ -35,7 +39,7 @@ const Router = () => {
         <Route path="properties" element={<Properties />} />
         <Route path="offers" element={<Offers />} />
       </Route>
-      <Route path="*" element={<NotFound/>} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

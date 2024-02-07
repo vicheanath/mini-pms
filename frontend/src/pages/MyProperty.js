@@ -1,13 +1,19 @@
-import React from 'react'
-import { useQuery } from 'react-query'
-import Loading from '../components/Loading'
-import Property from '../components/Property'
+import React from "react";
+import { useQuery } from "react-query";
+import Loading from "../components/Loading";
+import Property from "../components/Property";
+import { useNavigate } from "react-router-dom";
 const MyProperty = () => {
-    const { data, isFetching, isLoading, refetch } = useQuery(
-        `properties?memberId=123`
-      );
-    
-        if (isLoading) return <Loading />;
+  const { data, isFetching, isLoading, refetch } = useQuery(
+    `properties?memberId=123`
+  );
+  const navigate = useNavigate();
+  const handleViewOffer = (id) => {
+    navigate(`/property/${id}/offers`);
+  }
+
+  if (isLoading) return <Loading />;
+
   return (
     <div className="container">
       <h2 className="mt-4">My Property</h2>
@@ -23,14 +29,19 @@ const MyProperty = () => {
 
         {data?.data.map((property) => {
           return (
-            <div className="col-md-4" key={property.id}>
-              <Property key={property.id} {...property} refetch={refetch} />
+            <div className="col-md-4 mb-4" key={property.id}>
+              <Property
+                key={property.id}
+                {...property}
+                refetch={refetch}
+                viewOffer={handleViewOffer}
+              />
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MyProperty
+export default MyProperty;

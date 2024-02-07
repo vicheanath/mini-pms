@@ -1,5 +1,13 @@
 import React from "react";
-import { Row, Col, Image, Button, Badge, Carousel } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Image,
+  Button,
+  Badge,
+  Carousel,
+  Alert,
+} from "react-bootstrap";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
@@ -7,17 +15,46 @@ import Loading from "../components/Loading";
 import { formatMoney } from "../utils/money";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { icon } from "../utils/map";
+import { useNavigate } from "react-router-dom";
+import RequestOffer from "./RequestOffer";
+import { useMutation } from "react-query";
+import { useSelector } from "react-redux";
+import { api } from "../libs/api";
 
 const PropertyDetail = () => {
   const { id } = useParams();
+  const { user } = useSelector((state) => state.auth);
+  const isOwner = Object.keys(user?.roles).includes("Owner");
   const { data, isLoading, isError } = useQuery(`properties/${id}`);
-  console.log(data);
-
+  const navigate = useNavigate();
+  const [show, setShow] = React.useState(false);
+  const requestOfferMutation = useMutation(async (data) => {
+    api.post("offers/submit", data).then((res) => {
+      setShow(false);
+    });
+  });
   if (isLoading) return <Loading />;
 
   return (
     <React.Fragment>
       <Row className="mt-4">
+        <Alert
+          variant="danger"
+          show={requestOfferMutation.isError}
+          onClose={() => requestOfferMutation.reset()}
+          dismissible
+        >
+          Error while fetching data
+        </Alert>
+        <Alert
+          variant="success"
+          show={requestOfferMutation.isSuccess}
+          onClose={() => requestOfferMutation.reset()}
+          dismissible
+        >
+          Offer requested successfully
+        </Alert>
+
         <Col md={7}>
           <Carousel
             fade
@@ -48,9 +85,18 @@ const PropertyDetail = () => {
             <p> Rooms: {data.numberOfRoom}</p>
             Status :<Badge bg="success">{data.status}</Badge>
             <div className="mt-4">
-              <Button variant="secondary">
-                <MdOutlineLocalOffer /> Request Offer
-              </Button>
+              {
+                isOwner ? "": (
+                  <Button
+                    variant="primary"
+                    onClick={() => {
+                      setShow(true);
+                    }}
+                  >
+                    <MdOutlineLocalOffer /> Request Offer
+                  </Button>
+                )
+              }
             </div>
           </div>
         </Col>
@@ -73,11 +119,15 @@ const PropertyDetail = () => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <Marker position={[data.latitude, data.longitude]} icon={icon}>
-            <Popup>
-             {data.location}
-            </Popup>
+            <Popup>{data.location}</Popup>
           </Marker>
         </MapContainer>
+        <RequestOffer
+          show={show}
+          handleClose={() => setShow(false)}
+          propertyId={id}
+          requestOfferMutation={requestOfferMutation}
+        />
       </Row>
     </React.Fragment>
   );

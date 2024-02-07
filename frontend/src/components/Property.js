@@ -14,6 +14,7 @@ const Property = ({
   status,
   favorite,
   refetch,
+  viewOffer,
 }) => {
   const addFavorite = async (id) => {
     api.post(`favorites/${id}`).then((res) => {
@@ -32,11 +33,12 @@ const Property = ({
         <Link to={`/property/${id}`}>
           <Card.Title>{formatMoney(price)}</Card.Title>
         </Link>
-        <Card.Text>
+        <Card.Text className="d-flex justify-content-between">
           <span>Location: {location} </span>
-          <span>Rooms: {numberOfRoom}</span>
+          <span>Rooms: {numberOfRoom}</span> 
           <Badge bg="primary">{status}</Badge>
         </Card.Text>
+        <div className="d-flex gap-2">
         <Button
           variant={favorite ? "danger" : "primary"}
           onClick={() => {
@@ -46,6 +48,17 @@ const Property = ({
         >
           {favorite ? <MdOutlineFavorite /> : <MdFavoriteBorder />}
         </Button>
+        {
+          viewOffer && (
+            <Button
+              variant="secondary"
+              onClick={() => viewOffer(id)}
+            >
+              View Offer
+            </Button>
+          )
+        }
+        </div>
       </Card.Body>
     </Card>
   );

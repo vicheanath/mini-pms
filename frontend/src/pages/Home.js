@@ -1,5 +1,4 @@
 import React from "react";
-import dumpProperties from "../dump/property.json";
 import {
   Row,
   Col,
