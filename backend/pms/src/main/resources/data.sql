@@ -22,6 +22,3 @@ VALUES (1, 1),
        (2, 2),
        (3, 3),
        (4, 1);
-
-INSERT INTO public.favorite (member_id,property_id) VALUES
-    (2,30);

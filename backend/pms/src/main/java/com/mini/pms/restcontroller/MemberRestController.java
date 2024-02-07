@@ -29,9 +29,9 @@ public class MemberRestController {
          return memberService.update(m.getId(), member);
      }
      @GetMapping()
-     public List<Member> findAll() {
+     public List<MemberResponse> findAll() {
          Member m = authService.getAuthenticatedUser();
-         return memberService.findAll();
+         return Util.mapList(memberService.findAll(), MemberResponse.class);
      }
 
 

@@ -1,52 +1,51 @@
 import React from "react";
-import { Card, Button } from "react-bootstrap";
-import { MdFavoriteBorder } from "react-icons/md";
+import { Card, Button, Badge } from "react-bootstrap";
+import { MdFavoriteBorder, MdOutlineFavorite } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { formatMoney } from "../utils/money";
+import { api } from "../libs/api";
 const Property = ({
   price,
-  numberOfRooms,
+  numberOfRoom,
   type,
   location,
   pictures,
   id,
-  addFavorite,
-  removeFavorite,
+  status,
+  favorite,
+  refetch,
 }) => {
-  const [favorite, setFavorite] = React.useState(false);
+  const addFavorite = async (id) => {
+    api.post(`favorites/${id}`).then((res) => {
+      console.log(res);
+    });
+  };
+  const removeFavorite = (id) => {
+    api.delete(`favorites/${id}`).then((res) => {
+      console.log(res);
+    });
+  };
   return (
     <Card>
       <Card.Img variant="top" src={pictures[0]} />
       <Card.Body>
-        <Card.Title>{type}</Card.Title>
+        <Link to={`/property/${id}`}>
+          <Card.Title>{formatMoney(price)}</Card.Title>
+        </Link>
         <Card.Text>
-          <Link to={`/property/${id}`}>
-            Price: {price} <br />
-          </Link>
-          Location: {location} <br />
-          Rooms: {numberOfRooms} <br />
+          <span>Location: {location} </span>
+          <span>Rooms: {numberOfRoom}</span>
+          <Badge bg="primary">{status}</Badge>
         </Card.Text>
-        {addFavorite && (
-          <Button
-            variant="primary"
-            onClick={() => {
-              setFavorite(true);
-              addFavorite(id);
-            }}
-          >
-            <MdFavoriteBorder /> Add to favorite
-          </Button>
-        )}
-        {removeFavorite  && (
-          <Button
-            variant="danger"
-            onClick={() => {
-              removeFavorite(id);
-              setFavorite(false);
-            }}
-          >
-            <MdFavoriteBorder /> Remove from favorite
-          </Button>
-        )}
+        <Button
+          variant={favorite ? "danger" : "primary"}
+          onClick={() => {
+            favorite ? removeFavorite(id) : addFavorite(id);
+            refetch();
+          }}
+        >
+          {favorite ? <MdOutlineFavorite /> : <MdFavoriteBorder />}
+        </Button>
       </Card.Body>
     </Card>
   );

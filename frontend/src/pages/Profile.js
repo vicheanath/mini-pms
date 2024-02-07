@@ -17,7 +17,7 @@ import { useMutation } from "react-query";
 import Loading from "../components/Loading";
 import { api } from "../libs/api";
 const Profile = () => {
-  const { data, isLoading, isError, refetch } = useQuery("users/profile");
+  const { data, isLoading, isError,refetch } = useQuery("users/profile");
   const ProfileSchema = z.object({
     phone: z.string().min(3).max(20),
     address: z.string().min(3).max(20),
@@ -40,7 +40,7 @@ const Profile = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(ProfileSchema) });
+  } = useForm({ resolver: zodResolver(ProfileSchema)});
 
   const {
     register: registerChangePassword,
