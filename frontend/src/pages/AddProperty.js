@@ -84,8 +84,8 @@ const AddProperty = () => {
 
   const onSubmit = (data) => {
     data.pictures = imageKeys;
-    data.latitude = latLong.lat;
-    data.longitude = latLong.lng;
+    data.latitude = latLong.lat || 0;
+    data.longitude = latLong.lng || 0;
     propertyMutation.mutate(data);
   };
   const type = watch("type");
