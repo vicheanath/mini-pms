@@ -34,5 +34,6 @@ public class PropertyResponse {
     private double longitude;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private boolean isFavorite;
 
 }

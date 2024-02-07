@@ -1,6 +1,5 @@
 package com.mini.pms.entity;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.mini.pms.entity.type.MemberStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -65,8 +64,8 @@ public class Member {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "user_role",
-            joinColumns = {@JoinColumn(name = "user_id")},
+            name = "member_role",
+            joinColumns = {@JoinColumn(name = "member_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private List<Role> roles;
 

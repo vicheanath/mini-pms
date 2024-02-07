@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -80,6 +81,9 @@ public class Property {
     private double latitude;
     private double longitude;
 
+    @OneToMany(mappedBy = "property")
+    List<Favorite> favorites;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -97,4 +101,7 @@ public class Property {
                 .toList();
 
     }
+
+    @Transient
+    private boolean isFavorite;
 }
