@@ -119,7 +119,7 @@ const PropertyDetail = () => {
       <Row className="mt-4">
         <MapContainer
           center={[data.latitude, data.longitude]}
-          zoom={5}
+          zoom={15}
           scrollWheelZoom={false}
           style={{ height: "400px", width: "100%" }}
         >
