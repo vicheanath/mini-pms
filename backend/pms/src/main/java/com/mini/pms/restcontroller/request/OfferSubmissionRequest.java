@@ -7,4 +7,5 @@ public class OfferSubmissionRequest {
     private Long customerId;
     private Long propertyId;
     private String remark;
+    private Double price;
 }

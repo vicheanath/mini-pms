@@ -10,7 +10,6 @@ import com.mini.pms.service.PictureService;
 import com.mini.pms.service.PropertyService;
 import com.mini.pms.util.Util;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Where;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -22,7 +21,6 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-@Where(clause = "status != 'DELETED'")
 public class PropertyServiceImpl implements PropertyService {
 
     private final PropertyRepo propertyRepo;

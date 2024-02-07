@@ -87,7 +87,9 @@ public class PmsApplication implements CommandLineRunner {
                         .findByEmail("c@c.com")
                         .orElseThrow(
                                 () -> new PlatformException("Not found", HttpStatus.NOT_FOUND));
-        var offer = Offer.builder().remark("Hello").property(prop).customer(customer).build();
+        var offer = Offer.builder().remark("Hello").property(prop).customer(customer)
+                .price(3000)
+                .build();
 
         offerRepo.save(offer);
     }
