@@ -1,37 +1,30 @@
 import React from "react";
 import { useQuery } from "react-query";
-import {
-  Row,
-  Col,
-  Card,
-  Button,
-  Form,
-  InputGroup,
-  FormControl,
-  Image,
-} from "react-bootstrap";
+import { Row, Col, Card, Button, Form, Image, Alert } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "react-query";
 import Loading from "../components/Loading";
 import { api } from "../libs/api";
+import avatar from "../images/avatar.jpg";
 const Profile = () => {
-  const { data, isLoading, isError,refetch } = useQuery("users/profile");
+  const { data, isLoading, isError, refetch } = useQuery("users/profile");
   const ProfileSchema = z.object({
-    phone: z.string().min(3).max(20),
-    address: z.string().min(3).max(20),
-    city: z.string().min(3).max(20),
-    zip: z.string().min(3).max(20),
+    phone: z.string().nullable(),
+    address: z.string().nullable(),
+    city: z.string().nullable(),
+    state: z.string().nullable(),
+    zip: z.string().nullable(),
   });
 
   const ChangePasswordSchema = z
     .object({
       oldPassword: z.string().min(3).max(20),
       newPassword: z.string().min(3).max(20),
-      confirmPassword: z.string().min(3).max(20),
+      confirmNewPassword: z.string().min(3).max(20),
     })
-    .refine((data) => data.newPassword === data.confirmPassword, {
+    .refine((data) => data.newPassword === data.confirmNewPassword, {
       message: "Passwords do not match",
       path: ["confirmPassword"],
     });
@@ -40,7 +33,16 @@ const Profile = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(ProfileSchema)});
+    setValue,
+  } = useForm({ resolver: zodResolver(ProfileSchema) });
+
+  if (data) {
+    setValue("phone", data.phone);
+    setValue("address", data.address);
+    setValue("city", data.city);
+    setValue("zip", data.zip);
+    setValue("state", data.state);
+  }
 
   const {
     register: registerChangePassword,
@@ -53,20 +55,32 @@ const Profile = () => {
   });
 
   const changePassword = useMutation((data) => {
-    return api.put("users/change-password", data);
+    return api
+      .put("users/change-password", data)
+      .then((res) => res.data)
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
   });
 
   const onSubmit = (data) => {
     updateProfile.mutate(data);
-    // refetch();
+    refetch();
   };
 
   const onChangePassword = (data) => {
-    changePassword.mutate(data);
+    changePassword
+      .mutate(data)
+      
   };
+
+  console.log(changePassword);
 
   if (isError) return <div>Error loading profile</div>;
   if (isLoading) return <Loading />;
+
+
+
   return (
     <div className="mt-3">
       <h3>Profile</h3>
@@ -74,14 +88,14 @@ const Profile = () => {
         <Col md={4}>
           <Card>
             <Card.Body>
-              <Image src="https://via.placeholder.com/150" roundedCircle />
-              <Card.Title>Username</Card.Title>
-              <Card.Text>Email: {data.email}</Card.Text>
-              <Card.Text>Phone: {data.phone}</Card.Text>
-              <Card.Text>Address: {data.address}</Card.Text>
-              <Card.Text>City:{data.city}</Card.Text>
-              <Card.Text>State:{data.state}</Card.Text>
-              <Card.Text>Zip:{data.zip}</Card.Text>
+              <Image src={avatar} roundedCircle width="100" height="100" />
+              <Card.Title>{data.name}</Card.Title>
+              <Card.Text>Email: {data.email || "N/A"}</Card.Text>
+              <Card.Text>Phone: {data.phone || "N/A"}</Card.Text>
+              <Card.Text>Address: {data.address || "N/A"}</Card.Text>
+              <Card.Text>City:{data.city || "N/A"}</Card.Text>
+              <Card.Text>State:{data.state || "N/A"}</Card.Text>
+              <Card.Text>Zip:{data.zip || "N/A"}</Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -91,6 +105,15 @@ const Profile = () => {
             <Card.Body>
               <Card.Title>Update Profile</Card.Title>
               <Form onSubmit={handleSubmit(onSubmit)}>
+                <Alert
+                  variant="success"
+                  show={updateProfile.isSuccess}
+                  onClose={() => updateProfile.reset()}
+                  dismissible
+                >
+                  Profile updated successfully
+                </Alert>
+
                 <Form.Group controlId="formBasicPhone">
                   <Form.Label>Phone</Form.Label>
                   <Form.Control
@@ -161,6 +184,23 @@ const Profile = () => {
             <Card.Body>
               <Card.Title>Change Password</Card.Title>
               <Form onSubmit={handleSubmitChangePassword(onChangePassword)}>
+                <Alert
+                  variant="success"
+                  show={changePassword.isSuccess}
+                  onClose={() => changePassword.reset()}
+                  dismissible
+                >
+                  Password changed successfully
+                </Alert>
+                <Alert
+                  variant="danger"
+                  show={changePassword.isError}
+                  onClose={() => changePassword.reset()}
+                  dismissible
+                >
+                  {changePassword.error?.message}
+                </Alert>
+
                 <Form.Group controlId="formBasicOldPassword">
                   <Form.Label>Old Password</Form.Label>
                   <Form.Control
@@ -193,10 +233,10 @@ const Profile = () => {
                   <Form.Control
                     type="password"
                     placeholder="Enter confirm password"
-                    {...registerChangePassword("confirmPassword")}
+                    {...registerChangePassword("confirmNewPassword")}
                   />
                   <Form.Text className="text-danger">
-                    {errorsChangePassword.confirmPassword?.message}
+                    {errorsChangePassword.confirmNewPassword?.message}
                   </Form.Text>
                 </Form.Group>
 

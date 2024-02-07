@@ -31,6 +31,7 @@ public class PropertyRestController {
 
     @GetMapping
     public ResponseEntity<PageResponse> findAllProps(
+            @RequestParam(value = "memberId", required = false) Long memberId,
             @RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "minPrice", required = false) Double minPrice,
             @RequestParam(value = "maxPrice", required = false) Double maxPrice,
@@ -48,6 +49,7 @@ public class PropertyRestController {
             Principal principal
     ) {
         var props = propService.findAll(
+                memberId,
                 search,
                 minPrice,
                 maxPrice,

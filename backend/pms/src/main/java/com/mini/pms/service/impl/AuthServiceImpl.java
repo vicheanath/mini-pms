@@ -3,6 +3,7 @@ package com.mini.pms.service.impl;
 import com.mini.pms.customexception.PlatformException;
 import com.mini.pms.entity.Member;
 import com.mini.pms.entity.Role;
+import com.mini.pms.entity.type.MemberStatus;
 import com.mini.pms.entity.type.TokenType;
 import com.mini.pms.repo.MemberRepo;
 import com.mini.pms.repo.RoleRepo;
@@ -23,6 +24,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +43,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final AuthenticationManager authManager;
 
+    private final BCryptPasswordEncoder passwordEncoder;
 
     private final RoleRepo roleRepo;
     private final MemberRepo memberRepo;
@@ -118,6 +121,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public Member registerOwner(RegisterRequest authRequest) {
         authRequest.setRole("Owner");
+        authRequest.setStatus(MemberStatus.INACTIVE);
         return register(authRequest);
     }
 
@@ -132,7 +136,8 @@ public class AuthServiceImpl implements AuthService {
         Member member = Member.builder()
                 .name(authRequest.getName())
                 .email(authRequest.getEmail())
-                .password(authRequest.getPassword())
+                .status(authRequest.getStatus())
+                .password(passwordEncoder.encode(authRequest.getPassword()))
                 .roles(List.of(role))
                 .build();
         return  memberRepo.save(member);

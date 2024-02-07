@@ -5,10 +5,12 @@ import com.mini.pms.restcontroller.request.AuthRequest;
 import com.mini.pms.restcontroller.request.ChangePasswordRequest;
 import com.mini.pms.restcontroller.request.ForgotPasswordRequest;
 import com.mini.pms.restcontroller.request.RegisterRequest;
+import com.mini.pms.restcontroller.response.MemberResponse;
 import com.mini.pms.restcontroller.response.TokenResponse;
 import com.mini.pms.service.AuthService;
 
 import com.mini.pms.service.MemberService;
+import com.mini.pms.util.Util;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -36,8 +38,8 @@ public class AuthRestController {
 
     @PostMapping("owner/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public Member registerOwner(@RequestBody RegisterRequest registerRequest) {
-        return authService.registerOwner(registerRequest);
+    public MemberResponse registerOwner(@RequestBody RegisterRequest registerRequest) {
+        return Util.mapObj(authService.registerOwner(registerRequest), MemberResponse.class);
     }
 
     @PostMapping("customer/register")

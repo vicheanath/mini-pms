@@ -14,6 +14,7 @@ import AddProperty from "../pages/AddProperty";
 import ForgotPassword from "../pages/ForgotPassword";
 import ChangePassword from "../pages/ChangePassword";
 import Favorite from "../pages/Favorite";
+import MyProperty from "../pages/MyProperty";
 const Router = () => {
   return (
     <Routes>
@@ -23,6 +24,7 @@ const Router = () => {
         <Route path="add-property" element={<AddProperty />} />
         <Route path="profile" element={<Profile />} />
         <Route path="favorite" element={<Favorite />} />
+        <Route path="my-properties" element={<MyProperty />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="change-password" element={<ChangePassword />} />
 

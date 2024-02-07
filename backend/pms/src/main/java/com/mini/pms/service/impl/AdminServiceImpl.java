@@ -4,6 +4,7 @@ import com.mini.pms.customexception.PlatformException;
 import com.mini.pms.entity.Member;
 import com.mini.pms.entity.type.MemberStatus;
 import com.mini.pms.repo.MemberRepo;
+import com.mini.pms.restcontroller.request.MemberRequest;
 import com.mini.pms.service.AdminService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -45,12 +46,26 @@ public class AdminServiceImpl implements AdminService {
     public void approve(long id) {
         var member = findById(id);
 
-        if (MemberStatus.ACTIVATED.equals(member.getStatus())) {
+        if (MemberStatus.ACTIVE.equals(member.getStatus())) {
             throw new PlatformException("Member is already activated", HttpStatus.BAD_REQUEST);
         }
 
-        member.setStatus(MemberStatus.ACTIVATED);
+        member.setStatus(MemberStatus.ACTIVE);
         memberRepo.save(member);
+    }
+
+    @Override
+    public Member update(long id, MemberRequest memberRequest) {
+        Member member = findById(id);
+        member.setName(memberRequest.getName());
+        member.setEmail(memberRequest.getEmail());
+        member.setPhone(memberRequest.getPhone());
+        member.setStatus(memberRequest.getStatus());
+        member.setCity(memberRequest.getCity());
+        member.setAddress(memberRequest.getAddress());
+        member.setState(memberRequest.getState());
+        member.setZip(memberRequest.getZip());
+        return memberRepo.save(member);
     }
 
 }

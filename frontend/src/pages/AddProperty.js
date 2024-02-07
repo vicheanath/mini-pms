@@ -20,8 +20,9 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { getCurrLocation, icon, iconURL } from "../utils/map";
 import { FaLocationDot } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-const SELLER_TYPES = ["Rent", "Sale"];
-const CATEGORY = ["House", "Apartment", "Condo"];
+
+export const CATEGORY = ["House", "Apartment", "Condo","Land"];
+const LAND_TYPES = ["Residential", "Commercial", "Agricultural"];
 const HOUSE_TYPES = ["Single Family", "Multi Family", "Townhouse"];
 const APARTMENT_TYPES = ["Studio", "Loft", "Duplex"];
 const CONDO_TYPES = ["High Rise", "Low Rise", "Mid Rise"];
@@ -43,6 +44,9 @@ const AddProperty = () => {
         break;
       case "Condo":
         setPropertyType(CONDO_TYPES);
+        break;
+      case "Land":
+        setPropertyType(LAND_TYPES);
         break;
       default:
         setPropertyType(HOUSE_TYPES);
@@ -224,7 +228,7 @@ const AddProperty = () => {
                   <select
                     {...register("category")}
                     onChange={(e) => handleChangePropertyType(e.target.value)}
-                    className="form-control"
+                    className="form-select"
                   >
                     {CATEGORY.map((type, index) => {
                       return (
@@ -242,7 +246,7 @@ const AddProperty = () => {
               <Col md={6}>
                 <Form.Group className="mb-3" controlId="subCategory">
                   <Form.Label>{category} Type</Form.Label>
-                  <select {...register("subCategory")} className="form-control">
+                  <select {...register("subCategory")} className="form-select">
                     <option value="">Select {category} type</option>
                     {propertyType.map((type, index) => {
                       return (

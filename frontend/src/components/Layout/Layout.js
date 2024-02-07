@@ -7,8 +7,9 @@ const Layout = ({ children }) => {
   const navLinks = [
     { title: "Rent", path: "/?type=RENT" },
     { title: "Sell", path: "/?type=SELL" },
-    { title: "Dashboard", path: "/dashboard" },
-    { title: "Profile", path: "/profile" },
+    // { title: "Contact", path: "/contact" },
+    // { title: "About", path: "/about" },
+    // { title: "Privacy Policy", path: "/privacy-policy" },
   ];
   return (
     <React.Fragment>

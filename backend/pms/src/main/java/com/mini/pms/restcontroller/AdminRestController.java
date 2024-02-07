@@ -1,5 +1,6 @@
 package com.mini.pms.restcontroller;
 
+import com.mini.pms.restcontroller.request.MemberRequest;
 import com.mini.pms.restcontroller.response.MemberResponse;
 import com.mini.pms.restcontroller.response.PageResponse;
 import com.mini.pms.service.AdminService;
@@ -8,13 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -41,6 +37,15 @@ public class AdminRestController {
         var members = adminService.findAll(role, pageable, principal);
         return new PageResponse(members, MemberResponse.class);
     }
+
+    @PutMapping("users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<String> update(@PathVariable("id") long id, @RequestBody MemberRequest memberRequest) {
+        adminService.update(id, memberRequest);
+        return new ResponseEntity<>("User approved", HttpStatus.NO_CONTENT);
+    }
+
+
 
     @PostMapping("users/{id}/approve")
     @ResponseStatus(HttpStatus.NO_CONTENT)
