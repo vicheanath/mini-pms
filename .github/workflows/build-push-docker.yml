@@ -1,10 +1,18 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
 
 name: Build and Publish Docker Image
 
 on:
   release:
-    types: [created]
+    types: [created, published]
     version: 'v*.*.*'
+    
 
 jobs:
   build:
@@ -15,11 +23,11 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: 1234
-          POSTGRES_DB: mini-pms
+          POSTGRES_DB: pms-db
         ports:
           - 5432:5432
-
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 17
@@ -53,7 +61,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
           context: .
-          file: ./Dockerfile
+          file: ./backend/pms/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
