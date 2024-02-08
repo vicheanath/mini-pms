@@ -4,6 +4,7 @@ import com.mini.pms.restcontroller.request.EmailRequest;
 import com.mini.pms.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ public class EmailRestController {
 
     @PostMapping("send")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void sendEmail(@RequestBody EmailRequest emailRequest) {
+    public void sendEmail(@RequestBody @Validated EmailRequest emailRequest) {
         emailService.sendSimpleMail(
                 emailRequest.getTitle(), emailRequest.getContent(), emailRequest.getRecipient());
     }
