@@ -9,7 +9,7 @@ import {
   Alert,
 } from "react-bootstrap";
 import { MdOutlineLocalOffer } from "react-icons/md";
-import { useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import Loading from "../components/Loading";
 import { formatMoney } from "../utils/money";
@@ -93,9 +93,16 @@ const PropertyDetail = () => {
                 ? "success"
                 : "danger"
             }>{data.offerStatus}</Badge>
+
             <div className="mt-4">
               {
-                isOwner ? "": (
+                isOwner ?  (
+                      <Link to={"/update-property"}>
+                  <Button className="w-25" variant="primary">
+                      Edit
+                    </Button>
+                  </Link>
+                ): (
                   <Button
                     variant="primary"
                     onClick={() => {

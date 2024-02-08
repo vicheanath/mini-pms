@@ -20,6 +20,7 @@ import MyOffer from "../pages/MyOffer";
 import Contact from "../pages/Contact";
 import About from "../pages/About";
 import PricacyPilicy from "../pages/PricacyPilicy";
+import UpdateProperty from "../pages/UpdateProperty";
 const Router = () => {
   return (
     <Routes>
@@ -29,6 +30,7 @@ const Router = () => {
         <Route path="property/:id/offers" element={<ClientOffers />} />
         <Route path="my-offer" element={<MyOffer />} />
         <Route path="add-property" element={<AddProperty />} />
+        <Route path="update-property" element={<UpdateProperty />} />
         <Route path="profile" element={<Profile />} />
         <Route path="favorite" element={<Favorite />} />
         <Route path="my-properties" element={<MyProperty />} />
