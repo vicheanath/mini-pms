@@ -1,4 +1,19 @@
-# mini-pms
+<h1 align="center">
+ Mini Property Management System
+</h1>
+
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
+
+<p align="center">roperty management system website using React js and Spring. You can find the details of the project in the attached file.</p>
+<p align="center"> 
+  <a href="https://github.com/vicheanath/mini-pms/actions/workflows/test.yml">
+    <img src="https://github.com/vicheanath/mini-pms/actions/workflows/test.yml/badge.svg" />
+  </a>
+  <a href="https://github.com/vicheanath/mini-pms/actions/workflows/build-push-docker.yml">
+    <img src="https://github.com/vicheanath/mini-pms/actions/workflows/build-push-docker.yml/badge.svg" />
+  </a>
+</p>
 
 
 ## Project Description
