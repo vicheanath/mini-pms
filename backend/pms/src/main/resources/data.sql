@@ -87,7 +87,7 @@ VALUES (
                 'House for Sell in Iowa',
                 'RENT',
                 '2024-02-07 00:29:48.576972',
-                3
+                2
         ),
         (
                 'Land',
@@ -106,7 +106,7 @@ VALUES (
                 'Great Building Site Right off Hwy 34',
                 'RENT',
                 '2024-02-07 00:44:43.55343',
-                3
+                2
         ),
         (
                 'House',
@@ -123,7 +123,7 @@ VALUES (
                 '1,000',
                 'RENT',
                 '2024-02-07 01:04:03.030894',
-                3
+                2
         );
 
 

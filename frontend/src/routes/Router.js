@@ -30,7 +30,7 @@ const Router = () => {
         <Route path="property/:id/offers" element={<ClientOffers />} />
         <Route path="my-offer" element={<MyOffer />} />
         <Route path="add-property" element={<AddProperty />} />
-        <Route path="update-property" element={<UpdateProperty />} />
+        <Route path="update-property/:id" element={<UpdateProperty />} />
         <Route path="profile" element={<Profile />} />
         <Route path="favorite" element={<Favorite />} />
         <Route path="my-properties" element={<MyProperty />} />
