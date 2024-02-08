@@ -23,9 +23,7 @@ import { api } from "../libs/api";
 
 const PropertyDetail = () => {
   const { id } = useParams();
-  const { user } = useSelector((state) => state.auth);
-  const isOwner = user?.roles.map((role) => role.role).includes("Owner");
-  console.log(isOwner);
+
   const { data, isLoading, isError } = useQuery(`properties/${id}`);
   const navigate = useNavigate();
   const [show, setShow] = React.useState(false);
@@ -86,33 +84,27 @@ const PropertyDetail = () => {
             <h3>{formatMoney(data.price)}</h3>
             <p>{data.location}</p>
             <p> Rooms: {data.numberOfRoom}</p>
-            Status :<Badge bg={
-              data.offerStatus === "PENDING"
-                ? "warning"
-                : data.offerStatus === "APPROVED"
-                ? "success"
-                : "danger"
-            }>{data.offerStatus}</Badge>
-
-            <div className="mt-4">
-              {
-                isOwner ?  (
-                      <Link to={"/update-property"}>
-                  <Button className="w-25" variant="primary">
-                      Edit
-                    </Button>
-                  </Link>
-                ): (
-                  <Button
-                    variant="primary"
-                    onClick={() => {
-                      setShow(true);
-                    }}
-                  >
-                    <MdOutlineLocalOffer /> Request Offer
-                  </Button>
-                )
+            Status :
+            <Badge
+              bg={
+                data.offerStatus === "PENDING"
+                  ? "warning"
+                  : data.offerStatus === "APPROVED"
+                  ? "success"
+                  : "danger"
               }
+            >
+              {data.offerStatus}
+            </Badge>
+            <div className="mt-4">
+              <Button
+                variant="primary"
+                onClick={() => {
+                  setShow(true);
+                }}
+              >
+                <MdOutlineLocalOffer /> Request Offer
+              </Button>
             </div>
           </div>
         </Col>

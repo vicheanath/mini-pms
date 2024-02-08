@@ -41,6 +41,7 @@ const MyProperty = () => {
                 {...property}
                 refetch={refetch}
                 viewOffer={handleViewOffer}
+                updateProperty={true}
               />
             </div>
           );
