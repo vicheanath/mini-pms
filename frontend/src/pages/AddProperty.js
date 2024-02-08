@@ -22,10 +22,29 @@ import { FaLocationDot } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
 export const CATEGORY = ["House", "Apartment", "Condo","Land"];
-const LAND_TYPES = ["Residential", "Commercial", "Agricultural"];
-const HOUSE_TYPES = ["Single Family", "Multi Family", "Townhouse"];
-const APARTMENT_TYPES = ["Studio", "Loft", "Duplex"];
-const CONDO_TYPES = ["High Rise", "Low Rise", "Mid Rise"];
+export const LAND_TYPES = ["Residential", "Commercial", "Agricultural"];
+export const HOUSE_TYPES = ["Single Family", "Multi Family", "Townhouse"];
+export const APARTMENT_TYPES = ["Studio", "Loft", "Duplex"];
+export const CONDO_TYPES = ["High Rise", "Low Rise", "Mid Rise"];
+export const handleChangePropertyType = (type, setPropertyType) => {
+  switch (type) {
+    case "House":
+      setPropertyType(HOUSE_TYPES);
+      break;
+    case "Apartment":
+      setPropertyType(APARTMENT_TYPES);
+      break;
+    case "Condo":
+      setPropertyType(CONDO_TYPES);
+      break;
+    case "Land":
+      setPropertyType(LAND_TYPES);
+      break;
+    default:
+      setPropertyType(HOUSE_TYPES);
+      break;
+  }
+};
 
 const AddProperty = () => {
   const [propertyType, setPropertyType] = React.useState(HOUSE_TYPES);
@@ -34,34 +53,16 @@ const AddProperty = () => {
   const [imageKeys, setImageKeys] = React.useState([]);
   const [latLong, setLatLong] = React.useState(null);
   const navigate = useNavigate();
-  const handleChangePropertyType = (type) => {
-    switch (type) {
-      case "House":
-        setPropertyType(HOUSE_TYPES);
-        break;
-      case "Apartment":
-        setPropertyType(APARTMENT_TYPES);
-        break;
-      case "Condo":
-        setPropertyType(CONDO_TYPES);
-        break;
-      case "Land":
-        setPropertyType(LAND_TYPES);
-        break;
-      default:
-        setPropertyType(HOUSE_TYPES);
-        break;
-    }
-  };
+
   const PropertySchema = z.object({
     type: z.string(),
-    title: z.string().min(3).max(50),
-    price: z.string().min(1),
-    description: z.string().min(3).max(200),
-    location: z.string().min(3).max(200),
-    category: z.string().min(3).max(200),
+    title: z.string().min(3).max(150),
+    price: z.string().nullable(),
+    description: z.string().min(3).max(255),
+    location: z.string().min(3).max(255),
+    category: z.string().min(3).max(255),
     subCategory: z.string().min(3).max(200),
-    numberOfRoom: z.string().min(1),
+    numberOfRoom: z.string().nullable(),
   });
 
   const {
@@ -76,8 +77,7 @@ const AddProperty = () => {
 
   const propertyMutation = useMutation((data) => {
     api.post("properties", data).then((res) => {
-      console.log(res);
-      // navigate("/");
+      navigate("/my-properties", {state: {message: "Property added successfully"}});
     }).catch((error) => {
       console.log(error);
     });
@@ -85,8 +85,8 @@ const AddProperty = () => {
 
   const onSubmit = (data) => {
     data.pictures = imageKeys;
-    data.latitude = latLong.lat;
-    data.longitude = latLong.lng;
+    data.latitude = latLong.lat || 0;
+    data.longitude = latLong.lng || 0;
     propertyMutation.mutate(data);
   };
   const type = watch("type");
@@ -227,7 +227,7 @@ const AddProperty = () => {
                   <Form.Label>category</Form.Label>
                   <select
                     {...register("category")}
-                    onChange={(e) => handleChangePropertyType(e.target.value)}
+                    onChange={(e) => handleChangePropertyType(e.target.value, setPropertyType)}
                     className="form-select"
                   >
                     {CATEGORY.map((type, index) => {
@@ -322,7 +322,7 @@ const AddProperty = () => {
 
 export default AddProperty;
 
-const Map = ({ set }) => {
+export const Map = ({ set, center = defaultCenter }) => {
   const [map, setMap] = useState(null);
   const [latLong, setLatLong] = useState(null);
 
@@ -361,14 +361,14 @@ const Map = ({ set }) => {
   );
 };
 
-const center = [41.023248, -91.966827];
+const defaultCenter = [41.023248, -91.966827];
 const zoom = 15;
 
 function DisplayPosition({ map, setLatLong }) {
   const [position, setPosition] = useState(() => map.getCenter());
 
   const onClick = useCallback(() => {
-    map.setView(center, zoom);
+    map.setView(defaultCenter, zoom);
   }, [map]);
 
   const onMove = useCallback(() => {

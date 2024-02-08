@@ -1,5 +1,6 @@
 package com.mini.pms.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.mini.pms.entity.type.MemberStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -74,6 +75,7 @@ public class Member {
     private MemberStatus status;
 
     @OneToMany(mappedBy = "owner")
+    @JsonBackReference
     private List<Property> properties;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")

@@ -66,7 +66,7 @@ public class OfferServiceImpl implements OfferService {
     @Transactional(rollbackFor = DataAccessException.class)
     public void acceptOffer(Offer offer) {
         try {
-            offer.setStatus(OfferStatus.AGREED);
+            offer.setStatus(OfferStatus.ACCEPTED);
             // update property status to 'PENDING' here
             Property property = offer.getProperty();
             property.setOfferStatus(PropertyOfferStatus.PENDING);

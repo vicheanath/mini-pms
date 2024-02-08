@@ -3,8 +3,8 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-**/src/main/resources/zfilestorage/**
-!**/src/main/resources/zfilestorage/dump/**
+# **/src/main/resources/zfilestorage/**
+# !**/src/main/resources/zfilestorage/dump/**
 .idea/
 
 ### STS ###
