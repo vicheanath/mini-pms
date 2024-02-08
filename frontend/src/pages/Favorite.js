@@ -15,7 +15,7 @@ const Favorite = () => {
         {data.map((property) => {
           return (
             <Col md={4} key={property.id} className="mb-4">
-              <Property key={property.id} {...property} refetch={refetch} />
+              <Property key={property.id} {...property} refetch={refetch}/>
             </Col>
           )
         })}

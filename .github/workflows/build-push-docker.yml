@@ -10,8 +10,9 @@ name: Build and Publish Docker Image
 
 on:
   release:
-    types: [created]
+    types: [created, published]
     version: 'v*.*.*'
+    
 
 jobs:
   build:
