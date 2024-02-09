@@ -67,26 +67,44 @@ This is a mini property management system that allows users to create, read, upd
 
 ## Getting Started
 1. Clone the repository
-`git clone `
+
+```bash 
+git clone https://github.com/vicheanath/mini-pms.git
+```
 
 2. Change directory to the project directory
-`cd mini-pms`
 
-3. Install all dependencies
-`cd frontend && npm install`
+```bash 
+cd mini-pms
+```
+
+2. Install all dependencies
+
+```bash 
+cd frontend && npm install
+```
 
 4. Start the backend server
-`cd backend/pms `
+   
+```bash 
+cd backend/pms
+```
 
  - Run Docker Compose to start the PostgreSQL database
- - `docker-compose up -d`
+ - ```bash
+   docker-compose up -d
+   ```
  - Start the Spring Boot server with the following command or run the project in your favorite IDE
- - `mvn spring-boot:run`
+ - ```bash
+    mvn spring-boot:run
+   ```
 
 5. Start the frontend server
-`npm start`
+```bash
+npm start
+```
 
-6. Open your browser and navigate to http://localhost:3000
+7. Open your browser and navigate to http://localhost:3000
 
 ## UserDummy Data
 
