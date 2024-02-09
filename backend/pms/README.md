@@ -163,6 +163,10 @@ curl --location 'http://localhost:8080/api/v1/emails/send' \
 
 ## IV. System Design
 
+High Level Design
+
+![PMS-High-Level-Design.png](design%2FPMS-High-Level-Design.png)
+
 ### 1. Token Issuance
 
 <br>
@@ -190,20 +194,6 @@ curl --location 'http://localhost:8080/api/v1/emails/send' \
 <br>
 
 ### 5. SMTP Service
-![alt text](out/design/5_smtp/5_smtp.png)
+![SMTP Service](out/design/5_smtp/5_smtp.png)
 
 <br>
-
-Testing
-
-```plantuml.server
-@startuml
-    test -> hello: hi
-@enduml
-```
-
-```plantuml
-@startuml
-    test -> hello: hi
-@enduml
-```
