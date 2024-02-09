@@ -1,0 +1,106 @@
+@startuml
+
+    participant Frontend as front
+    participant Backend as back
+    participant "JWT Filter" as filter
+    participant AuthSerivce as auth
+    participant FileController as controller
+    participant FileService as service
+
+    skinparam participant {
+        padding 50
+    }
+    skinparam BoxPadding 50
+
+    |||
+
+group Upload File
+    autonumber  "<b>0."
+    front -> back: request to upload file
+    note over front
+        POST: **//.../files/upload//**
+        Content-Type: 
+            multipart/form-data; 
+            boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW        
+        Header: 
+            Authorization: Bearer ASDFkoeq...
+        Form:
+            ------WebKitFormBoundary7MA4YWxkTrZu0gW
+            Content-Disposition: 
+            form-data; name="file"; filename=".../avatar.jpg"
+            Content-Type: image/jpeg        
+
+    end note
+    |||
+    back -> filter: upload file
+    |||
+    filter -> filter: verify Bearer JWT token
+    |||
+    filter -> auth: upload file
+    auth -> auth: verify JWT token with secret \n if fail send message "Invalid Token"
+    |||
+    auth -> auth: validate JWT token if expired \n if fail send message "Expired Token"
+    |||
+    auth -> auth: 
+    note right
+     extract info from JWT Token
+        claims:
+            - email
+            - role
+    end note
+    auth -> filter: return JWT Info
+    |||
+    filter -> filter: authenticated email and role into SecurityContextHolder
+    filter -> controller: upload file
+    controller -> service: send file to servcie
+    service -> service: 
+    note right
+        - generate fileKey
+        - extract file metadata (filename, size)
+        - write the file to file storage mapped by fileKey
+        - generate a url to download file
+        - save (filekey, file metatdata, url) to table
+    end note
+    |||
+    service -> controller: response FileInfo
+    
+
+
+    controller --> front: response file info:
+    note right of front
+        {
+            "url": "http://localhost:8080/api/v1/files/51e2d007-1799-4f97-b3fd-2090b4cad885/download",
+            "key": "51e2d007-1799-4f97-b3fd-2090b4cad885"
+        }
+    end note
+    
+|||
+end
+|||
+
+group Download File
+|||
+
+    autonumber  "<b>0."
+    front -> back: download file
+    note over front
+        GET: **//.../files/{filekey}/download//**
+
+    end note
+    |||
+    back -> filter: download file
+    |||
+    filter -> filter: skip JWT token verification
+    |||
+    filter -> controller: download file
+    controller -> service: send file to servcie
+    service -> service: get file metadata by **{filekey}** from DB and \nvalidate if not exist throw message "file not found"
+    service -> service: read file by filekey
+    service -> controller: return file
+    controller -> front: stream file to client
+
+|||
+end
+
+
+@enduml

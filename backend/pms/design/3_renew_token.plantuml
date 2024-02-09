@@ -1,0 +1,60 @@
+@startuml
+
+    participant Frontend as front
+    participant Backend as back
+    participant "JWT Filter" as filter
+    participant AuthSerivce as auth
+    skinparam participant {
+        padding 20
+    }
+
+|||
+autonumber  "<b>0."
+note over front
+    POST: **//.../auth/token/refresh//**
+    Header: 
+            Authorization: Bearer ASDFkoeq...
+end note
+front -> back: request to renew token
+back -> filter: request to filter
+|||
+filter -> filter: verify Bearer JWT token
+|||
+filter -> auth: request to auth
+auth -> auth: verify JWT refresh token with secret \n if fail send message "Invalid Token"
+|||
+auth -> auth: validate JWT refresh token if expired \n if fail send message "Expired Token"
+|||
+auth -> auth:
+note right
+    extract info from JWT refresh token
+    claims:
+        - email
+        - role
+end note
+|||
+auth -> auth: validate and authenticate user
+|||
+auth -> auth:
+note right
+    create and sign a JWT access and refresh token
+    with secret key.
+        claims:
+            - email
+            - role
+            - issued date
+            - expired date
+end note
+
+auth --> front: issue a token response:
+note right of front
+    {
+        "accessToken":"ASDFkoeqncE/wej.sdfweWE/dfwe.WEFwfoweij"
+        "refreshToken":"ASDFkoeqncE/wej.sdfweWE/dfwe.WEFwfoweij"
+    }
+end note
+
+|||
+
+
+@enduml

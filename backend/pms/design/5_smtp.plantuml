@@ -1,0 +1,57 @@
+@startuml
+
+    participant Frontend as front
+    participant Backend as back
+    participant "JWT Filter" as filter
+    participant AuthSerivce as auth
+    participant EmailController as controller
+    participant EmailService as service
+
+    skinparam participant {
+        padding 50
+    }
+
+    |||
+    autonumber  "<b>0."
+    front -> back: request to send an email
+    note right front
+        GET: **//.../files/send//**
+        Header: 
+            Authorization: Bearer ASDFkoeq...
+        {
+            "email": "a@a.com", // recipient
+            "content": "everyone good",
+            "recipient": "dengbunthai@gmail.com"
+        }
+    end note
+    |||
+    back -> filter: request to send an email
+    |||
+    filter -> filter: verify Bearer JWT token
+    |||
+    filter -> auth: request to send an email
+    auth -> auth: verify JWT token with secret \n if fail send message "Invalid Token"
+    |||
+    auth -> auth: validate JWT token if expired \n if fail send message "Expired Token"
+    |||
+    auth -> auth: 
+    note right
+     extract info from JWT Token
+        claims:
+            - email
+            - role
+    end note
+    auth -> filter: return JWT Info
+    |||
+    filter -> filter: authenticated email and role into SecurityContextHolder
+    filter -> controller: forward requst to send the email
+    controller -> service: request service to send email
+    service -> Recipient: send email to recipient
+
+
+    controller --> front: response 204 no content
+    
+|||
+
+
+@enduml

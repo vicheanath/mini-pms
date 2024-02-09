@@ -1,0 +1,44 @@
+@startuml
+
+    participant Frontend as front
+    participant Backend as back
+    participant "JWT Filter" as filter
+    participant AuthSerivce as auth
+
+    |||
+    autonumber  "<b>0."
+    front -> back: request to create a token 
+    note left
+        POST: **//.../auth/token//**
+        {
+            "email": "a@a.com"
+            "password": "***"
+        }
+    end note
+    back -> filter: request token
+    filter -> filter: skip JWT token verification
+    filter -> auth: request token
+    auth -> auth: authenticate email & password \n if fail send message "Invalid Credential"
+    auth -> auth: 
+    note right
+     create and sign a JWT access and refresh token
+     with secret key.
+        claims:
+            - email
+            - role
+            - issued date
+            - expired date
+    end note
+
+    auth --> front: issue a token response:
+    note right of front
+        {
+            "accessToken":"ASDFkoeqncE/wej.sdfweWE/dfwe.WEFwfoweij" 
+            "refreshToken":"ASDFkoeqncE/wej.sdfweWE/dfwe.WEFwfoweij"
+        }
+    end note
+    
+|||
+
+
+@enduml

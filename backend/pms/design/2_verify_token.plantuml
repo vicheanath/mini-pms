@@ -1,0 +1,56 @@
+@startuml
+
+    participant Frontend as front
+    participant Backend as back
+    participant "JWT Filter" as filter
+    participant AuthSerivce as auth
+    participant ProfileController as controller
+
+    skinparam participant {
+        padding 50
+    }
+
+    |||
+    autonumber  "<b>0."
+    front -> back: request to get authenticated resource
+    note right front
+        GET: **//.../profile//**
+        Header: 
+            Authorization: Bearer ASDFkoeq...
+    end note
+    |||
+    back -> filter: request resource
+    |||
+    filter -> filter: verify Bearer JWT token
+    |||
+    filter -> auth: request resource
+    auth -> auth: verify JWT token with secret \n if fail send message "Invalid Token"
+    |||
+    auth -> auth: validate JWT token if expired \n if fail send message "Expired Token"
+    |||
+    auth -> auth: 
+    note right
+     extract info from JWT Token
+        claims:
+            - email
+            - role
+    end note
+    auth -> filter: return JWT Info
+    |||
+    filter -> filter: authenticated email and role into SecurityContextHolder
+    filter -> controller: forward requst to access resoure
+    controller -> controller: get resource
+
+    controller --> front: response profile:
+    note right of front
+        {
+            "name":"Mr.a" 
+            "email": "a@a.com"
+            ...
+        }
+    end note
+    
+|||
+
+
+@enduml
