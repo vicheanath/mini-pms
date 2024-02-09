@@ -7,13 +7,17 @@ import com.mini.pms.restcontroller.request.RegisterRequest;
 import com.mini.pms.restcontroller.response.TokenResponse;
 import org.springframework.security.core.Authentication;
 
+import java.security.Principal;
+
 public interface AuthService {
     Member getAuthenticatedUser();
     Authentication authenticate(String email, String password);
 
-    String createToken(AuthRequest authRequest, TokenType tokenType, long expired);
+    String createToken(Authentication auth, String email, TokenType tokenType, long expired);
 
     TokenResponse issueAccessToken(AuthRequest authRequest);
+
+    TokenResponse issueAccessToken(Principal principal);
 
     Member registerCustomer(RegisterRequest authRequest);
 

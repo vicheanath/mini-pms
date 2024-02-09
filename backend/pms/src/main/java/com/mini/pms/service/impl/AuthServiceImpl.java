@@ -28,6 +28,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.*;
 
 @Service
@@ -72,11 +73,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String createToken(AuthRequest authRequest, TokenType tokenType, long expired) {
-        var email = authRequest.getEmail();
-        var password = authRequest.getPassword();
+    public String createToken(Authentication auth, String email, TokenType tokenType, long expired) {
 
-        var auth = authenticate(email, password);
+        if (!auth.isAuthenticated()) {
+            throw new PlatformException("Unauthorized user", HttpStatus.UNAUTHORIZED);
+        }
 
         var now = new Date();
         var expireAt = new Date(now.getTime());
@@ -105,9 +106,26 @@ public class AuthServiceImpl implements AuthService {
 
         var tokenRes = TokenResponse.builder();
 
-        tokenRes.accessToken(createToken(authRequest, TokenType.ACCESS_TOKEN, ACCESS_TOKEN_EXPIRED))
+        var email = authRequest.getEmail();
+        var password = authRequest.getPassword();
+        var auth = authenticate(email, password);
+        tokenRes.accessToken(createToken(auth, email, TokenType.ACCESS_TOKEN, ACCESS_TOKEN_EXPIRED))
                 .refreshToken(
-                        createToken(authRequest, TokenType.REFRESH_TOKEN, REFRESH_TOKEN_EXPIRED));
+                        createToken(auth, email, TokenType.REFRESH_TOKEN, REFRESH_TOKEN_EXPIRED));
+
+        return tokenRes.build();
+    }
+
+    @Override
+    public TokenResponse issueAccessToken(Principal principal) {
+
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+
+        var tokenRes = TokenResponse.builder();
+
+        tokenRes.accessToken(createToken(auth, principal.getName(), TokenType.ACCESS_TOKEN, ACCESS_TOKEN_EXPIRED))
+                .refreshToken(
+                        createToken(auth, principal.getName(), TokenType.REFRESH_TOKEN, REFRESH_TOKEN_EXPIRED));
 
         return tokenRes.build();
     }
@@ -132,7 +150,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private Member register(RegisterRequest authRequest) {
-        Role role =  roleRepo.findByName(authRequest.getRole());
+        Role role = roleRepo.findByName(authRequest.getRole());
         Member member = Member.builder()
                 .name(authRequest.getName())
                 .email(authRequest.getEmail())
@@ -140,8 +158,7 @@ public class AuthServiceImpl implements AuthService {
                 .password(passwordEncoder.encode(authRequest.getPassword()))
                 .roles(List.of(role))
                 .build();
-        return  memberRepo.save(member);
+        return memberRepo.save(member);
     }
-
 
 }

@@ -8,15 +8,18 @@ import com.mini.pms.restcontroller.request.RegisterRequest;
 import com.mini.pms.restcontroller.response.MemberResponse;
 import com.mini.pms.restcontroller.response.TokenResponse;
 import com.mini.pms.service.AuthService;
-
 import com.mini.pms.service.MemberService;
 import com.mini.pms.util.Util;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/v1/auth")
@@ -30,11 +33,6 @@ public class AuthRestController {
     public TokenResponse token(@RequestBody AuthRequest authRequest) {
         return authService.issueAccessToken(authRequest);
     }
-
-    //    @PostMapping("/token/refresh")
-    //    public String refresh(@RequestBody AuthRequest authRequest) {
-    //        return authService.issueAccessToken(authRequest);
-    //    }
 
     @PostMapping("owner/register")
     @ResponseStatus(HttpStatus.CREATED)

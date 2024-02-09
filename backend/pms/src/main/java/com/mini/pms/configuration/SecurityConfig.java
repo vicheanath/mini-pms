@@ -69,6 +69,8 @@ public class SecurityConfig {
                                     )
                                     .permitAll()
 
+                                    .requestMatchers(contextPath + "/auth/token/refresh")
+                                    .authenticated()
                                     .requestMatchers(contextPath + "/admins/**")
                                     .hasAuthority("Admin")
                                     .requestMatchers(contextPath + "/owners/**")
