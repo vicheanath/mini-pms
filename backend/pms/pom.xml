@@ -15,6 +15,8 @@
     <description>PMS project for Spring Boot</description>
     <properties>
         <java.version>17</java.version>
+        <sonar.organization>vicheanath</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
     <dependencies>
         <dependency>
