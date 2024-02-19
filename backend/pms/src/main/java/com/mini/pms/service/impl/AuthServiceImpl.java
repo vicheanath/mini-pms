@@ -38,8 +38,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Value("${jwt.secret}")
     private String secret;
-
-    private final long ACCESS_TOKEN_EXPIRED = 1000 * 60 * 1000; // 10mn
+    // 3 seconds for testing
+    private final long ACCESS_TOKEN_EXPIRED = 1000 * 3; // 3s
     private final long REFRESH_TOKEN_EXPIRED = 1000 * 60 * 20; // 20mn
 
     private final AuthenticationManager authManager;

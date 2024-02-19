@@ -5,21 +5,23 @@ import { apiBaseUrl } from "./constants";
 import { defaultQueryFn } from "./defaultQueryFn";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
+import { refreshAccessTokenFn } from "./api";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     mutations: {
       onError: async (e) => {
         const err = JSON.parse(e.message);
-        console.log(err);
+        if (err.code2 === 401) {
+          refreshAccessTokenFn();
+        }
       },
     },
     queries: {
       retry: async (count, e) => {
         const err = JSON.parse(e.message);
-        console.log(err);
         if (err.code2 === 401) {
-          localStorage.clear();
+          refreshAccessTokenFn();
         }
       },
       staleTime: 60 * 1000 * 1, // 5 minutes

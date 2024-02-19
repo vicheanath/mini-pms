@@ -46,4 +46,4 @@ management:
 jwt:
   secret: ${JWT_SECRET:1234}
 mail:
-  enabled: ${ENABLED:false}
+  enabled: ${ENABLED:true}
