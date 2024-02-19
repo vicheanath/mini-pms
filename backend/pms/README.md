@@ -71,6 +71,8 @@ response:
 <br>
 
 ##### Refresh Token
+Add the refresh token in the header <br>
+for example `Authorization: Bearer {refreshToken}`
 
 ```shell
 curl --location --request POST 'http://localhost:8080/api/v1/token/refresh' \
