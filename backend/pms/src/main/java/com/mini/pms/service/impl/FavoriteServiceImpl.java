@@ -53,7 +53,10 @@ public class FavoriteServiceImpl implements FavoriteService {
     public void removeFavorite(long propertyId, long memberId) {
         Member member = memberService.profile(memberId);
         Property property = propertyService.findById(propertyId);
-        favoriteRepo.deleteByMemberAndProperty(member, property);
+        int isDeleted = favoriteRepo.deleteByMemberAndProperty(member, property);
+        if (isDeleted == 0) {
+            throw new PlatformException("Favorite not found", HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override

@@ -19,7 +19,7 @@ public interface FavoriteRepo extends JpaRepository<Favorite,Long> {
 
     boolean existsByMemberAndProperty(Member member, Property property);
 
-    void deleteByMemberAndProperty(Member member, Property property);
+    int deleteByMemberAndProperty(Member member, Property property);
 
     List<Favorite> findByMemberId(long memberId);
 
