@@ -43,7 +43,11 @@ CREATE DATABASE "pms-db";
 
 <br>
 
-#### 5. Create Access Token
+#### 5. Create Access / Refresh Token
+
+<br>
+
+##### Access Token
 
 You can paste this in Postman or run in a terminal
 
@@ -64,6 +68,26 @@ response:
   "refreshToken": "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6W3sicm9sZSI6IkFkbWluIn1dLCJleHAiOjE3MDcwNzY3NjEsImlhdCI6MTcwNzA3NTU2MSwiZW1haWwiOiJhQGEuY29tIn0.HmEI79h6_IZBsZDv73kMd6XTcfz5PJBq2WrZPXNXBt1vco-osuq5PiEzDPIAn_KYTVvlb8CSlEybyJMqss8tKQ"
 }
 ```
+<br>
+
+##### Refresh Token
+
+```shell
+curl --location --request POST 'http://localhost:8080/api/v1/token/refresh' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJI...'
+
+```
+
+response:
+
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6W3sicm9sZSI6IkFkbWluIn1dLCJleHAiOjE3MDcwNzYxNjAsImlhdCI6MTcwNzA3NTU2MCwiZW1haWwiOiJhQGEuY29tIn0.rw0kPwa9Jpi8vNgBtej3X4QH0rDN69h1jg-sQtUY4w-sjnjYJSrpMq1S3CKOoiYL8ZWffrvX9b2uSDQNhP4GVw",
+  "refreshToken": "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6W3sicm9sZSI6IkFkbWluIn1dLCJleHAiOjE3MDcwNzY3NjEsImlhdCI6MTcwNzA3NTU2MSwiZW1haWwiOiJhQGEuY29tIn0.HmEI79h6_IZBsZDv73kMd6XTcfz5PJBq2WrZPXNXBt1vco-osuq5PiEzDPIAn_KYTVvlb8CSlEybyJMqss8tKQ"
+}
+```
+
 <br>
 
 ---
