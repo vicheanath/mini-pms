@@ -142,7 +142,7 @@ VALUES (
            '2de25a4be7b35b4e5bdc85dd1b90dd0b-cc_ft_1536.webp',
            374928,
            '2024-02-07 00:29:48.620212',
-           'http://localhost:8080/api/v1/files/18ee8134-c056-4b62-ab9c-de5c5ed1a397/download',
+           'http://localhost:8080/api/v1/files/dump/18ee8134-c056-4b62-ab9c-de5c5ed1a397/download',
            1
        ),
        (
@@ -151,7 +151,7 @@ VALUES (
            'istockphoto-1223671392-612x612.webp',
            119848,
            '2024-02-07 00:37:40.770564',
-           'http://localhost:8080/api/v1/files/7dbe103a-ef37-4d40-8514-8b1d305cadbc/download',
+           'http://localhost:8080/api/v1/files/dump/7dbe103a-ef37-4d40-8514-8b1d305cadbc/download',
            2
        ),
        (
@@ -160,7 +160,7 @@ VALUES (
            '70eae94aac25d652feec326f6c956677-cc_ft_768.webp',
            81462,
            '2024-02-07 00:39:46.315914',
-           'http://localhost:8080/api/v1/files/cf9af819-c037-4a2f-9d0b-a5266752e1de/download',
+           'http://localhost:8080/api/v1/files/dump/cf9af819-c037-4a2f-9d0b-a5266752e1de/download',
            2
        ),
        (
@@ -169,7 +169,7 @@ VALUES (
            '36a3818de08b1276e999d6644b898bc7-cc_ft_768.webp',
            95240,
            '2024-02-07 00:44:43.638679',
-           'http://localhost:8080/api/v1/files/4ddaf5cb-d198-4c4f-bda3-166d0d1720e6/download',
+           'http://localhost:8080/api/v1/files/dump/4ddaf5cb-d198-4c4f-bda3-166d0d1720e6/download',
            2
        ),
        (
@@ -178,7 +178,7 @@ VALUES (
            '681b80dd92692119ba9b5877582ff7b3-cc_ft_768.webp',
            133530,
            '2024-02-07 00:29:48.619834',
-           'http://localhost:8080/api/v1/files/255d0f6e-be87-4deb-a8d1-4640941c97e1/download',
+           'http://localhost:8080/api/v1/files/dump/255d0f6e-be87-4deb-a8d1-4640941c97e1/download',
            1
        ),
        (
@@ -187,7 +187,7 @@ VALUES (
            'a4da493447946d23c7dafae95f171ece-cc_ft_768.webp',
            57856,
            '2024-02-07 00:29:48.62001',
-           'http://localhost:8080/api/v1/files/216bde52-1811-4e57-a587-41bfc9cf00ab/download',
+           'http://localhost:8080/api/v1/files/dump/216bde52-1811-4e57-a587-41bfc9cf00ab/download',
            1
        ),
        (
@@ -196,7 +196,7 @@ VALUES (
            'f9f46aa3b70545cd8462c399dd3e4cb2-cc_ft_1536.webp',
            79694,
            '2024-02-07 00:29:48.620092',
-           'http://localhost:8080/api/v1/files/3d56edd8-d846-498a-a7a0-86abf7f450b8/download',
+           'http://localhost:8080/api/v1/files/dump/3d56edd8-d846-498a-a7a0-86abf7f450b8/download',
            1
        ),
        (
@@ -205,7 +205,7 @@ VALUES (
            '36a3818de08b1276e999d6644b898bc7-cc_ft_768.webp',
            95240,
            '2024-02-07 00:37:40.77056',
-           'http://localhost:8080/api/v1/files/d940e58b-fea3-42c4-b8ad-ad0a6fd77d2a/download',
+           'http://localhost:8080/api/v1/files/dump/d940e58b-fea3-42c4-b8ad-ad0a6fd77d2a/download',
            2
        ),
        (
@@ -214,7 +214,7 @@ VALUES (
            '70eae94aac25d652feec326f6c956677-cc_ft_768.webp',
            81462,
            '2024-02-07 00:37:40.770559',
-           'http://localhost:8080/api/v1/files/ea5dd452-e0b9-4a5e-a47e-791a51b3f7c8/download',
+           'http://localhost:8080/api/v1/files/dump/ea5dd452-e0b9-4a5e-a47e-791a51b3f7c8/download',
            2
        ),
        (
@@ -223,7 +223,7 @@ VALUES (
            '1c0500ddb4a2c8237f1b05bf4f6b14f0-cc_ft_1536.webp',
            150908,
            '2024-02-07 00:37:40.770563',
-           'http://localhost:8080/api/v1/files/dfa22596-db7b-42ce-a421-95ddefbc9c9a/download',
+           'http://localhost:8080/api/v1/files/dump/dfa22596-db7b-42ce-a421-95ddefbc9c9a/download',
            2
        ),
        (
@@ -232,7 +232,7 @@ VALUES (
            'd64f5b44f3f1edca650d6847c696652d-cc_ft_768.webp',
            124432,
            '2024-02-07 00:37:40.788933',
-           'http://localhost:8080/api/v1/files/52830c0e-246b-4b48-b6dc-0bda9a4444b8/download',
+           'http://localhost:8080/api/v1/files/dump/52830c0e-246b-4b48-b6dc-0bda9a4444b8/download',
            2
        ),
        (
@@ -241,7 +241,7 @@ VALUES (
            '36a3818de08b1276e999d6644b898bc7-cc_ft_768.webp',
            95240,
            '2024-02-07 00:39:46.315386',
-           'http://localhost:8080/api/v1/files/591d9fa5-98e7-4a26-9feb-05e1d711e1bc/download',
+           'http://localhost:8080/api/v1/files/dump/591d9fa5-98e7-4a26-9feb-05e1d711e1bc/download',
            2
        ),
        (
@@ -250,7 +250,7 @@ VALUES (
            '1c0500ddb4a2c8237f1b05bf4f6b14f0-cc_ft_1536.webp',
            150908,
            '2024-02-07 00:39:46.315794',
-           'http://localhost:8080/api/v1/files/fa0f3c2e-83dd-40ed-8a57-151cdf8c7490/download',
+           'http://localhost:8080/api/v1/files/dump/fa0f3c2e-83dd-40ed-8a57-151cdf8c7490/download',
            2
        ),
        (
@@ -259,7 +259,7 @@ VALUES (
            'd64f5b44f3f1edca650d6847c696652d-cc_ft_768.webp',
            124432,
            '2024-02-07 00:39:46.315384',
-           'http://localhost:8080/api/v1/files/48cf8e8a-31f9-45d4-8521-331d035ed6a9/download',
+           'http://localhost:8080/api/v1/files/dump/48cf8e8a-31f9-45d4-8521-331d035ed6a9/download',
            2
        ),
        (
@@ -268,7 +268,7 @@ VALUES (
            'istockphoto-1223671392-612x612.webp',
            119848,
            '2024-02-07 00:39:46.315524',
-           'http://localhost:8080/api/v1/files/7ec7814c-f1d4-40f3-8408-2c9b5ca475ce/download',
+           'http://localhost:8080/api/v1/files/dump/7ec7814c-f1d4-40f3-8408-2c9b5ca475ce/download',
            2
        ),
        (
@@ -277,7 +277,7 @@ VALUES (
            '1c0500ddb4a2c8237f1b05bf4f6b14f0-cc_ft_1536.webp',
            150908,
            '2024-02-07 00:44:43.638803',
-           'http://localhost:8080/api/v1/files/20b85878-8ffd-442a-be27-e7b3d1dcc0f1/download',
+           'http://localhost:8080/api/v1/files/dump/20b85878-8ffd-442a-be27-e7b3d1dcc0f1/download',
            2
        ),
        (
@@ -286,7 +286,7 @@ VALUES (
            'd64f5b44f3f1edca650d6847c696652d-cc_ft_768.webp',
            124432,
            '2024-02-07 00:44:43.638862',
-           'http://localhost:8080/api/v1/files/cb0ecd6f-0ff2-47e8-9a85-dca4b2d5a50f/download',
+           'http://localhost:8080/api/v1/files/dump/cb0ecd6f-0ff2-47e8-9a85-dca4b2d5a50f/download',
            2
        ),
        (
@@ -295,7 +295,7 @@ VALUES (
            '70eae94aac25d652feec326f6c956677-cc_ft_768.webp',
            81462,
            '2024-02-07 00:44:43.638934',
-           'http://localhost:8080/api/v1/files/708d8753-0c03-4442-8ecd-15ef7ce229d6/download',
+           'http://localhost:8080/api/v1/files/dump/708d8753-0c03-4442-8ecd-15ef7ce229d6/download',
            2
        ),
        (
@@ -304,7 +304,7 @@ VALUES (
            'istockphoto-1223671392-612x612.webp',
            119848,
            '2024-02-07 00:44:43.638987',
-           'http://localhost:8080/api/v1/files/5d4e5767-6ba6-49f4-8778-25314b25a7ad/download',
+           'http://localhost:8080/api/v1/files/dump/5d4e5767-6ba6-49f4-8778-25314b25a7ad/download',
            2
        ),
        (
@@ -313,7 +313,7 @@ VALUES (
            '71d6d546e79e698652c862e7febb6c84-cc_ft_768.webp',
            104744,
            '2024-02-07 01:04:03.062579',
-           'http://localhost:8080/api/v1/files/0d832078-7c8c-4a93-bf2c-4f8c986d7bcc/download',
+           'http://localhost:8080/api/v1/files/dump/0d832078-7c8c-4a93-bf2c-4f8c986d7bcc/download',
            3
        ),
        (
@@ -322,7 +322,7 @@ VALUES (
            '478163394364d24a5c9f5e514143a987-cc_ft_768.webp',
            47724,
            '2024-02-07 01:04:03.063409',
-           'http://localhost:8080/api/v1/files/19e4d3b2-b4fe-4260-9082-30c0bbdc4bcd/download',
+           'http://localhost:8080/api/v1/files/dump/19e4d3b2-b4fe-4260-9082-30c0bbdc4bcd/download',
            3
        ),
        (
@@ -331,7 +331,7 @@ VALUES (
            'ffde7376d106d8c16964fdd2be7b4bc6-cc_ft_768.webp',
            108156,
            '2024-02-07 01:04:03.063517',
-           'http://localhost:8080/api/v1/files/26e2c78c-def2-4fc9-b34c-21c2eb8994ed/download',
+           'http://localhost:8080/api/v1/files/dump/26e2c78c-def2-4fc9-b34c-21c2eb8994ed/download',
            3
        );
 INSERT INTO offer(
